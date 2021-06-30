@@ -2,6 +2,7 @@
 package dao;
  
 import connect.ConnectionFactory;
+import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -298,6 +299,19 @@ public class UsuarioDAO {
         
     }
     
-    
+    // criptografia
+    public String criptografar(String senha){
+        
+        try {
+            
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            byte messageDigest[] = digest.digest(senha.getBytes("UTF-8"));
+            
+        } catch (Exception e) {
+            
+        }
+        
+        return "";
+    }
     
 }
