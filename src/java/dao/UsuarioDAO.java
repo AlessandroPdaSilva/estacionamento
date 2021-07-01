@@ -258,7 +258,7 @@ public class UsuarioDAO {
         
         Usuario u = new Usuario();
         // query
-        String sql = "SELECT * FROM usuario WHERE login = ?";
+        String sql = "SELECT * FROM usuario WHERE nome = ?";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -302,16 +302,27 @@ public class UsuarioDAO {
     // criptografia
     public String criptografar(String senha){
         
+        String senhaHex = "";
+        
         try {
             
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-            byte messageDigest[] = digest.digest(senha.getBytes("UTF-8"));
+            MessageDigest md = MessageDigest.getInstance("SHA-1");// MD5,SHA-1,SHA-256
+            byte messageDigest[] = md.digest(senha.getBytes("UTF-8"));// criptografando
+            
+            StringBuilder sb = new StringBuilder();
+            
+            for(byte b : messageDigest){
+                sb.append(String.format("%02x", 0xFF & b));//passando para String
+                
+            }
+            
+            senhaHex = sb.toString();// senha criptografada
             
         } catch (Exception e) {
-            
+            e.printStackTrace();
         }
         
-        return "";
+        return senhaHex;
     }
     
 }
