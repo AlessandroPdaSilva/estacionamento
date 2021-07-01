@@ -5,7 +5,8 @@
         <group>
             <file>file:/C:/Users/Alessandro/Documents/NetBeansProjects/estacionamento/src/java/dao/UsuarioDAO.java</file>
             <file>file:/C:/Users/Alessandro/Documents/NetBeansProjects/estacionamento/web/index.jsp</file>
-            <file>file:/C:/Users/Alessandro/Documents/NetBeansProjects/estacionamento/web/frota_de_veiuculos.jsp</file>
+            <file>file:/C:/Users/Alessandro/Documents/NetBeansProjects/estacionamento/web/criar_login.jsp</file>
+            <file>file:/C:/Users/Alessandro/Documents/NetBeansProjects/estacionamento/web/frota_de_veiculos.jsp</file>
             <file>file:/C:/Users/Alessandro/Documents/NetBeansProjects/estacionamento/src/java/controller/GerenciarLogin.java</file>
         </group>
     </open-files>

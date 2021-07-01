@@ -52,16 +52,25 @@ public class GerenciarLogin extends HttpServlet {
             String senha = request.getParameter("campo");
 
             if (senha.equals("123")) {
+                boolean l = true;
+                
+                HttpSession sessao = request.getSession();
+                sessao.setAttribute("logado", l);
                 response.sendRedirect("criar_login.jsp");
             } else {
+                
                 out.println("<script type='text/javascript'>");
                 out.println("alert('Senha invalida')");
                 out.println("location.href='index.jsp'");
                 out.println("</script>");
             }
+            
         }
-
-        
+            //bloqueio -voltar
+            if (acao.equals("voltar")) {
+                request.getSession().removeAttribute("logado");
+                response.sendRedirect("index.jsp");
+            }
 
     }
 
