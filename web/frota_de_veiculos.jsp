@@ -1,6 +1,10 @@
 
+<%@page import="model.VeiculoDaFrota"%>
+<%@page import="dao.VeiculoDaFrotaDAO"%>
+<%@page import="java.util.ArrayList"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><!-- taglib -->
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 
 <!-- logado -->
 <c:if test="${ulogado!=null}">
@@ -10,9 +14,12 @@
     <h1 class="my-3">Frota de Veiculos</h1>
 
 
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalCriar">
         Criar Veiculo
     </button>
+
+
+
     <!-- tabela -->
     <table class="table table-dark table-striped" id="listarFrota">
         <thead>
@@ -28,29 +35,36 @@
         </thead>
 
 
-
-
         <tbody>
-
-            <tr>
-                <th scope="row"></th>
-                <td></td>
-                <td></td>
-                <td></td>
+                
+            <!-- view -->
+            <jsp:useBean class="dao.VeiculoDaFrotaDAO" id="vfdao"/><!-- objeto -->
+            <c:forEach var="vf" items="${vfdao.all}">
 
 
-                <td>
-                    <a href="gerenciar_menu.do?acao=editar&idMenu=" name="idMenu" class="btn btn-primary" >
-                        <img src="imagens/pencil.svg">
-                    </a>
-                    <a class="btn btn-danger" onclick="confirmarExclusao()">
-                        <img src="imagens/trash-fill.svg">
-                    </a>
-                </td>
-            </tr>
+                <tr>
+                    <th scope="row">${vf.id}</th>
+                    <td>${vf.modelo}</td>
+                    <td>${vf.placa}</td>
+                    <td>${vf.vaga}</td>
 
+
+                    <td>
+                        <a href="gerenciar_veiculo.do?acao=editar_page&id=${vf.id}" class="btn btn-primary" >
+                            <img src="imagens/pencil.svg">
+                        </a>
+                        <a class="btn btn-danger" onclick="confirmarExclusao(${vf.id},'${vf.modelo}','${vf.placa}' )">
+                            <img src="imagens/trash-fill.svg">
+                        </a>
+                    </td>
+                </tr>
+
+
+
+            </c:forEach>
+                
+                
         </tbody>
-
 
 
     </table>
@@ -59,11 +73,12 @@
 
 
 
-    <!-- MODAL -->
-    <div id="exampleModal" class="modal" tabindex="-1">
+    <!-- MODAL CRIAR-->
+    <div id="ModalCriar" class="modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
 
+                <!-- form-->
                 <form action="gerenciar_veiculo.do" method="GET">
                     <div class="modal-header">
                         <h5 class="modal-title">Criar Veiculo</h5>
@@ -86,13 +101,13 @@
                             <input name="vaga" type="number" class="form-control" id="floatingPassword" placeholder="Password">
                             <label for="floatingPassword">vaga</label>
                         </div>
-                        
-                        
+
+                        <input name="acao" value="criar_veiculo" hidden="">
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
                     </div>
                 </form>
 
@@ -100,17 +115,25 @@
         </div>
     </div>
 
+    
+    
+    
+    
 
 
 
     <!-- javaScript -->
     <script type="text/javascript">
-        function confirmarExclusao(id, nome) {
-            if (confirm("Deseja realmente excluir o menu " + nome + "?")) {
-                location.href = "gerenciar_menu.do?acao=deletar&idMenu=" + id;
+        function confirmarExclusao(id, modelo ,placa) {
+            if (confirm("\nDeseja realmente EXCLUIR o " + modelo + "? \n\n - Placa: " + placa +"\n " )) {
+                location.href = "gerenciar_veiculo.do?acao=deletar&id=" + id;
             }
         }
     </script>
+    
+    
+    
+    
     <script type="text/javascript" src="datatables/jquery.js"></script>
     <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
     <script type="text/javascript">

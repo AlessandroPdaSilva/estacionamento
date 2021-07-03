@@ -1,7 +1,5 @@
  
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 
 <!doctype html>
 <html lang="pt-BR">
@@ -15,7 +13,7 @@
         <style>
             
             .navegacao{
-                color:#009900;
+                color:#ffffff;
             }
             
             
@@ -40,7 +38,7 @@
                     <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         
                         <li><a href="frota_de_veiculos.jsp" class="navegacao nav-link px-4" > Frota de Veiculos</a></li>
-                        <li><a href="" class="navegacao nav-link px-4" > funcionarios</a></li>
+                        <li><a href="" class="navegacao nav-link px-4" > Funcionarios</a></li>
                         
                     </ul>
 

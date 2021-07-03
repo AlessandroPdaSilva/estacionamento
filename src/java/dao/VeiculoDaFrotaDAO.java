@@ -210,6 +210,52 @@ public class VeiculoDaFrotaDAO {
 
     }
 
+    // get Veiculo
+    public VeiculoDaFrota getVeiculo(int id) throws SQLException{
+        
+        VeiculoDaFrota vf = new VeiculoDaFrota();
+        // query
+        String sql = "SELECT * FROM veiculo_da_frota WHERE id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rset;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, id);// bind 1
+
+            // execução (boolean)
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                vf.setId(rset.getInt("id"));
+                vf.setModelo(rset.getString("modelo"));
+                vf.setPlaca(rset.getString("placa"));
+                vf.setVaga(rset.getInt("vaga"));
+
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        return vf;
+        
+    }
     
     
 }
