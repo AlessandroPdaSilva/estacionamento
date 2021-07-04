@@ -10,7 +10,7 @@
 <c:if test="${ulogado!=null}">
 
 
-    <%@include file="page/cabeçalho.jsp" %>
+    <%@include file="../page/cabeçalho.jsp" %>
     <h1 class="my-3">Frota de Veiculos</h1>
 
 
@@ -50,11 +50,11 @@
 
 
                     <td>
-                        <a href="gerenciar_veiculo.do?acao=editar_page&id=${vf.id}" class="btn btn-primary" >
-                            <img src="imagens/pencil.svg">
+                        <a href="/estacionamento/gerenciar_veiculo.do?acao=editar_page&id=${vf.id}" class="btn btn-primary" >
+                            <img src="../imagens/pencil.svg">
                         </a>
                         <a class="btn btn-danger" onclick="confirmarExclusao(${vf.id},'${vf.modelo}','${vf.placa}' )">
-                            <img src="imagens/trash-fill.svg">
+                            <img src="../imagens/trash-fill.svg">
                         </a>
                     </td>
                 </tr>
@@ -79,7 +79,7 @@
             <div class="modal-content">
 
                 <!-- form-->
-                <form action="gerenciar_veiculo.do" method="GET">
+                <form action="/estacionamento/gerenciar_veiculo.do" method="GET">
                     <div class="modal-header">
                         <h5 class="modal-title">Criar Veiculo</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -126,7 +126,7 @@
     <script type="text/javascript">
         function confirmarExclusao(id, modelo ,placa) {
             if (confirm("\nDeseja realmente EXCLUIR o " + modelo + "? \n\n - Placa: " + placa +"\n " )) {
-                location.href = "gerenciar_veiculo.do?acao=deletar&id=" + id;
+                location.href = "/estacionamento/gerenciar_veiculo.do?acao=deletar&id=" + id;
             }
         }
     </script>
@@ -164,7 +164,7 @@
 
 
 
-    <%@include file="page/rodape.jsp" %>
+    <%@include file="../page/rodape.jsp" %>
 
 </c:if>
 

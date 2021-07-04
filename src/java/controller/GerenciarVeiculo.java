@@ -57,12 +57,12 @@ public class GerenciarVeiculo extends HttpServlet {
             if(vfd.save(vf)){
                 out.println("<script type='text/javascript'>");
                 out.println("alert('Criado com sucesso')");
-                out.println("location.href='frota_de_veiculos.jsp'");
+                out.println("location.href='frota_de_veiculos/index.jsp'");
                 out.println("</script>");
             }else{
                 out.println("<script type='text/javascript'>");
                 out.println("alert('Erro ao criar')");
-                out.println("location.href='frota_de_veiculos.jsp'");
+                out.println("location.href='frota_de_veiculos/index.jsp'");
                 out.println("</script>");
             }
             
@@ -81,12 +81,12 @@ public class GerenciarVeiculo extends HttpServlet {
                 if(vfd.delete(id)){
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Deletado com sucesso')");
-                    out.println("location.href='frota_de_veiculos.jsp'");
+                    out.println("location.href='frota_de_veiculos/index.jsp'");
                     out.println("</script>");
                 }else{
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Erro ao deletar')");
-                    out.println("location.href='frota_de_veiculos.jsp'");
+                    out.println("location.href='frota_de_veiculos/index.jsp'");
                     out.println("</script>");
                 }
                 
@@ -112,7 +112,7 @@ public class GerenciarVeiculo extends HttpServlet {
                 
                 vf = vfd.getVeiculo(id);
                 
-                RequestDispatcher disp = getServletContext().getRequestDispatcher("/editar_veiculo.jsp");// jogar para form
+                RequestDispatcher disp = getServletContext().getRequestDispatcher("/frota_de_veiculos/editar_veiculo.jsp");// jogar para form
                 request.setAttribute("vf", vf);// content
                 disp.forward(request, response);// dispachar
                 
@@ -151,12 +151,12 @@ public class GerenciarVeiculo extends HttpServlet {
                 if(vfd.update(id, placa, modelo, vaga)){
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Editado com sucesso')");
-                    out.println("location.href='frota_de_veiculos.jsp'");
+                    out.println("location.href='frota_de_veiculos/index.jsp'");
                     out.println("</script>");
                 }else{
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Erro ao editar')");
-                    out.println("location.href='frota_de_veiculos.jsp'");
+                    out.println("location.href='frota_de_veiculos/index.jsp'");
                     out.println("</script>");
                 }
                 

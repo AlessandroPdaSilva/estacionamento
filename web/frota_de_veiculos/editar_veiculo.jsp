@@ -1,12 +1,13 @@
  
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %><!-- taglib -->
 
 <!-- logado -->
 <c:if test="${ulogado!=null}">
 
     
     
-<%@include file="page/cabeçalho.jsp" %>
+<%@include file="../page/cabeçalho.jsp" %>
 
 <h1>Editar Veiculo</h1>
 
@@ -31,12 +32,12 @@
     <input name="id" value="${vf.id}" hidden="">
     <input name="acao" value="editar" hidden="">
 
-    <a href="frota_de_veiculos.jsp" class="btn btn-primary "> Voltar</a>
+    <a href="frota_de_veiculos/index.jsp" class="btn btn-primary "> Voltar</a>
     <button class="btn btn-success" type="submit">Editar</button>
 </form>
 
 
-<%@include file="page/rodape.jsp" %>
+<%@include file="../page/rodape.jsp" %>
 
 </c:if>
 

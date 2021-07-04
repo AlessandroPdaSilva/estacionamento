@@ -98,7 +98,7 @@ public class GerenciarLogin extends HttpServlet {
                 if (u.getId() > 0 && u.getSenha().equals(senha)) {
                     HttpSession sessao = request.getSession();
                     sessao.setAttribute("ulogado", u);
-                    response.sendRedirect("frota_de_veiculos.jsp");
+                    response.sendRedirect("frota_de_veiculos/index.jsp");
 
                 } else {
                     out.println("<script type='text/javascript'>");
