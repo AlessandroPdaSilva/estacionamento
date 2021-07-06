@@ -1,7 +1,7 @@
-
+ 
 package controller;
 
-import dao.VeiculoDaFrotaDAO;
+import dao.FuncionarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -10,59 +10,60 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.VeiculoDaFrota;
+import model.Funcionario;
 
-@WebServlet(name = "GerenciarVeiculo", urlPatterns = {"/gerenciar_veiculo.do"})
-public class GerenciarVeiculo extends HttpServlet {
 
+ 
+@WebServlet(name = "GerenciarFuncionario", urlPatterns = {"/gerenciar_funcionario.do"})
+public class GerenciarFuncionario extends HttpServlet {
+ 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+             
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GerenciarVeiculo</title>");            
+            out.println("<title>Servlet GerenciarFuncionario</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet GerenciarVeiculo at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GerenciarFuncionario at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
-
-    
+ 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         
+        
         PrintWriter out = response.getWriter();
         String acao = request.getParameter("acao");   
         
         // criar veiculo
-        if (acao.equals("criar_veiculo")) {
+        if (acao.equals("criar_funcionario")) {
             
-            String modelo = request.getParameter("modelo");
-            String placa = request.getParameter("placa");
-            int vaga = Integer.parseInt((String) request.getParameter("vaga"));
+            String matricula = request.getParameter("matricula");
+            String nome = request.getParameter("nome");
+            String telefone = request.getParameter("telefone");
             
-            VeiculoDaFrota vf = new VeiculoDaFrota();
-            VeiculoDaFrotaDAO vfd = new VeiculoDaFrotaDAO();
+            Funcionario f = new Funcionario();
+            FuncionarioDAO fd = new FuncionarioDAO();
             
-            vf.setModelo(modelo);
-            vf.setPlaca(placa);
-            vf.setVaga(vaga);
+            f.setMatricula(matricula);
+            f.setNome(nome);
+            f.setTelefone(telefone);
             
-            if(vfd.save(vf)){
+            if(fd.save(f)){
                 out.println("<script type='text/javascript'>");
                 out.println("alert('Criado com sucesso')");
-                out.println("location.href='frota_de_veiculos/index.jsp'");
+                out.println("location.href='funcionarios/index.jsp'");
                 out.println("</script>");
             }else{
                 out.println("<script type='text/javascript'>");
                 out.println("alert('Erro ao criar')");
-                out.println("location.href='frota_de_veiculos/index.jsp'");
+                out.println("location.href='funcionarios/index.jsp'");
                 out.println("</script>");
             }
             
@@ -74,19 +75,19 @@ public class GerenciarVeiculo extends HttpServlet {
             
             int id = Integer.parseInt((String) request.getParameter("id"));
             
-            VeiculoDaFrotaDAO vfd = new VeiculoDaFrotaDAO();
+            FuncionarioDAO vfd = new FuncionarioDAO();
             
             try {
                 
                 if(vfd.delete(id)){
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Deletado com sucesso')");
-                    out.println("location.href='frota_de_veiculos/index.jsp'");
+                    out.println("location.href='funcionarios/index.jsp'");
                     out.println("</script>");
                 }else{
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Erro ao deletar')");
-                    out.println("location.href='frota_de_veiculos/index.jsp'");
+                    out.println("location.href='funcionarios/index.jsp'");
                     out.println("</script>");
                 }
                 
@@ -107,13 +108,13 @@ public class GerenciarVeiculo extends HttpServlet {
             
             
             try {
-                VeiculoDaFrotaDAO vfd = new VeiculoDaFrotaDAO();
-                VeiculoDaFrota vf = new VeiculoDaFrota();
+                FuncionarioDAO fd = new FuncionarioDAO();
+                Funcionario f = new Funcionario();
                 
-                vf = vfd.getVeiculo(id);
+                f = fd.getFuncionario(id);
                 
-                RequestDispatcher disp = getServletContext().getRequestDispatcher("/frota_de_veiculos/editar_veiculo.jsp");// jogar para form
-                request.setAttribute("vf", vf);// content
+                RequestDispatcher disp = getServletContext().getRequestDispatcher("/funcionarios/editar_funcionario.jsp");// jogar para form
+                request.setAttribute("f", f);// content
                 disp.forward(request, response);// dispachar
                 
             } catch (Exception e) {
@@ -128,35 +129,36 @@ public class GerenciarVeiculo extends HttpServlet {
         }
         
     }
-
+ 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-         
+     
+        
         PrintWriter out = response.getWriter();
         String acao = request.getParameter("acao");   
         
         // criar veiculo
         if (acao.equals("editar")) {
             
-            String modelo = request.getParameter("modelo");
-            String placa = request.getParameter("placa");
-            int vaga = Integer.parseInt((String) request.getParameter("vaga"));
+            String matricula = request.getParameter("matricula");
+            String nome = request.getParameter("nome");
+            String telefone = request.getParameter("telefone");
             int id = Integer.parseInt((String) request.getParameter("id"));
             
-            VeiculoDaFrotaDAO vfd = new VeiculoDaFrotaDAO();
+            FuncionarioDAO fd = new FuncionarioDAO();
             
             try {
                 
-                if(vfd.update(id, placa, modelo, vaga)){
+                if(fd.update(id, matricula, nome, telefone)){
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Editado com sucesso')");
-                    out.println("location.href='frota_de_veiculos/index.jsp'");
+                    out.println("location.href='funcionarios/index.jsp'");
                     out.println("</script>");
                 }else{
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Erro ao editar')");
-                    out.println("location.href='frota_de_veiculos/index.jsp'");
+                    out.println("location.href='funcionarios/index.jsp'");
                     out.println("</script>");
                 }
                 
@@ -174,6 +176,6 @@ public class GerenciarVeiculo extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }
+    } 
 
 }

@@ -25,9 +25,9 @@
         <thead>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">modelo</th>
-                <th scope="col">Placa </th>
-                <th scope="col">Vaga</th>
+                <th scope="col">Matricula</th>
+                <th scope="col">Nome </th>
+                <th scope="col">Telefone</th>
 
                 <th scope="col">Opções</th>
 
@@ -38,22 +38,22 @@
         <tbody>
                 
             <!-- view -->
-            <jsp:useBean class="dao.VeiculoDaFrotaDAO" id="vfdao"/><!-- objeto -->
-            <c:forEach var="vf" items="${vfdao.all}">
+            <jsp:useBean class="dao.FuncionarioDAO" id="fdao"/><!-- objeto -->
+            <c:forEach var="f" items="${fdao.all}">
 
 
                 <tr>
-                    <th scope="row">${vf.id}</th>
-                    <td>${vf.modelo}</td>
-                    <td>${vf.placa}</td>
-                    <td>${vf.vaga}</td>
+                    <th scope="row">${f.id}</th>
+                    <td>${f.matricula}</td>
+                    <td>${f.nome}</td>
+                    <td>${f.telefone}</td>
 
 
                     <td>
-                        <a href="/estacionamento/gerenciar_veiculo.do?acao=editar_page&id=${vf.id}" class="btn btn-primary" >
+                        <a href="/estacionamento/gerenciar_funcionario.do?acao=editar_page&id=${f.id}" class="btn btn-primary" >
                             <img src="../imagens/pencil.svg">
                         </a>
-                        <a class="btn btn-danger" onclick="confirmarExclusao(${vf.id},'${vf.modelo}','${vf.placa}' )">
+                        <a class="btn btn-danger" onclick="confirmarExclusao(${f.id},'${f.matricula}','${f.nome}' )">
                             <img src="../imagens/trash-fill.svg">
                         </a>
                     </td>
@@ -79,30 +79,32 @@
             <div class="modal-content">
 
                 <!-- form-->
-                <form action="/estacionamento/gerenciar_veiculo.do" method="GET">
+                <form action="/estacionamento/gerenciar_funcionario.do" method="GET">
                     <div class="modal-header">
-                        <h5 class="modal-title">Criar Veiculo</h5>
+                        <h5 class="modal-title">Criar Funcionario</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
                     <div class="modal-body">
 
                         <div class="form-floating">
-                            <input name="modelo" type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
-                            <label for="floatingInput">modelo</label>
+                            <input name="matricula" type="text" class="form-control" id="floatingInput" placeholder="name@example.com">
+                            <label for="floatingInput">matricula</label>
                         </div>
                         <br>
                         <div class="form-floating">
-                            <input name="placa" type="text" class="form-control" id="floatingPassword" placeholder="Password">
-                            <label for="floatingPassword">placa</label>
+                            <input name="nome" type="text" class="form-control" id="floatingPassword" placeholder="Password">
+                            <label for="floatingPassword">nome</label>
                         </div>
                         <br>
-                        <div class="form-floating">
-                            <input name="vaga" type="number" class="form-control" id="floatingPassword" placeholder="Password">
-                            <label for="floatingPassword">vaga</label>
-                        </div>
+                        
+                            telefone (opcional)
+                            <input name="telefone" type="text" placeholder="Ex.: 61 9999-9999">
+                        
+                        
 
-                        <input name="acao" value="criar_veiculo" hidden="">
+                        
+                        <input name="acao" value="criar_funcionario" hidden="">
                     </div>
 
                     <div class="modal-footer">
@@ -124,9 +126,9 @@
 
     <!-- javaScript -->
     <script type="text/javascript">
-        function confirmarExclusao(id, modelo ,placa) {
-            if (confirm("\nDeseja realmente EXCLUIR o " + modelo + "? \n\n - Placa: " + placa +"\n " )) {
-                location.href = "/estacionamento/gerenciar_veiculo.do?acao=deletar&id=" + id;
+        function confirmarExclusao(id, matricula ,nome) {
+            if (confirm("\nDeseja realmente EXCLUIR o " + nome + "? \n\n - Matricula: " + matricula +"\n " )) {
+                location.href = "/estacionamento/gerenciar_funcionario.do?acao=deletar&id=" + id;
             }
         }
     </script>
@@ -175,6 +177,8 @@
 <c:if test="${ulogado==null}">
 
     <h1>Acesso negado</h1>
+    
+    <a href="/estacionamento"> voltar para a pagina inicial </a>
 
 </c:if>
 
