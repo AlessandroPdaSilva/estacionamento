@@ -5,7 +5,8 @@
 <!-- logado -->
 <c:if test="${ulogado!=null}">
 
-
+    <!-- Permissao -->
+    <%@include file="permissao.jsp" %>
 
     <%@include file="../page/cabeçalho.jsp" %>
 
@@ -41,15 +42,12 @@
 
 
     <%@include file="../page/rodape.jsp" %>
+    
+    <!-- Permissao fim-->
+    <%@include file="../page/sem_permissao.jsp" %>
 
 </c:if>
 
 
 
-
-<!-- nao logado -->
-<c:if test="${ulogado==null}">
-
-    <h1>Acesso negado</h1>
-
-</c:if>
+    <%@include file="../page/acesso_negado.jsp" %>

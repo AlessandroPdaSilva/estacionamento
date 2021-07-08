@@ -98,7 +98,7 @@ public class GerenciarLogin extends HttpServlet {
                 if (u.getId() > 0 && u.getSenha().equals(senha)) {
                     HttpSession sessao = request.getSession();
                     sessao.setAttribute("ulogado", u);
-                    response.sendRedirect("frota_de_veiculos/index.jsp");
+                    response.sendRedirect("relatorio/index.jsp");
 
                 } else {
                     out.println("<script type='text/javascript'>");
@@ -119,6 +119,7 @@ public class GerenciarLogin extends HttpServlet {
 
             String login = request.getParameter("login");
             String senha = request.getParameter("senha");
+            int nivel = Integer.parseInt((String) request.getParameter("nivel"));
 
             UsuarioDAO ud = new UsuarioDAO();
             Usuario u = new Usuario();
@@ -127,6 +128,7 @@ public class GerenciarLogin extends HttpServlet {
 
             u.setNome(login);
             u.setSenha(senha);
+            u.setNivel(nivel);
             
             if(ud.save(u)){
                 out.println("<script type='text/javascript'>");

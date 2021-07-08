@@ -36,6 +36,11 @@
                         <input name="senha" type="password" class="form-control" id="floatingPassword" placeholder="Password">
                         <label for="floatingPassword">Senha</label>
                     </div>
+                    <br>
+                    <div class="form-floating">
+                        <input name="nivel" type="number" class="form-control" id="floatingPassword" placeholder="Password">
+                        <label for="floatingPassword">nivel</label>
+                    </div>
 
                     <input name="acao" value="criar" hidden="">
                     <div class="checkbox mb-3">

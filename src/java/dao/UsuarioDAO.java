@@ -15,7 +15,7 @@ public class UsuarioDAO {
     //CREATE
     public Boolean save(Usuario u) {
         // query
-        String sql = "INSERT INTO usuario(nome,senha) VALUES (?,?)";
+        String sql = "INSERT INTO usuario(nome,senha,nivel) VALUES (?,?,?)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -29,6 +29,7 @@ public class UsuarioDAO {
             pstmt = (PreparedStatement) conn.prepareStatement(sql);
             pstmt.setString(1, u.getNome());//bind 1
             pstmt.setString(2, u.getSenha());//bind 2
+            pstmt.setInt(3, u.getNivel());//bind 3
             
 
             // execute
@@ -279,6 +280,7 @@ public class UsuarioDAO {
                 u.setId(rset.getInt("id"));
                 u.setNome(rset.getString("nome"));
                 u.setSenha(rset.getString("senha"));
+                u.setNivel(rset.getInt("id"));
 
             }
 
@@ -324,5 +326,7 @@ public class UsuarioDAO {
         
         return senhaHex;
     }
+    
+    
     
 }
