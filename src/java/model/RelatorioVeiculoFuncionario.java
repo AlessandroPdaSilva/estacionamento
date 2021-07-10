@@ -5,36 +5,38 @@ public class RelatorioVeiculoFuncionario {
     
     // var
     private int id;
-    private int idVeiculo;
-    private int idFuncionario;
+    private VeiculoDaFrota veiculo;
+    private Funcionario funcionario;
     private int vagaEstacionamento;
     String saidaVeiculo;
     String entradaVeiculo;
     
     // get e set
 
+    public VeiculoDaFrota getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(VeiculoDaFrota veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    
+    
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getIdVeiculo() {
-        return idVeiculo;
-    }
-
-    public void setIdVeiculo(int idVeiculo) {
-        this.idVeiculo = idVeiculo;
-    }
-
-    public int getIdFuncionario() {
-        return idFuncionario;
-    }
-
-    public void setIdFuncionario(int idFuncionario) {
-        this.idFuncionario = idFuncionario;
     }
 
     public int getVagaEstacionamento() {
