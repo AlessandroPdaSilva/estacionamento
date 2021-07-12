@@ -1,7 +1,7 @@
  
 package model;
  
-public class RelatorioVeiculoFuncionario {
+public class Agendamento {
     
     // var
     private int id;
@@ -10,8 +10,20 @@ public class RelatorioVeiculoFuncionario {
     private int vagaEstacionamento;
     private String saidaVeiculo;
     private String entradaVeiculo;
+    private int status;
+    
     
     // get e set
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+    
+    
 
     public VeiculoDaFrota getVeiculo() {
         return veiculo;
@@ -62,6 +74,7 @@ public class RelatorioVeiculoFuncionario {
     public void setEntradaVeiculo(String entradaVeiculo) {
         this.entradaVeiculo = entradaVeiculo;
     }
+    
     
     
     

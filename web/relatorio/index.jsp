@@ -40,7 +40,7 @@
             <tbody>
 
                 <!-- view -->
-                <jsp:useBean class="dao.FuncionarioDAO" id="fdao"/><!-- objeto -->
+                
                 <jsp:useBean class="dao.RelatorioVeiculoFuncionarioDAO" id="rdao"/><!-- objeto -->
                 <c:forEach var="r" items="${rdao.all}">
 
