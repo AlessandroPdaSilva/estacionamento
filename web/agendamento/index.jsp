@@ -41,17 +41,17 @@
         <tbody>
 
             <!-- view -->
-            <jsp:useBean class="dao.VeiculoDaFrotaDAO" id="vfdao"/><!-- objeto -->
-            <c:forEach var="vf" items="${vfdao.all}">
+            <jsp:useBean class="dao.VeiculoDaFrotaDAO" id="pp"/><!-- objeto -->
+            <c:forEach var="p" items="${pp.all}">
 
 
                 <tr>
-                    <th scope="row">${vf.id}</th>
-                    <td>${vf.modelo}</td>
-                    <td>${vf.placa}</td>
-                    <td>${vf.vaga}</td>
-                    <td>${vf.vaga}</td>
-                    <td>${vf.vaga}</td>
+                    <th scope="row">${p.id}</th>
+                    <td>${p.modelo}</td>
+                    <td>${p.placa}</td>
+                    <td>${p.vaga}</td>
+                    <td>${p.vaga}</td>
+                    <td>${p.vaga}</td>
                     <td>
                         <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalCriar">
                             botao
@@ -84,25 +84,36 @@
                         <h5 class="modal-title">Criar Agendamento</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    
+
                     <!-- body form -->
                     <div class="modal-body">
 
-                        
+
                         <select id="funcionario" class="form-select" aria-label="Default select example">
                             <option selected disabled=""> Funcionario</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
                             
-                          </select>
-
-
-                        <div id="resp1">
+                            <jsp:useBean class="dao.FuncionarioDAO" id="fdao"/><!-- objeto -->
+                            <c:forEach var="f" items="${fdao.all}">
+                                <option value="${f.matricula}">${f.nome}</option>
+                            </c:forEach>
                             
-                        </div>
+                        </select>
+ 
+                        <div id="resp1"></div>
+
+                        <br>
                         
+                        <select id="placa" class="form-select " aria-label="Default select example">
+                            <option selected disabled=""> placa</option>
+                            <jsp:useBean class="dao.VeiculoDaFrotaDAO" id="vdao"/><!-- objeto -->
+                            <c:forEach var="v" items="${vdao.all}">
+                                <option value="${v.modelo}">${v.placa}</option>
+                            </c:forEach>
+
+                        </select>
+
                         
+                        <div id="resp2"></div>
                         
                         <br>
                         <div class="form-floating">
@@ -134,19 +145,31 @@
                 location.href = "/estacionamento/gerenciar_veiculo.do?acao=deletar&id=" + id;
             }
         }
-        
-        
-        var select = document.querySelector('select');
-        select.addEventListener('change', function() {
+
+
+        var select = document.querySelector('select#funcionario');
+        select.addEventListener('change', function () {
             var option = this.selectedOptions[0];
             var texto = option.value;
             var resp = document.getElementById('resp1');
-            
-            resp.innerHTML = "<br> &nbsp &nbsp Matricula = "+texto
+
+            //resp.innerHTML = '<br><input class="form-control" id="disabledInput" type="text" placeholder="'+texto+'" disabled>'
+            resp.innerHTML = '<br><div class="alert alert-success" role="alert"> Matricula = '+texto+'</div>'
             console.log(texto);
         });
+
         
-        
+        var select = document.querySelector('select#placa');
+        select.addEventListener('change', function () {
+            var option = this.selectedOptions[0];
+            var texto = option.value;
+            var resp = document.getElementById('resp2');
+
+            //resp.innerHTML = '<br><input class="form-control" id="disabledInput" type="text" placeholder="'+texto+'" disabled>'
+            resp.innerHTML = '<br><div class="alert alert-success" role="alert">'+texto+'</div>'
+            console.log(texto);
+        });
+
     </script>
 
 
