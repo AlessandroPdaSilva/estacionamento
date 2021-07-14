@@ -155,6 +155,7 @@ public class GerenciarAgendamento extends HttpServlet {
                     r.setSaidaVeiculo(a.getSaidaVeiculo());
                     r.setEntradaVeiculo(a.getEntradaVeiculo());
                     
+                    rd.save(r);
                     
 //                    if(rd.save(r)){
 //                        out.println("<script type='text/javascript'>");
@@ -183,6 +184,41 @@ public class GerenciarAgendamento extends HttpServlet {
             
         }
         
+        // Deletar
+        if (acao.equals("deletar")) {
+            
+            int id = Integer.parseInt((String) request.getParameter("id"));
+            
+            AgendamentoDAO a = new AgendamentoDAO();
+            
+            try {
+                
+                if(a.delete(id)){
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Deletado com sucesso')");
+                    out.println("location.href='agendamento/editar.jsp'");
+                    out.println("</script>");
+                }else{
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Erro ao deletar')");
+                    out.println("location.href='agendamento/editar.jsp'");
+                    out.println("</script>");
+                }
+                
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        
         
     }
  
@@ -190,6 +226,62 @@ public class GerenciarAgendamento extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
          
+        PrintWriter out = response.getWriter();
+        String acao = request.getParameter("acao");   
+        
+        // editar
+        if (acao.equals("editar")) {
+            
+            String matricula = request.getParameter("matricula");
+            String placa = request.getParameter("placa");
+            int vaga = Integer.parseInt((String) request.getParameter("vaga"));
+            int id = Integer.parseInt((String) request.getParameter("id"));
+            int status = 1;
+            
+            
+            try {
+                
+                //-funcionario
+                Funcionario f = new Funcionario();
+                FuncionarioDAO fd = new FuncionarioDAO();
+
+                f = fd.getFuncionario(matricula);
+                int id_funcionario = f.getId();
+                
+                //-veiculo
+                VeiculoDaFrota vf = new VeiculoDaFrota();
+                VeiculoDaFrotaDAO vfd = new VeiculoDaFrotaDAO();
+                
+                vf = vfd.getVeiculo(placa);
+                int id_veiculo = vf.getId();
+                
+                 
+                
+                
+                AgendamentoDAO ad = new AgendamentoDAO();
+                if(ad.update(id,id_veiculo,id_funcionario,vaga)){// editando
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Editado com sucesso')");
+                    out.println("location.href='agendamento/editar.jsp'");
+                    out.println("</script>");
+                }else{
+                     out.println("<script type='text/javascript'>");
+                    out.println("alert('Erro ao editar')");
+                    out.println("location.href='agendamento/editar.jsp'");
+                    out.println("</script>");
+                }
+            
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            
+            
+            
+        
+            
+        }
+        
     }
  
     @Override

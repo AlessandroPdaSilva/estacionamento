@@ -149,6 +149,103 @@ public class AgendamentoDAO {
 
     }
 
+    //UPDATE
+    public Boolean update(int id, int id_veiculo, int id_funcionario, int vaga) throws Exception {
+        
+        // query
+        String sql = "UPDATE agendamento SET id_veiculo = ?, id_funcionario = ?, vaga_estacionamento = ? WHERE id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        int exec = 0;
+        Boolean msg = false;
+        try {
+
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            
+             
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, id_veiculo);// bind 1
+            pstmt.setInt(2, id_funcionario);// bind 2
+            pstmt.setInt(3,vaga);// bind 3
+            pstmt.setInt(4,id);// bind 4
+            
+             
+
+            // execução (boolean)
+            exec = pstmt.executeUpdate();
+
+            if (exec > 0) {
+                msg = true;
+            } else {
+                msg = false;
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        // mensagem de exclusao
+        return msg;
+
+    }
+    
+    //DELETE
+    public Boolean delete(int id) throws Exception {
+        // query
+        String sql = "DELETE FROM agendamento WHERE id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        int exec = 0;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, id);// bind 1
+
+            // execução (boolean)
+            exec = pstmt.executeUpdate();
+
+            if (exec > 0) {
+                msg = true;
+            } else {
+                msg = false;
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        // mensagem de exclusao
+        return msg;
+
+    }
+    
     // get agendamento
     public Agendamento getAgendamento(int id) throws SQLException{
         

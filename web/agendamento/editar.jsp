@@ -13,14 +13,12 @@
     <%@include file="permissao.jsp" %>
 
     <%@include file="../page/cabeçalho.jsp" %>
-    <h1 class="my-3">Agendamento</h1>
+    <h1 class="my-3">Editar Agendamento</h1>
 
 
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalCriar">
-        Criar Agendamento
-    </button>
-    <a class="btn btn-secondary mb-3" href="/estacionamento/agendamento/editar.jsp">
-        Editar Agendamento
+    
+    <a class="btn btn-primary mb-3" href="/estacionamento/agendamento/index.jsp">
+        Voltar
     </a>
 
 
@@ -64,15 +62,12 @@
                         </c:if>
                     </td>
                     <td>
-                        <c:if test="${a.status==1}">
-                            <a onclick="confirmarFinalizacao(${a.id},'${a.funcionario.nome}','${a.veiculo.placa}' )" class="btn btn-success mb-3">
-                                Finalizar
-                            </a>
-                            
-                        </c:if>
-                        <c:if test="${a.status==0}"> 
-                        
-                        </c:if>
+                        <a  onclick="enviarId(${a.id})" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditar">
+                                <img src="../imagens/pencil.svg">
+                        </a>
+                        <a class="btn btn-danger" onclick="confirmarExclusao(${a.id})">
+                                <img src="../imagens/trash-fill.svg">
+                        </a>
                         
                     </td>
                 </tr>
@@ -91,15 +86,15 @@
 
 
 
-    <!-- MODAL CRIAR-->
-    <div id="ModalCriar" class="modal" tabindex="-1">
+    <!-- MODAL EDITAR-->
+    <div id="ModalEditar" class="modal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
                 <!-- form-->
-                <form action="/estacionamento/gerenciar_agendamento.do" method="GET">
+                <form action="/estacionamento/gerenciar_agendamento.do" method="POST">
                     <div class="modal-header">
-                        <h5 class="modal-title">Criar Agendamento</h5>
+                        <h5 class="modal-title">Editar Agendamento</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
 
@@ -132,16 +127,21 @@
 
                         
                         <div id="resp2"></div>
+                        <div id="resp3"></div>
                         
                         <br>
                         <div class="form-floating">
                             <input name="vaga" type="number" class="form-control" id="floatingPassword" placeholder="Password">
                             <label for="floatingPassword">vaga</label>
                         </div>
-                        <input name="acao" value="criar_agendamento" hidden="">                        </div>
+                        
+                        <input name="acao" value="editar" hidden="">  
+                    
+                    </div>
+                            
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <button type="submit" class="btn btn-primary">Editar</button>
                     </div>
                 </form>
 
@@ -192,6 +192,21 @@
         
             console.log(texto);
         });
+        
+        // confirmar exclusao
+        function confirmarExclusao(id) {
+            if (confirm("\nDeseja realmente EXCLUIR o agendamento de ID = "+id+" ? " )) {
+                location.href = "/estacionamento/gerenciar_agendamento.do?acao=deletar&id=" + id;
+            }
+        }
+        
+        function enviarId(id){
+            var resp = document.getElementById('resp3');
+            
+            resp.innerHTML += '<input name="id" type="text" value="'+id+'" hidden></input>'
+            
+            
+        }
 
     </script>
 

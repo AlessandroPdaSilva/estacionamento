@@ -96,10 +96,12 @@ public class GerenciarLogin extends HttpServlet {
                 u = ud.getUsuario(login);
 
                 if (u.getId() > 0 && u.getSenha().equals(senha)) {
+                    
                     HttpSession sessao = request.getSession();
                     sessao.setAttribute("ulogado", u);
                     response.sendRedirect("relatorio/index.jsp");
-
+                    
+                    
                 } else {
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Login ou Senha invalida')");

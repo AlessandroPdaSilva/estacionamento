@@ -280,7 +280,7 @@ public class UsuarioDAO {
                 u.setId(rset.getInt("id"));
                 u.setNome(rset.getString("nome"));
                 u.setSenha(rset.getString("senha"));
-                u.setNivel(rset.getInt("id"));
+                u.setNivel(rset.getInt("nivel"));
 
             }
 

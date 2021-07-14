@@ -1,4 +1,4 @@
-
+   <%@page import="model.Usuario"%>
    <!-- Permissao -->
     <%
       Usuario u = (Usuario)session.getAttribute("ulogado");
