@@ -209,7 +209,7 @@ public class FuncionarioDAO {
 
     }
 
-    // get Veiculo
+    // get funcionario
     public Funcionario getFuncionario(int id) throws SQLException{
         
         Funcionario f = new Funcionario();
@@ -256,7 +256,52 @@ public class FuncionarioDAO {
         
     }
     
-    
+    // get funcionario por matricula
+    public Funcionario getFuncionario(String matricula) throws SQLException{
+        
+        Funcionario f = new Funcionario();
+        // query
+        String sql = "SELECT * FROM funcionario WHERE matricula = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rset;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setString(1, matricula);// bind 1
+
+            // execução (boolean)
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                f.setId(rset.getInt("id"));
+                f.setMatricula(rset.getString("matricula"));
+                f.setNome(rset.getString("nome"));
+                f.setTelefone(rset.getString("telefone"));
+
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        return f;
+        
+    }
     
     
 }

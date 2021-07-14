@@ -257,5 +257,95 @@ public class VeiculoDaFrotaDAO {
         
     }
     
+    // get Veiculo por placa
+    public VeiculoDaFrota getVeiculo(String placa) throws SQLException{
+        
+        VeiculoDaFrota vf = new VeiculoDaFrota();
+        // query
+        String sql = "SELECT * FROM veiculo_da_frota WHERE placa = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rset;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setString(1, placa);// bind 1
+
+            // execução (boolean)
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                vf.setId(rset.getInt("id"));
+                vf.setModelo(rset.getString("modelo"));
+                vf.setPlaca(rset.getString("placa"));
+                vf.setVaga(rset.getInt("vaga"));
+
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        return vf;
+        
+    }
+    
+    // modificar vaga
+    public void modificarVaga(int id,int vaga) throws Exception {
+        // query
+        String sql = "UPDATE veiculo_da_frota SET vaga = ? WHERE id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        int exec = 0;
+        Boolean msg = false;
+        try {
+
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            
+            pstmt.setInt(1,vaga);// bind 1
+            pstmt.setInt(2,id);// bind 2
+            
+             
+
+            // execução (boolean)
+            exec = pstmt.executeUpdate();
+
+             
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+ 
+
+    }
+
     
 }

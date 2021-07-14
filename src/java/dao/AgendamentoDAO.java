@@ -19,7 +19,7 @@ public class AgendamentoDAO {
     //CREATE
     public Boolean save(Agendamento a) {
         // query
-        String sql = "INSERT INTO agendamento(id_veiculo,id_funcionario,vaga_estacionamento,saida_do_veiculo,entrada_do_veiculo,status) VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO agendamento(id_veiculo,id_funcionario,vaga_estacionamento,saida_do_veiculo,status,entrada_do_veiculo) VALUES (?,?,?,?,?,?)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -31,12 +31,19 @@ public class AgendamentoDAO {
             conn = ConnectionFactory.createConnectionToMySql();
             //preparando
             pstmt = (PreparedStatement) conn.prepareStatement(sql);
-            pstmt.setInt(1, a.getVeiculo().getId());//bind 1
-            pstmt.setInt(2, a.getFuncionario().getId());//bind 2
+            
+            Funcionario f = new Funcionario();
+            f = a.getFuncionario();
+            
+            VeiculoDaFrota v = new VeiculoDaFrota();
+            v = a.getVeiculo();
+            
+            pstmt.setInt(1, v.getId());//bind 1
+            pstmt.setInt(2, f.getId());//bind 2
             pstmt.setInt(3, a.getVagaEstacionamento());//bind 3
-            pstmt.setString(4, a.getSaidaVeiculo());//bind 4
-            pstmt.setString(5, a.getEntradaVeiculo());//bind 5
-            pstmt.setInt(5, a.getStatus());//bind 6
+            pstmt.setString(4, a.getSaidaVeiculo());//bind 3
+            pstmt.setInt(5, a.getStatus());//bind 5
+            pstmt.setString(6, a.getEntradaVeiculo());//bind 6
 
             // execute
             exec = pstmt.executeUpdate();
@@ -75,9 +82,9 @@ public class AgendamentoDAO {
 
         // query --id,id_veiculo,id_funcionario,vaga_estacionamento,DATE_FORMAT( saida_do_veiculo, '%d/%m/%Y  %H:%i' ),DATE_FORMAT( entrada_do_veiculo, '%d/%m/%Y  %H:%i' )
         //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
-        String sql = "SELECT * FROM agendamento r "
-       + "INNER JOIN funcionario f ON r.id_funcionario = f.id "
-       + "INNER JOIN veiculo_da_frota v ON r.id_veiculo = v.id ";
+        String sql = "SELECT * FROM agendamento a "
+       + "INNER JOIN funcionario f ON a.id_funcionario = f.id "
+       + "INNER JOIN veiculo_da_frota v ON a.id_veiculo = v.id ";
 
         // var -veiculo_dados
         ArrayList<Agendamento> relatorio_dados = new ArrayList<>();
@@ -95,10 +102,10 @@ public class AgendamentoDAO {
 
             while (rset.next()) {// passando valores para var(veiculo_dados)
 
-                Agendamento r = new Agendamento();// objeto
+                Agendamento a = new Agendamento();// objeto
                 
                 
-                r.setId(rset.getInt("r.id"));
+                a.setId(rset.getInt("a.id"));
                 
                 // funcionario
                 Funcionario f = new Funcionario();
@@ -106,40 +113,21 @@ public class AgendamentoDAO {
                 f.setMatricula(rset.getString("f.matricula"));
                 f.setNome(rset.getString("f.nome"));
                 
-                r.setFuncionario(f);
+                a.setFuncionario(f);
                 
                 // veiculo
                 VeiculoDaFrota v = new VeiculoDaFrota();
                 v.setPlaca(rset.getString("v.placa"));
                 
-                r.setVeiculo(v);
+                a.setVeiculo(v);
                 
                 
-                r.setVagaEstacionamento(rset.getInt("vaga_estacionamento"));// veiculo
-                
-                //data e hora
-                // --saida
-                String fsaida = rset.getString("saida_do_veiculo");
-                String separa[] = fsaida.split(" ");
-                String data[] = separa[0].split("-");
-                String time[] = separa[1].split(":");
-                String saida = ""+data[2]+"/"+data[1]+"/"+data[0]+" - "+time[0]+":"+time[1];
+                a.setVagaEstacionamento(rset.getInt("a.vaga_estacionamento"));// veiculo
 
-                // --entrada
-                String fentrada = rset.getString("entrada_do_veiculo");
-                String separa2[] = fentrada.split(" ");
-                String data2[] = separa2[0].split("-");
-                String time2[] = separa2[1].split(":");
-                String entrada = ""+data2[2]+"/"+data2[1]+"/"+data2[0]+" - "+time2[0]+":"+time2[1];
-                
-                
-                
-                r.setSaidaVeiculo(saida);// saida
-                r.setEntradaVeiculo(entrada);//entrada
-                r.setStatus(rset.getInt("r.status"));
+                a.setStatus(rset.getInt("a.status"));
 
                 
-                relatorio_dados.add(r);// adiciona na variavel (array)
+                relatorio_dados.add(a);// adiciona na variavel (array)
             }
 
         } catch (Exception e) {// erro
@@ -161,8 +149,178 @@ public class AgendamentoDAO {
 
     }
 
+    // get agendamento
+    public Agendamento getAgendamento(int id) throws SQLException{
+        
+        Agendamento a = new Agendamento();
+        // query
+        String sql = "SELECT * FROM agendamento WHERE id = ? ";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rset;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, id);// bind 1
+
+            // execução (boolean)
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                
+                a.setId(rset.getInt("id"));
+                
+                // funcionario
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("id_funcionario"));
+                
+                
+                a.setFuncionario(f);
+                
+                // veiculo
+                VeiculoDaFrota v = new VeiculoDaFrota();
+                v.setId(rset.getInt("id_veiculo"));
+                
+                a.setVeiculo(v);
+                
+                
+                a.setVagaEstacionamento(rset.getInt("vaga_estacionamento"));// veiculo
+                a.setStatus(rset.getInt("status"));
+                a.setSaidaVeiculo(rset.getString("saida_do_veiculo"));
+                a.setEntradaVeiculo(rset.getString("entrada_do_veiculo"));
+                
+                
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        return a;
+        
+    }
     
+    // finalizar
+    public Boolean finalizarAgendamento(int id, String entrada) throws SQLException{
+        // query
+        String sql = "UPDATE agendamento SET entrada_do_veiculo = ?,status = 0 WHERE id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        int exec = 0;
+        Boolean msg = false;
+        try {
+
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setString(1, entrada);// bind 1
+            pstmt.setInt(2,id);// bind 2
+            
+             
+
+            // execução (boolean)
+            exec = pstmt.executeUpdate();
+
+            if (exec > 0) {
+                msg = true;
+            } else {
+                msg = false;
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        // mensagem de exclusao
+        return msg;
+    }
     
+    // CREATE RELATORIO
+    public void saveRelatorio(Agendamento a) {
+        // query
+        String sql = "INSERT INTO relatorio_veiculo_funcionario(id_veiculo,id_funcionario,vaga_estacionamento,saida_do_veiculo,entrada_do_veiculo) VALUES (?,?,?,?,?)";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        int exec = 0;
+        Boolean msg = false;
+        try {
+            //conexao
+            conn = ConnectionFactory.createConnectionToMySql();
+            //preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            
+            Funcionario f = new Funcionario();
+            f = a.getFuncionario();
+            
+            VeiculoDaFrota v = new VeiculoDaFrota();
+            v = a.getVeiculo();
+            
+            pstmt.setInt(1, v.getId());//bind 1
+            pstmt.setInt(2, f.getId());//bind 2
+            pstmt.setInt(3, a.getVagaEstacionamento());//bind 3
+            pstmt.setString(4, a.getSaidaVeiculo());//bind 3
+            
+            pstmt.setString(5, a.getEntradaVeiculo());//bind 6
+
+            // execute
+            exec = pstmt.executeUpdate();
+
+            if (exec > 0) {
+                msg = true;
+            } else {
+                msg = false;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();// erro
+             
+        } finally {
+            // close connect
+            try {
+                if (pstmt != null) {
+                    pstmt.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+         
+
+    }
     
     
     

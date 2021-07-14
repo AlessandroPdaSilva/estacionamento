@@ -41,21 +41,35 @@
         <tbody>
 
             <!-- view -->
-            <jsp:useBean class="dao.VeiculoDaFrotaDAO" id="pp"/><!-- objeto -->
-            <c:forEach var="p" items="${pp.all}">
+            <jsp:useBean class="dao.AgendamentoDAO" id="adao"/><!-- objeto -->
+            <c:forEach var="a" items="${adao.all}">
 
 
                 <tr>
-                    <th scope="row">${p.id}</th>
-                    <td>${p.modelo}</td>
-                    <td>${p.placa}</td>
-                    <td>${p.vaga}</td>
-                    <td>${p.vaga}</td>
-                    <td>${p.vaga}</td>
+                    <th scope="row">${a.id}</th>
+                    <td>${a.veiculo.placa}</td>
+                    <td>${a.funcionario.nome}</td>
+                    <td>${a.funcionario.matricula}</td>
+                    <td>${a.vagaEstacionamento}</td>
                     <td>
-                        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalCriar">
-                            botao
-                        </button>
+                        <c:if test="${a.status==1}"> 
+                            Em uso 
+                        </c:if>
+                        
+                        <c:if test="${a.status==0}"> 
+                            Finalizado 
+                        </c:if>
+                    </td>
+                    <td>
+                        <c:if test="${a.status==1}">
+                            <a href="/estacionamento/gerenciar_agendamento.do?acao=finalizar&id=${a.id}" class="btn btn-success mb-3">
+                                Finalizar
+                            </a>
+                        </c:if>
+                        <c:if test="${a.status==0}"> 
+                        
+                        </c:if>
+                        
                     </td>
                 </tr>
 
@@ -79,7 +93,7 @@
             <div class="modal-content">
 
                 <!-- form-->
-                <form action="/estacionamento/gerenciar_veiculo.do" method="GET">
+                <form action="/estacionamento/gerenciar_agendamento.do" method="GET">
                     <div class="modal-header">
                         <h5 class="modal-title">Criar Agendamento</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -89,7 +103,7 @@
                     <div class="modal-body">
 
 
-                        <select id="funcionario" class="form-select" aria-label="Default select example">
+                        <select id="funcionario" class="form-select" aria-label="Default select example" name="matricula">
                             <option selected disabled=""> Funcionario</option>
                             
                             <jsp:useBean class="dao.FuncionarioDAO" id="fdao"/><!-- objeto -->
@@ -120,7 +134,7 @@
                             <input name="vaga" type="number" class="form-control" id="floatingPassword" placeholder="Password">
                             <label for="floatingPassword">vaga</label>
                         </div>
-                        <input name="acao" value="criar_veiculo" hidden="">                        </div>
+                        <input name="acao" value="criar_agendamento" hidden="">                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                         <button type="submit" class="btn btn-primary">Salvar</button>
@@ -140,13 +154,14 @@
 
     <!-- javaScript -->
     <script type="text/javascript">
+        //exclusao
         function confirmarExclusao(id, modelo, placa) {
             if (confirm("\nDeseja realmente EXCLUIR o " + modelo + "? \n\n - Placa: " + placa + "\n ")) {
                 location.href = "/estacionamento/gerenciar_veiculo.do?acao=deletar&id=" + id;
             }
         }
 
-
+        // funcionario
         var select = document.querySelector('select#funcionario');
         select.addEventListener('change', function () {
             var option = this.selectedOptions[0];
@@ -158,15 +173,19 @@
             console.log(texto);
         });
 
-        
-        var select = document.querySelector('select#placa');
-        select.addEventListener('change', function () {
+        // veiculo
+        var select2 = document.querySelector('select#placa');
+        select2.addEventListener('change', function () {
             var option = this.selectedOptions[0];
             var texto = option.value;
+            var texto2 = option.text;
             var resp = document.getElementById('resp2');
 
             //resp.innerHTML = '<br><input class="form-control" id="disabledInput" type="text" placeholder="'+texto+'" disabled>'
-            resp.innerHTML = '<br><div class="alert alert-success" role="alert">'+texto+'</div>'
+            resp.innerHTML = '<br><div class="alert alert-success" role="alert">'+texto+'</div>'+
+                    '<input name="placa" type="text" value="'+texto2+'" hidden></input>'
+            
+        
             console.log(texto);
         });
 
