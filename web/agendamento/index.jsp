@@ -16,13 +16,27 @@
     <h1 class="my-3">Agendamento</h1>
 
 
-    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalCriar">
-        Criar Agendamento
-    </button>
-    <a class="btn btn-secondary mb-3" href="/estacionamento/agendamento/editar.jsp">
-        Editar Agendamento
-    </a>
-
+    
+    
+    
+    
+    <div class="d-flex bd-highlight mb-3">
+        <div class="p-2 bd-highlight">
+            <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalCriar">
+                Criar Agendamento
+            </button></div>
+        <div class="p-2 bd-highlight">
+            <a class="btn btn-secondary mb-3" href="/estacionamento/agendamento/editar.jsp">
+                Editar Agendamento
+            </a>
+        </div>
+        <div class="ms-auto p-2 bd-highlight">
+            <a class="btn btn-outline-primary mb-3" onclick="limpar()">
+                Limpar
+            </a>
+        </div>
+    </div>
+    
 
     <!-- tabela -->
     <table class="table table-dark table-striped" id="listarFrota">
@@ -201,6 +215,15 @@
         
             console.log(texto);
         });
+        
+        
+        // limpar
+        function limpar(){
+            if (confirm("\n Deseja remover agendamentos finalizados ?")) {
+                location.href = "/estacionamento/gerenciar_agendamento.do?acao=limpar";
+            }
+        }
+        
 
     </script>
 

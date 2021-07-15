@@ -22,8 +22,27 @@
                 color:#ffffff;
             }
 
+            .nav-nome{
+                border:none;
+                background: none;
+                color:white;
+                
+            }
+            
+            .nav-nome:hover{
+                text-decoration: underline;
+            }
 
-
+            .nav-nome2{
+                border:none;
+                background: none;
+                color:black;
+                cursor:pointer;
+            }
+            
+            .nav-nome2:hover{
+                text-decoration: underline;
+            }
         </style>
 
         <title>Projeto Estacionamento</title>
@@ -52,7 +71,8 @@
 
 
                     <div class="text-end">
-                        ${ulogado.nome}
+                        
+                        <button class="nav-nome" data-bs-toggle="modal" data-bs-target="#ModalPerfil">${ulogado.nome}</button>
 
                         <a  class="btn btn-success mx-3" href="/estacionamento/gerenciar_login.do?acao=deslogar"> Deslogar </a>
                     </div>
@@ -64,3 +84,44 @@
 
         <!-- body-->
         <div class="container">  
+            
+            
+            
+            
+            <!-- MODAL PERFIL-->
+            <div id="ModalPerfil" class="modal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+
+                        <!-- form-->
+                        <form action="/estacionamento/gerenciar_agendamento.do" method="POST">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><img src="../imagens/perfil.png"> 
+                                    &nbsp Usuario
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <!-- body form -->
+                            <div class="modal-body">                                 
+                                <p class="fs-5">
+                                Nome: ${ulogado.nome}<br>
+                                Perfil: <c:if test="${ulogado.nivel==1}"> Administrador</c:if>
+                                        <c:if test="${ulogado.nivel==2}"> Gerente</c:if>
+                                        <c:if test="${ulogado.nivel==3}"> Usuario</c:if>
+                                 
+                                        <br><br><br>
+                                        
+                                        
+                                   </p>     
+                                   <div class="d-flex justify-content-center">Create by&nbsp<a class="nav-nome2 fw-bold" href="https://alessandropdasilva.github.io/" target="_blank">Alessandro</a></div>            
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>

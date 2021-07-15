@@ -246,6 +246,50 @@ public class AgendamentoDAO {
 
     }
     
+    //DELETE LIMPAR
+    public Boolean deleteLimpar() throws Exception {
+        // query
+        String sql = "DELETE FROM agendamento WHERE status = 0";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        int exec = 0;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+
+            // execução (boolean)
+            exec = pstmt.executeUpdate();
+
+            if (exec > 0) {
+                msg = true;
+            } else {
+                msg = false;
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        // mensagem de exclusao
+        return msg;
+
+    }
+    
+    
     // get agendamento
     public Agendamento getAgendamento(int id) throws SQLException{
         

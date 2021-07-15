@@ -214,7 +214,31 @@ public class GerenciarAgendamento extends HttpServlet {
         }
         
         
-        
+        // deleta limpar
+        if (acao.equals("limpar")) {
+            AgendamentoDAO a = new AgendamentoDAO();
+            
+            try {
+                
+                if(a.deleteLimpar()){
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Limpado com sucesso')");
+                    out.println("location.href='agendamento/index.jsp'");
+                    out.println("</script>");
+                }else{
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Erro ao Limpar')");
+                    out.println("location.href='agendamento/index.jsp'");
+                    out.println("</script>");
+                }
+                
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            
+        }
         
         
         
