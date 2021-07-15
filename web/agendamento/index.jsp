@@ -112,7 +112,12 @@
                             
                             <jsp:useBean class="dao.FuncionarioDAO" id="fdao"/><!-- objeto -->
                             <c:forEach var="f" items="${fdao.all}">
-                                <option value="${f.matricula}">${f.nome}</option>
+                                
+                                
+                                <c:if test="${adao.getFuncionarioEmUso(f.matricula)==false}">
+                                    <option value="${f.matricula}">${f.nome}</option>
+                                </c:if>
+                                
                             </c:forEach>
                             
                         </select>
@@ -125,7 +130,11 @@
                             <option selected disabled=""> placa</option>
                             <jsp:useBean class="dao.VeiculoDaFrotaDAO" id="vdao"/><!-- objeto -->
                             <c:forEach var="v" items="${vdao.all}">
-                                <option value="${v.modelo}">${v.placa}</option>
+                                
+                                <c:if test="${adao.getCarroEmUso(v.placa)==false}">
+                                    <option value="${v.modelo}">${v.placa}</option>
+                                </c:if>
+                                
                             </c:forEach>
 
                         </select>

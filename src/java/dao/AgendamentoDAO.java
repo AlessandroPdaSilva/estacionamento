@@ -311,6 +311,153 @@ public class AgendamentoDAO {
         
     }
     
+    
+    // carro em uso
+    public Boolean getCarroEmUso(String placa) throws SQLException{
+        
+        Agendamento a = new Agendamento();
+        
+        VeiculoDaFrotaDAO vf = new VeiculoDaFrotaDAO();
+        VeiculoDaFrota vv = new VeiculoDaFrota();
+        
+        vv = vf.getVeiculo(placa);
+        
+        // query
+        String sql = "SELECT * FROM agendamento WHERE (id_veiculo = ? AND status = 1)";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rset;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, vv.getId());// bind 1
+
+            // execução (boolean)
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                
+                a.setId(rset.getInt("id"));
+                
+                // funcionario
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("id_funcionario"));
+                
+                
+                a.setFuncionario(f);
+                
+                // veiculo
+                VeiculoDaFrota v = new VeiculoDaFrota();
+                v.setId(rset.getInt("id_veiculo"));
+                
+                a.setVeiculo(v);
+                
+                
+                a.setVagaEstacionamento(rset.getInt("vaga_estacionamento"));// veiculo
+                a.setStatus(rset.getInt("status"));
+                a.setSaidaVeiculo(rset.getString("saida_do_veiculo"));
+                a.setEntradaVeiculo(rset.getString("entrada_do_veiculo"));
+                
+                msg = true;
+                
+                
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+            msg = false;
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        return msg;
+        
+    }
+    
+    // funcionario em uso
+    public Boolean getFuncionarioEmUso(String matricula) throws SQLException{
+        
+        Agendamento a = new Agendamento();
+        
+        FuncionarioDAO fd = new FuncionarioDAO();
+        Funcionario ff = new Funcionario();
+        ff = fd.getFuncionario(matricula);
+        
+        // query
+        String sql = "SELECT * FROM agendamento WHERE (id_funcionario = ? AND status = 1)";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rset;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, ff.getId());// bind 1
+
+            // execução (boolean)
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                
+                a.setId(rset.getInt("id"));
+                
+                // funcionario
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("id_funcionario"));
+                
+                
+                a.setFuncionario(f);
+                
+                // veiculo
+                VeiculoDaFrota v = new VeiculoDaFrota();
+                v.setId(rset.getInt("id_veiculo"));
+                
+                a.setVeiculo(v);
+                
+                
+                a.setVagaEstacionamento(rset.getInt("vaga_estacionamento"));// veiculo
+                a.setStatus(rset.getInt("status"));
+                a.setSaidaVeiculo(rset.getString("saida_do_veiculo"));
+                a.setEntradaVeiculo(rset.getString("entrada_do_veiculo"));
+                
+                msg = true;
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+            msg = false;
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        return msg;
+        
+    }
+    
+    
     // finalizar
     public Boolean finalizarAgendamento(int id, String entrada) throws SQLException{
         // query
