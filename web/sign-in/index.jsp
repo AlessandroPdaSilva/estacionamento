@@ -7,7 +7,7 @@
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
 
-
+        <link rel="shortcut icon" href="../imagens/logo-setur.ico" />
 
         <!-- Bootstrap core CSS -->
         <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
