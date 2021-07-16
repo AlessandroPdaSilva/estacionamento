@@ -2,8 +2,12 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
 <!-- logado -->
-<c:if test="${logado!=null}">
+<c:if test="${ulogado!=null}">
+
+    <!-- Permissao -->
+    <%@include file="permissao.jsp" %>
 
 
     <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -23,7 +27,7 @@
 
 
                 <!-- form -->
-                <form action="gerenciar_login.do" method="POST" >
+                <form action="/estacionamento/gerenciar_login.do" method="POST" >
 
                     <h1 class="h3 mb-3 fw-normal my-5">Criar Login</h1>
 
@@ -51,7 +55,7 @@
                 </form>
 
                 <br>
-                <a  class="btn btn-success" href="gerenciar_login.do?acao=voltar">
+                <a  class="btn btn-success" href="../relatorio/index.jsp">
                     Voltar 
                 </a>
 
@@ -73,12 +77,16 @@
     </html>
 
 
+    <%@include file="../page/rodape.jsp" %>
+
+    <!-- Permissao fim-->
+    <%@include file="../page/sem_permissao.jsp" %>
 
 </c:if>
 
-    
-<c:if test="${logado==null}">
 
-    <h1>Acesso negado</h1>
 
-</c:if>
+<%@include file="../page/acesso_negado.jsp" %>
+
+
+

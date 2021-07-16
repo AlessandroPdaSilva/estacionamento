@@ -43,34 +43,10 @@ public class GerenciarLogin extends HttpServlet {
         // deslogar
         if (acao.equals("deslogar")) {
             request.getSession().removeAttribute("ulogado");
-            response.sendRedirect("index.jsp");
+            response.sendRedirect("sign-in/index.jsp");
         }
 
-        // bloqueio -criar usuario
-        if (acao.equals("criar_com_senha")) {
-
-            String senha = request.getParameter("campo");
-
-            if (senha.equals("123")) {
-                boolean l = true;
-                
-                HttpSession sessao = request.getSession();
-                sessao.setAttribute("logado", l);
-                response.sendRedirect("criar_login.jsp");
-            } else {
-                
-                out.println("<script type='text/javascript'>");
-                out.println("alert('Senha invalida')");
-                out.println("location.href='index.jsp'");
-                out.println("</script>");
-            }
-            
-        }
-            //bloqueio -voltar
-            if (acao.equals("voltar")) {
-                request.getSession().removeAttribute("logado");
-                response.sendRedirect("index.jsp");
-            }
+        
 
     }
 
@@ -105,7 +81,7 @@ public class GerenciarLogin extends HttpServlet {
                 } else {
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Login ou Senha invalida')");
-                    out.println("location.href='index.jsp'");
+                    out.println("location.href='sign-in/index.jsp'");
                     out.println("</script>");
                 }
 
@@ -135,12 +111,12 @@ public class GerenciarLogin extends HttpServlet {
             if(ud.save(u)){
                 out.println("<script type='text/javascript'>");
                 out.println("alert('Criado com sucesso')");
-                out.println("location.href='index.jsp'");
+                out.println("location.href='relatorio/index.jsp'");
                 out.println("</script>");
             }else{
                 out.println("<script type='text/javascript'>");
                 out.println("alert('Erro ao criar')");
-                out.println("location.href='index.jsp'");
+                out.println("location.href='relatorio/index.jsp'");
                 out.println("</script>");
             }
             

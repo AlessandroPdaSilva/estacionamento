@@ -110,7 +110,14 @@
                                         <c:if test="${ulogado.nivel==2}"> Gerente</c:if>
                                         <c:if test="${ulogado.nivel==3}"> Usuario</c:if>
                                  
-                                        <br><br><br>
+                                        
+                                        <c:if test="${ulogado.nivel==1}"> 
+                                            <br><br>
+                                            <a  class="btn btn-primary mb-3" href="../sign-in/criar_login.jsp">
+                                                Criar Usuario
+                                            </a>
+                                        </c:if>
+                                        <br><br>
                                         
                                         
                                    </p>     
