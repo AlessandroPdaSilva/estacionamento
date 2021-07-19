@@ -17,9 +17,16 @@
         <%@include file="../page/cabeçalho.jsp" %>
         
         
-        <h1 class="my-3">Relatorio</h1>
+        <h1 class="my-3">Relatorio da Garagem</h1>
 
-
+         
+            
+        <div class="p-2 bd-highlight">
+            <button class="btn btn-danger mb-3" onclick="gerarPDF()" href="/estacionamento/agendamento/editar.jsp">
+                <img src="../imagens/file-earmark-pdf.svg"> &nbsp gerar PDF
+            </button>
+        </div>
+         
 
         <!-- tabela -->
         <table class="table table-dark table-striped" id="listarFrota">
@@ -67,7 +74,13 @@
 
 
 
-
+                <script>
+                    function gerarPDF(){
+                        if (confirm("\nDeseja gerar um PDF ? " )) {
+                            location.href = "/estacionamento/gerenciar_agendamento.do?acao=gerarpdf";
+                        }
+                    }
+                </script>
 
         <script type="text/javascript" src="datatables/jquery.js"></script>
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
