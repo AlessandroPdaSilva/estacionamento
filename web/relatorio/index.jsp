@@ -22,13 +22,14 @@
          
             
         <div class="p-2 bd-highlight">
-            <button class="btn btn-danger mb-3" onclick="gerarPDF()" href="/estacionamento/agendamento/editar.jsp">
+            <button class="btn btn-danger mb-3" onclick="gerarPDF()" >
                 <img src="../imagens/file-earmark-pdf.svg"> &nbsp gerar PDF
             </button>
         </div>
          
 
         <!-- tabela -->
+        <div id="dados">
         <table class="table table-dark table-striped" id="listarFrota">
             <thead>
                 <tr>
@@ -43,7 +44,7 @@
                 </tr>
             </thead>
 
-
+            
             <tbody>
 
                 <!-- view -->
@@ -68,16 +69,63 @@
 
 
             </tbody>
-
+            
 
         </table>
-
+        </div>
 
 
                 <script>
                     function gerarPDF(){
                         if (confirm("\nDeseja gerar um PDF ? " )) {
-                            location.href = "/estacionamento/gerenciar_agendamento.do?acao=gerarpdf";
+                            
+                            var dados=document.getElementById('dados').innerHTML
+                            var janela = window.open( '  ' ,  '  ' ,'width=800,heigth=600')
+                            janela.document.write('<html><head>')
+                            janela.document.write('</head>')
+                            janela.document.write('<body>')
+                            
+                        
+                            
+                            janela.document.write('<h1 style="display: flex;flex-direction: row;justify-content: center;">Relatorio da Garagem</h1>');
+                            janela.document.write('<div style="display: flex;flex-direction: row;justify-content: center;">')
+                            janela.document.write('<table style="border-collapse: collapse;" cellspacing="0" cellpadding="6" border-spacing="0">')
+                            janela.document.write(''+'<thead>'
+                                    +'<th style="border: 1px solid black;" scope="col">ID</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Placa do carro</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Nome</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Matricula</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Vaga</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Saida do carro</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Entrada do carro</th>'
+                                    +'</thead>');
+                            janela.document.write('<tbody>')
+                            <c:forEach var="r" items="${rdao.allDesc}">
+                            janela.document.write(''
+                                    
+                                    +''
+                                    +'<tr>'
+                                    +'<td style="border: 1px solid black;" scope="row">${r.id}</td>'
+                                    +'<td style="border: 1px solid black;">${r.veiculo.placa}</td>'
+                                    +'<td style="border: 1px solid black;">${r.funcionario.nome}</td>'
+                                    +'<td style="border: 1px solid black;">${r.funcionario.matricula}</td>'
+                                    +'<td style="border: 1px solid black;">${r.vagaEstacionamento}</td>'
+                                    +'<td style="border: 1px solid black;">${r.saidaVeiculo}</td>'
+                                    +'<td style="border: 1px solid black;">${r.entradaVeiculo}</td>'
+                                    +'</tr>'
+                                    +''
+                                    
+                                    +'')
+                                   
+                            </c:forEach>
+                                
+                                janela.document.write('</tbody>')
+                                janela.document.write('</table>')
+                                janela.document.write('</div>')
+                            janela.document.write('</body></html>')
+                            janela.document.close()
+                            janela.print()
+        
                         }
                     }
                 </script>

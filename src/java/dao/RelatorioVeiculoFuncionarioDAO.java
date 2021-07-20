@@ -1,21 +1,12 @@
 package dao;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+
 import connect.ConnectionFactory;
-import java.awt.Desktop;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.UUID;
 import model.Funcionario;
 import model.RelatorioVeiculoFuncionario;
 import model.VeiculoDaFrota;
@@ -246,140 +237,7 @@ public class RelatorioVeiculoFuncionarioDAO {
 
     }
 
-    // Criar PDF
-    public String gerarPDF() {
-
-        Document doc = new Document();
-        doc.setPageSize(PageSize.A4.rotate());
-        ArrayList<RelatorioVeiculoFuncionario> rList = new ArrayList<>();
-        String resp = "";
-        
-        UUID uuid = UUID.randomUUID();
-        String myRandom = uuid.toString();
-        System.out.println();
-
-        String arquivoPdf = myRandom.substring(0,20)+".pdf";
-
-        Boolean msg = false;
-
-        try {
-            PdfWriter.getInstance(doc, new FileOutputStream(arquivoPdf));
-            
-            
-            
-            doc.open();
-
-            Paragraph p = new Paragraph("Relatorio de Garagem");// titulo
-            p.setAlignment(1);// centralizar titulo
-
-            doc.add(p);
-
-            p = new Paragraph(" ");// quebra linha
-
-            doc.add(p);
-
-            // tabela head
-            PdfPTable table = new PdfPTable(7);
-            PdfPCell cel1 = new PdfPCell(new Paragraph("ID"));
-            PdfPCell cel2 = new PdfPCell(new Paragraph("Placa do Carro"));
-            PdfPCell cel3 = new PdfPCell(new Paragraph("Nome"));
-            PdfPCell cel4 = new PdfPCell(new Paragraph("Matricula"));
-            PdfPCell cel5 = new PdfPCell(new Paragraph("Vaga"));
-            PdfPCell cel6 = new PdfPCell(new Paragraph("Saida do Carro"));
-            PdfPCell cel7 = new PdfPCell(new Paragraph("Entrada do Carro"));
-
-            table.addCell(cel1);
-            table.addCell(cel2);
-            table.addCell(cel3);
-            table.addCell(cel4);
-            table.addCell(cel5);
-            table.addCell(cel6);
-            table.addCell(cel7);
-
-            // tabela body
-            rList = getAllDesc();
-
-            if (rList != null) {
-                msg = true;
-
-                for (RelatorioVeiculoFuncionario r : rList) {
-                    cel1 = new PdfPCell(new Paragraph(r.getId() + ""));
-                    cel2 = new PdfPCell(new Paragraph(r.getVeiculo().getPlaca() + ""));
-                    cel3 = new PdfPCell(new Paragraph(r.getFuncionario().getNome() + ""));
-                    cel4 = new PdfPCell(new Paragraph(r.getFuncionario().getMatricula() + ""));
-                    cel5 = new PdfPCell(new Paragraph(r.getVagaEstacionamento() + ""));
-                    cel6 = new PdfPCell(new Paragraph(r.getSaidaVeiculo() + ""));
-                    cel7 = new PdfPCell(new Paragraph(r.getEntradaVeiculo() + ""));
-
-                    table.addCell(cel1);
-                    table.addCell(cel2);
-                    table.addCell(cel3);
-                    table.addCell(cel4);
-                    table.addCell(cel5);
-                    table.addCell(cel6);
-                    table.addCell(cel7);
-                }
-
-                doc.add(table);
-
-                doc.close();
-                
-                if(moverPDF(arquivoPdf)==false){
-                    msg = false;
-                }
-                
-                
-                
-                Desktop.getDesktop().open(new File("C:/apache-tomcat-9.0.44/webapps/estacionamento/web/pdf/"+arquivoPdf));
-                
-                resp ="pdf/"+arquivoPdf+"";
-                
-            }
-            
-            
-            
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return resp;
-    }
-
-    // mover Arquivo
-    public Boolean moverPDF(String relatorio){
-        // Arquivo a ser movido
-        File arquivo = new File(relatorio);
-        Boolean msg = false;
-        
-        
-        if (!arquivo.exists()) {
-            System.out.println("Arquivo não encontrado");
-            
-        } else {
- 
-            // Diretorio de destino
-            File diretorioDestino = new File("C:/apache-tomcat-9.0.44/webapps/estacionamento/web/pdf");
-
-            if (!diretorioDestino.exists()) {
-                diretorioDestino.mkdirs();
-            }
- 
-            // Move o arquivo para o novo diretorio
-            boolean sucesso = arquivo.renameTo(new File(diretorioDestino, arquivo.getName()));
-            if (sucesso) {
-                System.out.println("Arquivo movido para '" + diretorioDestino.getAbsolutePath() + "'");
-                msg=true;
-            } else {
-                System.out.println("Erro ao mover arquivo '" + arquivo.getAbsolutePath() + "' para '"
-                        + diretorioDestino.getAbsolutePath() + "'");
-            }
-        }
-        
-        return msg;
-        
-    }
-    
+   
   
     
     
