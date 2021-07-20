@@ -247,11 +247,14 @@ public class GerenciarAgendamento extends HttpServlet {
             
             try {
                 
-                if(rd.gerarPDF()){
+                if(rd.gerarPDF()!=null){
+                    
+                    String resp = rd.gerarPDF();
                     out.println("<script type='text/javascript'>");
                     out.println("alert('PDF gerado com sucesso')");
-                    out.println("location.href='relatorio/index.jsp'");
+                    out.println("location.href='"+resp+"'");
                     out.println("</script>");
+                    
                 }else{
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Erro ao gerar')");

@@ -247,11 +247,12 @@ public class RelatorioVeiculoFuncionarioDAO {
     }
 
     // Criar PDF
-    public Boolean gerarPDF() {
+    public String gerarPDF() {
 
         Document doc = new Document();
         doc.setPageSize(PageSize.A4.rotate());
         ArrayList<RelatorioVeiculoFuncionario> rList = new ArrayList<>();
+        String resp = "";
         
         UUID uuid = UUID.randomUUID();
         String myRandom = uuid.toString();
@@ -329,8 +330,9 @@ public class RelatorioVeiculoFuncionarioDAO {
                 
                 
                 
-                Desktop.getDesktop().open(new File("C:/relatorio_garagem/"+arquivoPdf));
+                Desktop.getDesktop().open(new File("C:/apache-tomcat-9.0.44/webapps/estacionamento/web/pdf/"+arquivoPdf));
                 
+                resp ="pdf/"+arquivoPdf+"";
                 
             }
             
@@ -341,7 +343,7 @@ public class RelatorioVeiculoFuncionarioDAO {
             e.printStackTrace();
         }
 
-        return msg;
+        return resp;
     }
 
     // mover Arquivo
@@ -357,7 +359,7 @@ public class RelatorioVeiculoFuncionarioDAO {
         } else {
  
             // Diretorio de destino
-            File diretorioDestino = new File("C:/relatorio_garagem");
+            File diretorioDestino = new File("C:/apache-tomcat-9.0.44/webapps/estacionamento/web/pdf");
 
             if (!diretorioDestino.exists()) {
                 diretorioDestino.mkdirs();
@@ -377,6 +379,8 @@ public class RelatorioVeiculoFuncionarioDAO {
         return msg;
         
     }
+    
+  
     
     
 }
