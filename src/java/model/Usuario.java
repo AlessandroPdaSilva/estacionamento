@@ -8,8 +8,19 @@ public class Usuario {
     private String nome;
     private String senha;
     private int nivel;
+    private Funcionario funcionario;
     
     // get e set
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    
 
     public int getNivel() {
         return nivel;

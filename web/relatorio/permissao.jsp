@@ -6,7 +6,7 @@
       
       int nivel = u.getNivel();
       
-      if(nivel==1 || nivel==2 || nivel==3){
+      if(nivel==1 || nivel==2 || nivel==3 || nivel==4){
           
           %>
      

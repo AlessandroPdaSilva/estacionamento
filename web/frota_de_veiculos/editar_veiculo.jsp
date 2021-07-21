@@ -28,7 +28,11 @@
         <label for="vaga" class="form-label">Vaga</label>
         <input type="number" class="form-control" id="vaga" name="vaga" value="${vf.vaga}">
     </div>
-    
+    <br>
+    <div class="col-md-2 mb-3">
+        <label for="odometro" class="form-label">Odometro</label>
+        <input type="number" class="form-control" id="vaga" name="odometro" value="${vf.odometro}">
+    </div>
     
     <input name="id" value="${vf.id}" hidden="">
     <input name="acao" value="editar" hidden="">

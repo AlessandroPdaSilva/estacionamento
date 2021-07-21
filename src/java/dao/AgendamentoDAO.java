@@ -50,6 +50,8 @@ public class AgendamentoDAO {
 
             if (exec > 0) {
                 msg = true;
+                VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
+                vd.modificarVaga(v.getId(), a.getVagaEstacionamento());
             } else {
                 msg = false;
             }

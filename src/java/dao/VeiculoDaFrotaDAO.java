@@ -15,7 +15,7 @@ public class VeiculoDaFrotaDAO {
     //CREATE
     public Boolean save(VeiculoDaFrota vf) {
         // query
-        String sql = "INSERT INTO veiculo_da_frota(placa,vaga,modelo) VALUES (?,?,?)";
+        String sql = "INSERT INTO veiculo_da_frota(placa,vaga,modelo,odometro) VALUES (?,?,?,?)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -30,7 +30,7 @@ public class VeiculoDaFrotaDAO {
             pstmt.setString(1, vf.getPlaca());//bind 1
             pstmt.setInt(2, vf.getVaga());//bind 2
             pstmt.setString(3, vf.getModelo());//bind 3
-            
+            pstmt.setInt(4, vf.getOdometro());//bind 4
 
             // execute
             exec = pstmt.executeUpdate();
@@ -92,7 +92,7 @@ public class VeiculoDaFrotaDAO {
                 vf.setPlaca(rset.getString("placa"));// placa
                 vf.setVaga(rset.getInt("vaga"));// vaga
                 vf.setModelo(rset.getString("modelo"));
-
+                vf.setOdometro(rset.getInt("odometro"));
                 
                 veiculo_dados.add(vf);// adiciona na variavel (array)
             }
@@ -117,9 +117,9 @@ public class VeiculoDaFrotaDAO {
     }
 
     //UPDATE
-    public Boolean update(int id, String placa, String modelo, int vaga) throws Exception {
+    public Boolean update(int id, String placa, String modelo, int vaga, int odometro) throws Exception {
         // query
-        String sql = "UPDATE veiculo_da_frota SET placa = ?, modelo = ?, vaga = ? WHERE id = ?";
+        String sql = "UPDATE veiculo_da_frota SET placa = ?, modelo = ?, vaga = ?, odometro = ? WHERE id = ?";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -135,7 +135,8 @@ public class VeiculoDaFrotaDAO {
             pstmt.setString(1, placa);// bind 1
             pstmt.setString(2, modelo);// bind 2
             pstmt.setInt(3,vaga);// bind 3
-            pstmt.setInt(4,id);// bind 4
+            pstmt.setInt(4,odometro);// bind 4
+            pstmt.setInt(5,id);// bind 5
             
              
 
@@ -237,6 +238,7 @@ public class VeiculoDaFrotaDAO {
                 vf.setModelo(rset.getString("modelo"));
                 vf.setPlaca(rset.getString("placa"));
                 vf.setVaga(rset.getInt("vaga"));
+                vf.setOdometro(rset.getInt("odometro"));
 
             }
 
@@ -284,6 +286,7 @@ public class VeiculoDaFrotaDAO {
                 vf.setModelo(rset.getString("modelo"));
                 vf.setPlaca(rset.getString("placa"));
                 vf.setVaga(rset.getInt("vaga"));
+                vf.setOdometro(rset.getInt("odometro"));
 
             }
 

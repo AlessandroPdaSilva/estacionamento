@@ -109,7 +109,16 @@
                                 Perfil: <c:if test="${ulogado.nivel==1}"> Administrador</c:if>
                                         <c:if test="${ulogado.nivel==2}"> Gerente</c:if>
                                         <c:if test="${ulogado.nivel==3}"> Usuario</c:if>
+                                        <c:if test="${ulogado.nivel==4}"> Funcionario</c:if>
                                  
+                                        <c:if test="${ulogado.nivel==4}"> 
+                                            <jsp:useBean class="dao.FuncionarioDAO" id="ffdao"/><!-- objeto -->
+                                            
+                                            <br>Nome do Funcionario: ${ffdao.getFuncionario(ulogado.funcionario.id).nome}
+                                            
+                                            
+                                        </c:if>
+                                        
                                         
                                         <c:if test="${ulogado.nivel==1}"> 
                                             <br><br>

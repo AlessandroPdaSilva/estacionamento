@@ -41,11 +41,18 @@
                         <label for="floatingPassword">Senha</label>
                     </div>
                     <br>
-                    <div class="form-floating">
-                        <input name="nivel" type="number" class="form-control" id="floatingPassword" placeholder="Password">
-                        <label for="floatingPassword">nivel</label>
-                    </div>
-
+                    <select id="nivel" class="form-select" aria-label="Default select example" name="nivel">
+                            <option selected disabled=""> Nivel</option>
+                            <option value="1">Administrador</option>
+                            <option value="2">Gerente</option>
+                            <option value="3">Usuario</option>
+                            <option value="4">Funcionario</option>
+                            
+                    </select>
+                    
+                    <div id="resp1"></div>
+                    
+                    
                     <input name="acao" value="criar" hidden="">
                     <div class="checkbox mb-3">
 
@@ -75,6 +82,41 @@
 
         </body>
     </html>
+    
+    <script type="text/javascript">
+        
+        // matricula
+        var select = document.querySelector('select#nivel');
+        select.addEventListener('change', function () {
+            var option = this.selectedOptions[0];
+            var texto = option.value;
+            var resp = document.getElementById('resp1');
+            
+            if(texto == 4){
+                //resp.innerHTML = '<br><input class="form-control" id="disabledInput" type="text" placeholder="'+texto+'" disabled>'
+                resp.innerHTML = '<br><select id="id-funcionario" class="form-select" aria-label="Default select example" name="id-funcionario">'
+                +'<option selected disabled=""> Selecione um Funcionario</option>'
+                
+                <jsp:useBean class="dao.FuncionarioDAO" id="fdao"/><!-- objeto -->
+                <jsp:useBean class="dao.UsuarioDAO" id="ddao"/><!-- objeto -->
+                <c:forEach var="f" items="${fdao.all}">
+                    
+                    <c:if test="${ddao.getFuncionarioEmUso(f.id)==false}">
+                        +'<option value="${f.id}">${f.nome}</option>'
+                    </c:if>
+                </c:forEach>
+        
+                +'</select>'
+                console.log(texto);
+            }else{
+                resp.innerHTML = ''
+            }
+            
+
+            
+        });
+        
+    </script>
 
 
     <%@include file="../page/rodape.jsp" %>

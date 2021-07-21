@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.Funcionario;
 import model.Usuario;
 
 @WebServlet(name = "GerenciarLogin", urlPatterns = {"/gerenciar_login.do"})
@@ -98,7 +99,9 @@ public class GerenciarLogin extends HttpServlet {
             String login = request.getParameter("login");
             String senha = request.getParameter("senha");
             int nivel = Integer.parseInt((String) request.getParameter("nivel"));
-
+            int idFuncionario = Integer.parseInt((String) request.getParameter("id-funcionario"));
+            
+            
             UsuarioDAO ud = new UsuarioDAO();
             Usuario u = new Usuario();
 
@@ -107,6 +110,11 @@ public class GerenciarLogin extends HttpServlet {
             u.setNome(login);
             u.setSenha(senha);
             u.setNivel(nivel);
+            
+            Funcionario f = new Funcionario();//funcionario
+            f.setId(idFuncionario);
+            
+            u.setFuncionario(f);
             
             if(ud.save(u)){
                 out.println("<script type='text/javascript'>");

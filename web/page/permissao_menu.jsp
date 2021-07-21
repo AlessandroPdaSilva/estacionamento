@@ -21,3 +21,9 @@
     <li><a href="/estacionamento/agendamento/index.jsp" class="navegacao nav-link px-4" > Agendamento</a></li>
 
 </c:if>
+
+<!-- Funcionario-->
+<c:if test="${ulogado.nivel==4}"> 
+    <li><a href="/estacionamento/relatorio/index.jsp" class="navegacao nav-link px-4" > Relatorio</a></li>
+    
+</c:if>

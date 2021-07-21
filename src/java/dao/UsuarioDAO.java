@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import model.Funcionario;
 import model.Usuario;
 
 public class UsuarioDAO {
@@ -15,13 +16,14 @@ public class UsuarioDAO {
     //CREATE
     public Boolean save(Usuario u) {
         // query
-        String sql = "INSERT INTO usuario(nome,senha,nivel) VALUES (?,?,?)";
+        String sql = "INSERT INTO usuario(nome,senha,nivel,id_funcionario) VALUES (?,?,?,?)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         int exec = 0;
         Boolean msg = false;
+        
         try {
             //conexao
             conn = ConnectionFactory.createConnectionToMySql();
@@ -30,6 +32,7 @@ public class UsuarioDAO {
             pstmt.setString(1, u.getNome());//bind 1
             pstmt.setString(2, u.getSenha());//bind 2
             pstmt.setInt(3, u.getNivel());//bind 3
+            pstmt.setInt(4, u.getFuncionario().getId());//bind 4
             
 
             // execute
@@ -91,6 +94,11 @@ public class UsuarioDAO {
                 usuario.setId(rset.getInt("id"));
                 usuario.setNome(rset.getString("nome"));// nome
                 usuario.setSenha(rset.getString("senha"));// senha
+                
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("id_funcionario"));
+                
+                usuario.setFuncionario(f);// funcionario
 
                 
                 usuario_dados.add(usuario);// adiciona na variavel (array)
@@ -232,7 +240,11 @@ public class UsuarioDAO {
                 u.setId(rset.getInt("id"));
                 u.setNome(rset.getString("nome"));// nome
                 u.setSenha(rset.getString("senha"));// senha
-
+                
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("id_funcionario"));
+                
+                u.setFuncionario(f);// id funcionario
                  
 
             }
@@ -281,7 +293,11 @@ public class UsuarioDAO {
                 u.setNome(rset.getString("nome"));
                 u.setSenha(rset.getString("senha"));
                 u.setNivel(rset.getInt("nivel"));
-
+                
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("id_funcionario"));
+                
+                u.setFuncionario(f);
             }
 
         } catch (Exception e) {// erro
@@ -327,6 +343,51 @@ public class UsuarioDAO {
         return senhaHex;
     }
     
+    // funcionario em uso
+    public Boolean getFuncionarioEmUso(int id_funcionario) throws SQLException{
+         
+        
+        // query
+        String sql = "SELECT * FROM usuario WHERE id_funcionario = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rset;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, id_funcionario);// bind 1
+
+            // execução (boolean)
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                
+                
+                msg = true;
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+            msg = false;
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        return msg;
+        
+    }
     
     
 }

@@ -29,7 +29,9 @@
                     <th scope="col">ID</th>
                     <th scope="col">modelo</th>
                     <th scope="col">Placa </th>
+                    <th scope="col">Odometro</th>
                     <th scope="col">Vaga</th>
+                    
 
                     <th scope="col">Opções</th>
 
@@ -48,8 +50,9 @@
                         <th scope="row">${vf.id}</th>
                         <td>${vf.modelo}</td>
                         <td>${vf.placa}</td>
+                        <td>${vf.odometro}</td>
                         <td>${vf.vaga}</td>
-
+                        
 
                         <td>
                             <a href="/estacionamento/gerenciar_veiculo.do?acao=editar_page&id=${vf.id}" class="btn btn-primary" >
@@ -103,7 +106,12 @@
                                 <input name="vaga" type="number" class="form-control" id="floatingPassword" placeholder="Password">
                                 <label for="floatingPassword">vaga</label>
                             </div>
-
+                            <br>
+                            <div class="form-floating">
+                                <input name="odometro" type="number" class="form-control" id="floatingPassword" placeholder="Password">
+                                <label for="floatingPassword">odômetro</label>
+                            </div>
+                            
                             <input name="acao" value="criar_veiculo" hidden="">
                         </div>
 

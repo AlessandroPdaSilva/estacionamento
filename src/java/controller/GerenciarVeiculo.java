@@ -46,6 +46,7 @@ public class GerenciarVeiculo extends HttpServlet {
             String modelo = request.getParameter("modelo");
             String placa = request.getParameter("placa");
             int vaga = Integer.parseInt((String) request.getParameter("vaga"));
+            int odometro = Integer.parseInt((String) request.getParameter("odometro"));
             
             VeiculoDaFrota vf = new VeiculoDaFrota();
             VeiculoDaFrotaDAO vfd = new VeiculoDaFrotaDAO();
@@ -53,6 +54,7 @@ public class GerenciarVeiculo extends HttpServlet {
             vf.setModelo(modelo);
             vf.setPlaca(placa);
             vf.setVaga(vaga);
+            vf.setOdometro(odometro);
             
             if(vfd.save(vf)){
                 out.println("<script type='text/javascript'>");
@@ -136,19 +138,20 @@ public class GerenciarVeiculo extends HttpServlet {
         PrintWriter out = response.getWriter();
         String acao = request.getParameter("acao");   
         
-        // criar veiculo
+        // editar veiculo
         if (acao.equals("editar")) {
             
             String modelo = request.getParameter("modelo");
             String placa = request.getParameter("placa");
             int vaga = Integer.parseInt((String) request.getParameter("vaga"));
             int id = Integer.parseInt((String) request.getParameter("id"));
+            int odometro = Integer.parseInt((String) request.getParameter("odometro"));
             
             VeiculoDaFrotaDAO vfd = new VeiculoDaFrotaDAO();
             
             try {
                 
-                if(vfd.update(id, placa, modelo, vaga)){
+                if(vfd.update(id, placa, modelo, vaga,odometro)){
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Editado com sucesso')");
                     out.println("location.href='frota_de_veiculos/index.jsp'");

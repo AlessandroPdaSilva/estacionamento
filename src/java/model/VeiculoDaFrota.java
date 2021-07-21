@@ -8,8 +8,19 @@ public class VeiculoDaFrota {
     String placa;
     int vaga;
     String modelo;
+    int odometro;
     
     // get e set
+
+    public int getOdometro() {
+        return odometro;
+    }
+
+    public void setOdometro(int odometro) {
+        this.odometro = odometro;
+    }
+    
+    
 
     public int getId() {
         return id;
