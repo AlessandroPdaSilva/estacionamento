@@ -36,7 +36,7 @@
 
         <main class="form-signin">
             <form action="/estacionamento/gerenciar_login.do" method="POST" >
-                <img class="mb-4" src="logo-setur.png" alt="" width="72" height="72">
+                <img style="border-radius:100%;" class="mb-4" src="logo-setur.png" alt="" width="72" height="72">
                 <h1 class="h3 mb-3 fw-normal">Login</h1>
 
 

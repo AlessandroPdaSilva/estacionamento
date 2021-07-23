@@ -22,7 +22,7 @@
             Criar Funcionario
         </button>
 
-
+        <a href="pedido/gerente_view.jsp" class="btn btn-secondary mb-3"> Pedido de Funcionarios</a>
 
         <!-- tabela -->
         <table class="table table-dark table-striped" id="listarFrota">
