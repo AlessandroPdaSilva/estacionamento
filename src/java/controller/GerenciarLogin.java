@@ -76,7 +76,15 @@ public class GerenciarLogin extends HttpServlet {
                     
                     HttpSession sessao = request.getSession();
                     sessao.setAttribute("ulogado", u);
-                    response.sendRedirect("relatorio/index.jsp");
+                    
+                    // se funcionario
+                    if(u.getNivel()==4){
+                        response.sendRedirect("funcionarios/pedido/funcionario_view.jsp");
+                    }else{
+                        response.sendRedirect("relatorio/index.jsp");
+                    }
+                    
+                    
                     
                     
                 } else {

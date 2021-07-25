@@ -10,8 +10,19 @@ public class Pedido {
     private String dataPedido;
     private String percurso;
     private int status;
+    private String mensagem;
     
     // gets e sets
+
+    public String getMensagem() {
+        return mensagem;
+    }
+
+    public void setMensagem(String mensagem) {
+        this.mensagem = mensagem;
+    }
+    
+    
 
     public int getId() {
         return id;

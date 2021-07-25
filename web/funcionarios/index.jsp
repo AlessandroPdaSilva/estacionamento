@@ -15,15 +15,14 @@
     
     
         <%@include file="../page/cabeçalho.jsp" %>
-        <h1 class="my-3">Funcionarios</h1>
+        <h1 class="my-3">Lista de Funcionarios</h1>
 
 
         <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalCriar">
             Criar Funcionario
         </button>
 
-        <a href="pedido/gerente_view.jsp" class="btn btn-secondary mb-3"> Pedido de Funcionarios</a>
-
+        
         <!-- tabela -->
         <table class="table table-dark table-striped" id="listarFrota">
             <thead>
