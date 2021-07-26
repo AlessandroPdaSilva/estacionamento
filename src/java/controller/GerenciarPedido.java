@@ -2,6 +2,7 @@ package controller;
 
 import dao.FuncionarioDAO;
 import dao.PedidoDAO;
+import dao.RelatorioChaveFuncionarioDAO;
 import dao.VeiculoDaFrotaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import model.Funcionario;
 import model.Pedido;
+import model.RelatorioChaveFuncionario;
 import model.VeiculoDaFrota;
 
 @WebServlet(name = "GerenciarPedido", urlPatterns = {"/gerenciar_pedido.do"})
@@ -53,6 +55,37 @@ public class GerenciarPedido extends HttpServlet {
                 PedidoDAO pd = new PedidoDAO();
 
                 if (pd.updateStatus(id, status)) {
+                    // jogando para relatorio
+                    RelatorioChaveFuncionarioDAO rd = new RelatorioChaveFuncionarioDAO();
+                    RelatorioChaveFuncionario r = new RelatorioChaveFuncionario();
+                    
+                    Pedido p = new Pedido();
+                    p.setId(id);
+                    
+                    r.setPedido(p);
+                    
+                    // data
+                    LocalDateTime agora = LocalDateTime.now();//data atual
+
+                
+                    DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("uuuu-MM-dd");// formatar a data
+                    String dataFormatada = formatterData.format(agora);
+
+
+                    DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");// formatar a hora
+                    String horaFormatada = formatterHora.format(agora);
+
+                    String dataColeta = ""+dataFormatada + " " + horaFormatada +"";
+                    
+                    r.setDataColeta(dataColeta);
+                    
+                    // odometro
+                    VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
+                    //vd.
+                    //r.setOdometroColeta();
+                    
+                    rd.save(r);
+                    
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Aceito com sucesso')");
                     out.println("location.href='funcionarios/pedido/gerente_view.jsp'");

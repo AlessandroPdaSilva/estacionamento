@@ -21,7 +21,7 @@
          
  
         <!-- tabela -->
-        <table class="table table-dark table-striped" id="listarPedido">
+        <table data-order='[[ 0, "desc" ]]' class="table table-dark table-striped" id="listarPedido">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -47,7 +47,15 @@
 
                     <tr>
                         <th scope="row">${p.id}</th>
-                        <td>${p.funcionario.nome}</td>
+                        <td>
+                            ${p.funcionario.nome} &nbsp
+                              <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                &nbsp Matricula: ${p.funcionario.matricula}
+                              </ul>
+                        </td>
                         <td>${p.veiculo.placa}</td>
                         <td>${p.dataPedido}</td>
                         <td>${p.percurso}</td>

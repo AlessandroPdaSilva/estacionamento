@@ -45,7 +45,7 @@
         </c:if>
  
         <!-- tabela -->
-        <table class="table table-dark table-striped" id="listarPedido">
+        <table data-order='[[ 0, "desc" ]]' class="table table-dark table-striped" id="listarPedido">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
