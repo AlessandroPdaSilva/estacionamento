@@ -226,6 +226,7 @@
                  +"<input name='acao' value='pedido_recusado' hidden>"
                  +"<input name='id' value='"+id+"' hidden>"
                  +"<input name='status' value='1' hidden>"
+                 +"<input name='placa' value='"+placa+"' hidden>"
                     
                 /*
                  * resp.innerHTML = '<a href="/estacionamento/gerenciar_pedido.do?acao=pedido_recusado&id=' + id +'&status=1" class="btn btn-danger" >Confirmar</a>'

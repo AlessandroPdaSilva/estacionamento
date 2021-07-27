@@ -9,6 +9,7 @@
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
             <li><a class="dropdown-item" href="/estacionamento/funcionarios/index.jsp">Lista de Funcionarios</a></li>
             <li><a class="dropdown-item" href="/estacionamento/funcionarios/pedido/gerente_view.jsp">Pedidos</a></li>
+            <li><a class="dropdown-item" href="/estacionamento/funcionarios/chave-funcionario/gerente_view.jsp">Chaves / Funcionarios</a></li>
 
           </ul>
     </li>

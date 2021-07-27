@@ -122,7 +122,7 @@
                                         
                                         <c:if test="${ulogado.nivel==1}"> 
                                             <br><br>
-                                            <a  class="btn btn-primary mb-3" href="../sign-in/criar_login.jsp">
+                                            <a  class="btn btn-primary mb-3" href="../../sign-in/criar_login.jsp">
                                                 Criar Usuario
                                             </a>
                                         </c:if>

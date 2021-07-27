@@ -50,6 +50,7 @@ public class GerenciarPedido extends HttpServlet {
 
             int id = Integer.parseInt((String) request.getParameter("id"));
             int status = Integer.parseInt((String) request.getParameter("status"));
+            String placa = (String) request.getParameter("placa");
 
             try {
                 PedidoDAO pd = new PedidoDAO();
@@ -59,12 +60,13 @@ public class GerenciarPedido extends HttpServlet {
                     RelatorioChaveFuncionarioDAO rd = new RelatorioChaveFuncionarioDAO();
                     RelatorioChaveFuncionario r = new RelatorioChaveFuncionario();
                     
+                    //--pedido
                     Pedido p = new Pedido();
                     p.setId(id);
                     
                     r.setPedido(p);
                     
-                    // data
+                    //--data
                     LocalDateTime agora = LocalDateTime.now();//data atual
 
                 
@@ -79,12 +81,23 @@ public class GerenciarPedido extends HttpServlet {
                     
                     r.setDataColeta(dataColeta);
                     
-                    // odometro
+                    //--odometro
                     VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
-                    //vd.
-                    //r.setOdometroColeta();
+                    VeiculoDaFrota v = new VeiculoDaFrota();
+                    v = vd.getVeiculo(placa);
                     
-                    rd.save(r);
+                    r.setOdometroColeta(v.getOdometro());
+                    
+                    // salvar
+                    
+                    
+                    if(rd.save(r)){
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Deu certo')");
+                        out.println(" ");
+                        out.println("</script>");
+                        }
+                    
                     
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Aceito com sucesso')");

@@ -40,30 +40,30 @@
             <tbody>
 
                 <!-- view -->
-                <jsp:useBean class="dao.PedidoDAO" id="pdao"/><!-- objeto -->
-                <c:forEach var="p" items="${pdao.all}">
+                <jsp:useBean class="dao.RelatorioChaveFuncionarioDAO" id="rfdao"/><!-- objeto -->
+                <c:forEach var="r" items="${rfdao.all}">
 
 
                     <tr>
-                        <th scope="row">${p.id}</th>
+                        <th scope="row">${r.pedido.id}</th>
                         <td>
-                            ${p.funcionario.nome} &nbsp
+                            ${r.pedido.funcionario.nome} &nbsp
                             <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                               </button>
                               <ul class="dropdown-menu">
-                                  &nbsp Matricula: ${p.funcionario.matricula} <br>
-                                  &nbsp Placa: ${p.veiculo.placa} 
+                                  &nbsp Matricula: ${r.pedido.funcionario.matricula} <br>
+                                  &nbsp Placa: ${r.pedido.veiculo.placa} 
                               </ul>
                         </td>
                          
-                        <td>${p.dataPedido}</td>
-                        <td>${p.dataPedido}</td>
+                        <td>${r.dataColeta}</td>
+                        <td>${r.dataDevolucao}</td>
                         
-                        <td>200000 / 200010</td>
+                        <td>${r.odometroColeta} / ${r.odometroDevolucao}</td>
                          
                          
-                        <td>2</td>
+                        <td>${r.status}</td>
                         <td>coletado</td>
                         
                     </tr>
