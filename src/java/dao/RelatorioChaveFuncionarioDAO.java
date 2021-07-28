@@ -313,6 +313,62 @@ public class RelatorioChaveFuncionarioDAO {
 
     }
     
+    // carro em uso
+    public Boolean getCarroEmUso(String placa) throws SQLException{
+        
+        Pedido p = new Pedido();
+        
+        VeiculoDaFrotaDAO vf = new VeiculoDaFrotaDAO();
+        VeiculoDaFrota vv = new VeiculoDaFrota();
+        
+        vv = vf.getVeiculo(placa);
+        
+        // query
+        String sql = "SELECT * FROM relatorio_chave_funcionario rf "
+                + "INNER JOIN pedido p ON p.id = rf.id_pedido "
+                + "WHERE (p.id_veiculo = ? AND (rf.status = 2 OR rf.status = 1))";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rset;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, vv.getId());// bind 1
+
+            // execução (boolean)
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                 
+                rset.getInt("id");
+                msg = true;
+                
+                
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+            msg = false;
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        return msg;
+        
+    }
+    
     
     
     //UPDATE DEVOLDIDO

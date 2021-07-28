@@ -510,7 +510,11 @@ public class PedidoDAO {
          
         
         // query
-        String sql = "SELECT * FROM pedido WHERE (id_funcionario = ? AND status = 2)";
+        String sql = "SELECT * FROM relatorio_chave_funcionario rf "
+                + "INNER JOIN pedido p ON p.id = rf.id_pedido "
+                + "WHERE ((p.id_funcionario = ? AND p.status = 2) OR (rf.status = 2 OR rf.status = 1))"; 
+                 
+                
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -558,6 +562,9 @@ public class PedidoDAO {
         return msg;
         
     }
+    
+    
+    
     
     //get mensagem
     public String getPedidoMensagem(int idPedido) throws SQLException {

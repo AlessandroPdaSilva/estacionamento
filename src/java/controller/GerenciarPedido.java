@@ -93,6 +93,8 @@ public class GerenciarPedido extends HttpServlet {
                     
                     r.setOdometroColeta(v.getOdometro());
                     
+                    
+                    rd.save(r);
                     // salvar
                     
                     /*

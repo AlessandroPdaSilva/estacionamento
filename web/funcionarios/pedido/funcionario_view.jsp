@@ -139,15 +139,20 @@
                           <input name="id_funcionario" value="${ulogado.funcionario.id}" hidden="">
 
                           <br>
-
+                          
+                          <jsp:useBean class="dao.RelatorioChaveFuncionarioDAO" id="rcdao"/><!-- objeto -->
                           <select id="placa" class="form-select " aria-label="Default select example">
                               <option selected disabled=""> placa</option>
                               
                               <c:forEach var="v" items="${vdao.all}">
-
-                                  <c:if test="${adao.getCarroEmUso(v.placa)==false}"></c:if>
                                   
-                                  <option value="${v.modelo}">${v.placa}</option>
+                                  
+                                  <c:if test="${rcdao.getCarroEmUso(v.placa)==false}">
+                                      <option value="${v.modelo}">${v.placa}</option>
+                                  </c:if>
+                                  
+                                  
+                                  
                               </c:forEach>
 
                           </select>
@@ -203,7 +208,9 @@
 
                           Deseja realmente DELETAR o ultimo pedido feito? <br><br>
 
-                          Obs: So é possivel deletar pedidos com status 'em aberto'.
+                          Obs: So é possivel deletar pedidos com status 'em aberto'.<br>
+                          &nbsp So e possivel criar pedidos se na tabela 'chave / funcionario' seu status estiver como 'devolvido'.<br>
+                          &nbsp So e possivel criar pedidos caso seu pedido ja estiver sido avalidado (Ex: pedido recusado)<br>
 
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
