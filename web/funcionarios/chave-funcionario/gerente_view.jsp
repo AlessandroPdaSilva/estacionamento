@@ -57,14 +57,40 @@
                               </ul>
                         </td>
                          
-                        <td>${r.dataColeta}</td>
+                        <td>
+                            ${r.dataColeta}
+                        </td>
                         <td>${r.dataDevolucao}</td>
                         
-                        <td>${r.odometroColeta} / ${r.odometroDevolucao}</td>
+                        <td>
+                            ${r.odometroColeta} / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}</c:if> 
+                        </td>
                          
                          
-                        <td>${r.status}</td>
-                        <td>coletado</td>
+                        <td>
+                        <c:if test="${r.status==0}"> 
+                                <div style="color:#198754;font-weight:750"> Devolvido </div>  
+                            </c:if>
+
+                            <c:if test="${r.status==1}"> 
+                                <div style="color:crimson;font-weight:750"> Em uso </div>  
+                            </c:if>
+
+                            <c:if test="${r.status==2}"> 
+                                <!--
+                                <div style="color:black;background:#ffca2c;text-align: center;"> Em aberto </div>  
+                                -->
+                                <div style="color:#ffca2c;font-weight:750"> Nao coletado </div>  
+                            </c:if>
+                            
+                        </td>
+                        <td>
+                        <c:if test="${r.status==2}">
+                            <a onclick="confirmarFinalizacao(${a.id},'${a.funcionario.nome}','${a.veiculo.placa}' )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarColetado" class="btn btn-success mb-3">
+                                Coletado
+                            </a>
+                        </c:if>
+                        </td>
                         
                     </tr>
 
@@ -80,6 +106,35 @@
 
 
  
+                
+       <!-- MODAL CONFIRMAR COLETADO-->
+      <div id="ModalConfirmarColetado" class="modal" tabindex="-1">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+
+                  <!-- form-->
+                  <form action="" method="">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Confirmação</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+
+                      <!-- body form -->
+                      <div class="modal-body">
+
+                          <div id="body-aceito">  </div>
+                          
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          <div id="resp-aceito">  </div>
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+      
 
 
 

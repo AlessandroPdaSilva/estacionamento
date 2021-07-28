@@ -406,6 +406,105 @@ public class PedidoDAO {
 
     }
      
+    //get pedido
+    public Pedido getPedidoId(int idPedido) throws SQLException {
+
+        // query --id,id_veiculo,id_funcionario,vaga_estacionamento,DATE_FORMAT( saida_do_veiculo, '%d/%m/%Y  %H:%i' ),DATE_FORMAT( entrada_do_veiculo, '%d/%m/%Y  %H:%i' )
+        //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
+        String sql = "SELECT * FROM pedido p "
+       + "INNER JOIN funcionario f ON p.id_funcionario = f.id "
+       + "INNER JOIN veiculo_da_frota v ON p.id_veiculo = v.id "
+       + "WHERE p.id = ?";
+
+        // var -veiculo_dados
+        ArrayList<Pedido> relatorio_dados = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        
+        Pedido p = new Pedido();// objeto
+
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, idPedido);//bind 1
+            // array do resultado
+            rset = pstmt.executeQuery();
+            
+            
+
+            while (rset.next()) {// passando valores para var(veiculo_dados)
+
+                
+                
+                
+                p.setId(rset.getInt("p.id"));
+                
+                // funcionario
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("f.id"));
+                f.setMatricula(rset.getString("f.matricula"));
+                f.setNome(rset.getString("f.nome"));
+                
+                p.setFuncionario(f);
+                
+                // veiculo
+                VeiculoDaFrota v = new VeiculoDaFrota();
+                v.setId(rset.getInt("v.id"));
+                v.setPlaca(rset.getString("v.placa"));
+                v.setOdometro(rset.getInt("v.odometro"));
+                
+                p.setVeiculo(v);
+                
+                p.setDataPedido(rset.getString("p.data_pedido"));
+                
+                
+                // percurso
+                String percurso = rset.getString("p.percurso");
+                String separaPer[] = percurso.split("/");
+                
+                p.setPercurso(""+separaPer[0]+" - "+separaPer[1]);
+                
+                
+                p.setStatus(rset.getInt("p.status"));
+                
+                //data e hora
+                // --saida
+                String fsaida = rset.getString("p.data_pedido");
+                String separa[] = fsaida.split(" ");
+                String data[] = separa[0].split("-");
+                String time[] = separa[1].split(":");
+                String dataPedido = "" + data[2] + "/" + data[1] + "/" + data[0] + " - " + time[0] + ":" + time[1];
+
+                p.setDataPedido(dataPedido);
+                
+                p.setMensagem(rset.getString("p.mensagem"));
+                
+                 
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (rset != null) {
+                rset.close();
+            }
+        }
+
+        return p;//  
+
+    }
+    
+    
     // funcionario em uso
     public Boolean getPedidoEmUso(int idFuncionario) throws SQLException{
          

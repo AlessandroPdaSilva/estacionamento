@@ -50,10 +50,15 @@ public class GerenciarPedido extends HttpServlet {
 
             int id = Integer.parseInt((String) request.getParameter("id"));
             int status = Integer.parseInt((String) request.getParameter("status"));
-            String placa = (String) request.getParameter("placa");
+            String placa = request.getParameter("placa");
+            
+            PedidoDAO pd = new PedidoDAO();
+            Pedido p = new Pedido();
 
             try {
-                PedidoDAO pd = new PedidoDAO();
+                
+                
+                p = pd.getPedidoId(id);
 
                 if (pd.updateStatus(id, status)) {
                     // jogando para relatorio
@@ -61,8 +66,7 @@ public class GerenciarPedido extends HttpServlet {
                     RelatorioChaveFuncionario r = new RelatorioChaveFuncionario();
                     
                     //--pedido
-                    Pedido p = new Pedido();
-                    p.setId(id);
+                    
                     
                     r.setPedido(p);
                     
@@ -82,9 +86,10 @@ public class GerenciarPedido extends HttpServlet {
                     r.setDataColeta(dataColeta);
                     
                     //--odometro
-                    VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
+                     
                     VeiculoDaFrota v = new VeiculoDaFrota();
-                    v = vd.getVeiculo(placa);
+                    v = p.getVeiculo();
+                    
                     
                     r.setOdometroColeta(v.getOdometro());
                     
@@ -96,7 +101,7 @@ public class GerenciarPedido extends HttpServlet {
                         out.println("alert('Deu certo')");
                         out.println(" ");
                         out.println("</script>");
-                        }
+                    }
                     
                     
                     out.println("<script type='text/javascript'>");

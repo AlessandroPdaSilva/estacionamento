@@ -17,7 +17,7 @@ public class RelatorioChaveFuncionarioDAO {
     //CREATE
     public Boolean save(RelatorioChaveFuncionario r) {
         // query
-        String sql = "INSERT INTO relatorio_funcionario_chave"
+        String sql = "INSERT INTO relatorio_chave_funcionario"
                 + "(id_pedido,data_coleta,odometro_coleta,data_devolucao,odometro_devolucao,status)"
                 + " VALUES (?,?,?,'0000-01-00 00:00:00',-1,2)";
 
@@ -78,7 +78,7 @@ public class RelatorioChaveFuncionarioDAO {
 
         // query --id,id_veiculo,id_funcionario,vaga_estacionamento,DATE_FORMAT( saida_do_veiculo, '%d/%m/%Y  %H:%i' ),DATE_FORMAT( entrada_do_veiculo, '%d/%m/%Y  %H:%i' )
         //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
-        String sql = "SELECT * FROM relatorio_funcionario_chave rf "
+        String sql = "SELECT * FROM relatorio_chave_funcionario rf "
                 + "INNER JOIN pedido p ON p.id = rf.id_pedido";
 
         // var -veiculo_dados
@@ -118,7 +118,7 @@ public class RelatorioChaveFuncionarioDAO {
                 VeiculoDaFrota v = new VeiculoDaFrota();
                 VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
                         
-                vd.getVeiculo(rset.getInt("p.id_veiculo"));
+                v = vd.getVeiculo(rset.getInt("p.id_veiculo"));
                 
                 p.setVeiculo(v);
                 
@@ -135,11 +135,35 @@ public class RelatorioChaveFuncionarioDAO {
                 
                 r.setPedido(p);
                 
+                // status
                 r.setStatus(rset.getInt("rf.status"));
-                r.setDataColeta(rset.getString("rf.data_coleta"));
-                r.setOdometroColeta(rset.getInt("rf.odometro_coleta"));
                 
-                r.setDataDevolucao(rset.getString("rf.data_devolucao"));
+                
+                //datas
+                // --saida
+                String fsaida = rset.getString("rf.data_coleta");// query
+                String separa[] = fsaida.split(" ");
+                String data[] = separa[0].split("-");
+                String time[] = separa[1].split(":");
+                String dataColeta = "" + data[2] + "/" + data[1] + "/" + data[0] + " - " + time[0] + ":" + time[1];
+
+                // --entrada
+                String fentrada = rset.getString("rf.data_devolucao");// query
+                String separa2[] = fentrada.split(" ");
+                String data2[] = separa2[0].split("-");
+                String time2[] = separa2[1].split(":");
+                String dataDevolucao = "" + data2[2] + "/" + data2[1] + "/" + data2[0] + " - " + time2[0] + ":" + time2[1];
+
+                if(dataDevolucao.equals("00/01/0000 - 00:00")){
+                    dataDevolucao = "Nao devolvido";
+                }
+                
+                r.setDataColeta(dataColeta);
+                r.setDataDevolucao(dataDevolucao);
+                
+                
+                // odometro
+                r.setOdometroColeta(rset.getInt("rf.odometro_coleta"));
                 r.setOdometroDevolucao(rset.getInt("rf.odometro_devolucao"));
 
                  
