@@ -95,14 +95,14 @@ public class GerenciarPedido extends HttpServlet {
                     
                     // salvar
                     
-                    
+                    /*
                     if(rd.save(r)){
                         out.println("<script type='text/javascript'>");
                         out.println("alert('Deu certo')");
                         out.println(" ");
                         out.println("</script>");
                     }
-                    
+                    */
                     
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Aceito com sucesso')");

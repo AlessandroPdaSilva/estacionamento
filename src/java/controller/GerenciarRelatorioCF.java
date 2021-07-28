@@ -1,8 +1,11 @@
   
 package controller;
 
+import dao.RelatorioChaveFuncionarioDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,6 +37,82 @@ public class GerenciarRelatorioCF extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
          
+        PrintWriter out = response.getWriter();
+        String acao = request.getParameter("acao");
+
+        // chave coletada
+        if (acao.equals("chave_coletada")) {
+            
+            int idPedido = Integer.parseInt((String) request.getParameter("id_pedido"));
+            int status = 1;
+            
+            RelatorioChaveFuncionarioDAO rd = new RelatorioChaveFuncionarioDAO();
+            
+            try {
+                
+                if(rd.updateColetado(idPedido, status)){
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Coletado com sucesso')");
+                    out.println("location.href='funcionarios/chave-funcionario/gerente_view.jsp'");
+                    out.println("</script>");
+                }else{
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Erro ao coletar')");
+                    out.println("location.href='funcionarios/chave-funcionario/gerente_view.jsp'");
+                    out.println("</script>");
+                }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+        }
+        
+        // chave devolvida
+        if (acao.equals("chave_devolvido")) {
+            
+            int idPedido = Integer.parseInt((String) request.getParameter("id_pedido"));
+            int odometroDevolvido = Integer.parseInt((String) request.getParameter("odometro"));
+            int status = 0;
+            
+            RelatorioChaveFuncionarioDAO rd = new RelatorioChaveFuncionarioDAO();
+            
+            try {
+                
+                //--data
+                    LocalDateTime agora = LocalDateTime.now();//data atual
+
+                
+                    DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("uuuu-MM-dd");// formatar a data
+                    String dataFormatada = formatterData.format(agora);
+
+
+                    DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");// formatar a hora
+                    String horaFormatada = formatterHora.format(agora);
+
+                    String dataDevolucao = ""+dataFormatada + " " + horaFormatada +"";
+                    
+                     
+                
+                if(rd.updateDevolvido(idPedido, dataDevolucao, odometroDevolvido, status)){
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Devolvido com sucesso')");
+                    out.println("location.href='funcionarios/chave-funcionario/gerente_view.jsp'");
+                    out.println("</script>");
+                }else{
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Erro ao devolver')");
+                    out.println("location.href='funcionarios/chave-funcionario/gerente_view.jsp'");
+                    out.println("</script>");
+                }
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+        }
+        
+        
     }
 
     

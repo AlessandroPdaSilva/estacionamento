@@ -63,7 +63,7 @@
                         <td>${r.dataDevolucao}</td>
                         
                         <td>
-                            ${r.odometroColeta} / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}</c:if> 
+                            ${r.odometroColeta}Km / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km</c:if> 
                         </td>
                          
                          
@@ -86,8 +86,13 @@
                         </td>
                         <td>
                         <c:if test="${r.status==2}">
-                            <a onclick="confirmarFinalizacao(${a.id},'${a.funcionario.nome}','${a.veiculo.placa}' )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarColetado" class="btn btn-success mb-3">
+                            <a onclick="confirmarColetado(${r.pedido.id},'${r.pedido.funcionario.nome}','${r.pedido.veiculo.placa}' )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarColetado" class="btn btn-primary mb-3">
                                 Coletado
+                            </a>
+                        </c:if>
+                        <c:if test="${r.status==1}">
+                            <a onclick="confirmarDevolvido(${r.pedido.id},'${r.pedido.funcionario.nome}','${r.pedido.veiculo.placa}' )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarDevolvido" class="btn btn-success mb-3">
+                                Devolvido
                             </a>
                         </c:if>
                         </td>
@@ -113,7 +118,7 @@
               <div class="modal-content">
 
                   <!-- form-->
-                  <form action="" method="">
+                  <form action="/estacionamento/gerenciar_relatorio_cf.do" method="GET">
                       <div class="modal-header">
                           <h5 class="modal-title">Confirmação</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -122,12 +127,46 @@
                       <!-- body form -->
                       <div class="modal-body">
 
-                          <div id="body-aceito">  </div>
+                          <div id="body-coletado">  </div>
                           
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                          <div id="resp-aceito">  </div>
+                        <button type="submit" class="btn btn-danger">Confirmar</button>   
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+      
+       <!-- MODAL CONFIRMAR DEVOLVIDO-->
+      <div id="ModalConfirmarDevolvido" class="modal" tabindex="-1">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+
+                  <!-- form-->
+                  <form action="/estacionamento/gerenciar_relatorio_cf.do" method="GET">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Confirmação</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+
+                      <!-- body form -->
+                      <div class="modal-body">
+
+                          <div id="body-devolvido">  </div>
+                          <br>
+                          Antes de finalizar, coloque o valor do odometro:
+                          <div class="form-floating">
+                              <input name="odometro" type="number" class="form-control" id="floatingPassword" placeholder="Password" required="">
+                                <label for="floatingPassword">odômetro</label>
+                            </div>
+                          
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-success">Confirmar</button>   
                       </div>
                   </form>
 
@@ -138,9 +177,35 @@
 
 
 
-
         <!-- javaScript -->
         <script type="text/javascript">
+             function confirmarColetado(idPedido,nome,placa){
+                 
+                var body = document.getElementById('body-coletado');
+                
+                body.innerHTML = "\nTem certeza que "+nome+" ja <span style='color:crimson;font-weight:750'>COLETOU</span> a chave\n do veiculo de placa '"+placa+"' ?"
+                +" <br>(ID: "+idPedido+")" 
+                +"<input name='acao' value='chave_coletada' hidden>"
+                 +"<input name='id_pedido' value='"+idPedido+"' hidden>"
+                 
+                  
+                    
+             }
+             
+             function confirmarDevolvido(idPedido,nome,placa){
+                 
+                var body = document.getElementById('body-devolvido');
+                
+                body.innerHTML = "\nTem certeza que "+nome+" ja <span style='color:#198754;font-weight:750'>DEVOLVEU</span> a chave\n do veiculo de placa '"+placa+"' ?"
+                +" <br>(ID: "+idPedido+")<br>" 
+                +" " 
+                +"<input name='acao' value='chave_devolvido' hidden>"
+                 +"<input name='id_pedido' value='"+idPedido+"' hidden>"
+                 
+                  
+                    
+             }
+             
              
         </script>
 

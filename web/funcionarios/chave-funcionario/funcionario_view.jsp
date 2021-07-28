@@ -30,7 +30,7 @@
                     <th scope="col">Data de Devolução</th>
                     <th scope="col">Odometro</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Opcoes</th>
+                     
 
 
                 </tr>
@@ -40,22 +40,51 @@
             <tbody>
 
                 <!-- view -->
-                <jsp:useBean class="dao.PedidoDAO" id="pdao"/><!-- objeto -->
-                <c:forEach var="p" items="${pdao.getPedido(ulogado.funcionario.id)}">
+                <jsp:useBean class="dao.RelatorioChaveFuncionarioDAO" id="rfdao"/><!-- objeto -->
+                <c:forEach var="r" items="${rfdao.getAllUsuario(ulogado.funcionario.id)}">
 
 
                     <tr>
-                        <th scope="row">${p.id}</th>
-                        <td>${p.funcionario.nome}</td>
+                        <th scope="row">${r.pedido.id}</th>
+                        <td>
+                            ${r.pedido.funcionario.nome} &nbsp
+                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                  &nbsp Matricula: ${r.pedido.funcionario.matricula} <br>
+                                  &nbsp Placa: ${r.pedido.veiculo.placa} 
+                              </ul>
+                        </td>
                          
-                        <td>${p.dataPedido}</td>
-                        <td>${p.dataPedido}</td>
+                        <td>
+                            ${r.dataColeta}
+                        </td>
+                        <td>${r.dataDevolucao}</td>
                         
-                        <td>200000 / 200010</td>
+                        <td>
+                            ${r.odometroColeta}Km / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km</c:if> 
+                        </td>
                          
                          
-                        <td>2</td>
-                        <td>coletado</td>
+                        <td>
+                        <c:if test="${r.status==0}"> 
+                                <div style="color:#198754;font-weight:750"> Devolvido </div>  
+                            </c:if>
+
+                            <c:if test="${r.status==1}"> 
+                                <div style="color:crimson;font-weight:750"> Em uso </div>  
+                            </c:if>
+
+                            <c:if test="${r.status==2}"> 
+                                <!--
+                                <div style="color:black;background:#ffca2c;text-align: center;"> Em aberto </div>  
+                                -->
+                                <div style="color:#ffca2c;font-weight:750"> Nao coletado </div>  
+                            </c:if>
+                            
+                        </td>
+                         
                         
                     </tr>
 
