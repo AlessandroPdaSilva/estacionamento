@@ -95,7 +95,7 @@
                             </a>
                         </c:if>
                         <c:if test="${r.status==1}">
-                            <a onclick="confirmarDevolvido(${r.pedido.id},'${r.pedido.funcionario.nome}','${r.pedido.veiculo.placa}' )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarDevolvido" class="btn btn-success mb-3">
+                            <a onclick="confirmarDevolvido(${r.pedido.id},'${r.pedido.funcionario.nome}','${r.pedido.veiculo.placa}',${r.odometroColeta} )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarDevolvido" class="btn btn-success mb-3">
                                 Devolvido
                             </a>
                         </c:if>
@@ -196,7 +196,7 @@
                     
              }
              
-             function confirmarDevolvido(idPedido,nome,placa){
+             function confirmarDevolvido(idPedido,nome,placa,odometroColeta){
                  
                 var body = document.getElementById('body-devolvido');
                 
@@ -204,7 +204,8 @@
                 +" <br>(ID: "+idPedido+")<br>" 
                 +" " 
                 +"<input name='acao' value='chave_devolvido' hidden>"
-                 +"<input name='id_pedido' value='"+idPedido+"' hidden>"
+                +"<input name='id_pedido' value='"+idPedido+"' hidden>"
+                +"<input name='odometro_coleta' value='"+odometroColeta+"' hidden>"
                  
                   
                     

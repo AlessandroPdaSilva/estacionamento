@@ -73,38 +73,50 @@ public class GerenciarRelatorioCF extends HttpServlet {
             
             int idPedido = Integer.parseInt((String) request.getParameter("id_pedido"));
             int odometroDevolvido = Integer.parseInt((String) request.getParameter("odometro"));
+            int odometroColeta = Integer.parseInt((String) request.getParameter("odometro_coleta"));
             int status = 0;
             
             RelatorioChaveFuncionarioDAO rd = new RelatorioChaveFuncionarioDAO();
             
             try {
                 
-                //--data
-                    LocalDateTime agora = LocalDateTime.now();//data atual
-
-                
-                    DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("uuuu-MM-dd");// formatar a data
-                    String dataFormatada = formatterData.format(agora);
+                if(odometroDevolvido>odometroColeta){
+                        //--data
+                        LocalDateTime agora = LocalDateTime.now();//data atual
 
 
-                    DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");// formatar a hora
-                    String horaFormatada = formatterHora.format(agora);
+                        DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("uuuu-MM-dd");// formatar a data
+                        String dataFormatada = formatterData.format(agora);
 
-                    String dataDevolucao = ""+dataFormatada + " " + horaFormatada +"";
-                    
-                     
-                
-                if(rd.updateDevolvido(idPedido, dataDevolucao, odometroDevolvido, status)){
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Devolvido com sucesso')");
-                    out.println("location.href='funcionarios/chave-funcionario/gerente_view.jsp'");
-                    out.println("</script>");
+
+                        DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");// formatar a hora
+                        String horaFormatada = formatterHora.format(agora);
+
+                        String dataDevolucao = ""+dataFormatada + " " + horaFormatada +"";
+
+
+
+                        if(rd.updateDevolvido(idPedido, dataDevolucao, odometroDevolvido, status)){
+                            out.println("<script type='text/javascript'>");
+                            out.println("alert('Devolvido com sucesso')");
+                            out.println("location.href='funcionarios/chave-funcionario/gerente_view.jsp'");
+                            out.println("</script>");
+                        }else{
+                            out.println("<script type='text/javascript'>");
+                            out.println("alert('Erro ao devolver')");
+                            out.println("location.href='funcionarios/chave-funcionario/gerente_view.jsp'");
+                            out.println("</script>");
+                        }
+                        
                 }else{
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Erro ao devolver')");
+                    out.println("alert('Erro. O valor do odometro digitado e menor do que o valor de odometro original')");
                     out.println("location.href='funcionarios/chave-funcionario/gerente_view.jsp'");
                     out.println("</script>");
                 }
+                
+                
+                
                 
             } catch (Exception e) {
                 e.printStackTrace();
