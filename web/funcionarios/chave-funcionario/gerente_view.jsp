@@ -17,9 +17,13 @@
         <%@include file="../../page/cabeçalho_sub.jsp" %>
         <h1 class="my-3">Chave / Funcionario</h1>
 
+         <div class="p-2 bd-highlight">
+            <button class="btn btn-danger mb-3" onclick="gerarPDF()" >
+                <img src="../../imagens/file-earmark-pdf.svg"> &nbsp gerar PDF
+            </button>
+        </div>
          
-         
- 
+        <div id="dados">
         <!-- tabela -->
         <table data-order='[[ 0, "desc" ]]' class="table table-dark table-striped" id="listarPedido">
             <thead>
@@ -108,7 +112,7 @@
 
 
         </table>
-
+        </div>
 
  
                 
@@ -207,9 +211,77 @@
              }
              
              
+             function gerarPDF(){
+                        if (confirm("\nDeseja gerar um PDF ? " )) {
+                            
+                            var dados=document.getElementById('dados').innerHTML
+                            var janela = window.open( '  ' ,  '  ' ,'width=800,heigth=600')
+                            janela.document.write('<html><head>')
+                            janela.document.write('</head>')
+                            janela.document.write('<body>')
+                            
+                        
+                            
+                            janela.document.write('<h1 style="display: flex;flex-direction: row;justify-content: center;">Relatorio Chave / Funcionario</h1>');
+                            janela.document.write('<div style="display: flex;flex-direction: row;justify-content: center;">')
+                            janela.document.write('<table style="border-collapse: collapse;" cellspacing="0" cellpadding="6" border-spacing="0">')
+                            janela.document.write(''+'<thead>'
+                                    +'<th style="border: 1px solid black;" scope="col">ID</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Funcionario</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Matricula</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Placa</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Data de Coleta</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Data de Devolução</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Odometro</th>'
+                                    +'<th style="border: 1px solid black;" scope="col">Status</th>'
+                                    +'</thead>');
+                            janela.document.write('<tbody>')
+                            <c:forEach var="r" items="${rfdao.allDesc}">
+                            janela.document.write(''
+                                    
+                                    +''
+                                    +'<tr>'
+                                    +'<td style="border: 1px solid black;" scope="row">${r.pedido.id} </td>'
+                                    +'<td style="border: 1px solid black;">${r.pedido.funcionario.nome}</td>'
+                                    +'<td style="border: 1px solid black;">${r.pedido.funcionario.matricula}</td>'
+                                    +'<td style="border: 1px solid black;">${r.pedido.veiculo.placa} </td>'
+                                    +'<td style="border: 1px solid black;">${r.dataColeta}</td>'
+                                    +'<td style="border: 1px solid black;">${r.dataDevolucao}</td>'
+                                    +'<td style="border: 1px solid black;">${r.odometroColeta}Km / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km</c:if> </td>'
+                                    +'<td style="border: 1px solid black;">'
+                                    <c:if test="${r.status==0}"> 
+                                        +' Devolvido '
+                                    </c:if>
+
+                                    <c:if test="${r.status==1}"> 
+                                        +' Em uso  ' 
+                                    </c:if>
+
+                                    <c:if test="${r.status==2}"> 
+
+                                        +' Nao coletado  ' 
+                                    </c:if>
+                                    +'</td>'
+                                    +'</tr>'
+                                    +''
+                                    
+                                    +'')
+                                   
+                            </c:forEach>
+                                
+                                janela.document.write('</tbody>')
+                                janela.document.write('</table>')
+                                janela.document.write('</div>')
+                            janela.document.write('</body></html>')
+                            janela.document.close()
+                            janela.print()
+        
+                        }
+                    }
+                
+             
         </script>
-
-
+ 
 
 
         <script type="text/javascript" src="datatables/jquery.js"></script>

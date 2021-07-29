@@ -191,6 +191,126 @@ public class RelatorioChaveFuncionarioDAO {
 
     }
     
+    //READ DESC
+    public ArrayList<RelatorioChaveFuncionario> getAllDesc() throws SQLException {
+
+        // query --id,id_veiculo,id_funcionario,vaga_estacionamento,DATE_FORMAT( saida_do_veiculo, '%d/%m/%Y  %H:%i' ),DATE_FORMAT( entrada_do_veiculo, '%d/%m/%Y  %H:%i' )
+        //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
+        String sql = "SELECT * FROM relatorio_chave_funcionario rf "
+                + "INNER JOIN pedido p ON p.id = rf.id_pedido "
+                + "ORDER BY rf.id_pedido DESC";
+
+        // var -veiculo_dados
+        ArrayList<RelatorioChaveFuncionario> relatorio_dados = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            // array do resultado
+            rset = pstmt.executeQuery();
+
+            while (rset.next()) {// passando valores para var(veiculo_dados)
+
+                RelatorioChaveFuncionario r = new RelatorioChaveFuncionario();// objeto
+                
+                PedidoDAO pd = new PedidoDAO();
+                Pedido p = new Pedido();// objeto
+                
+                // PEDIDO
+                p.setId(rset.getInt("p.id"));
+                
+                // funcionario
+                Funcionario f = new Funcionario();
+                FuncionarioDAO fd = new FuncionarioDAO();
+                
+                f = fd.getFuncionario(rset.getInt("p.id_funcionario"));
+                
+                
+                p.setFuncionario(f);
+                
+                // veiculo
+                VeiculoDaFrota v = new VeiculoDaFrota();
+                VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
+                        
+                v = vd.getVeiculo(rset.getInt("p.id_veiculo"));
+                
+                p.setVeiculo(v);
+                
+                 
+                // percurso
+                String percurso = rset.getString("p.percurso");
+                String separaPer[] = percurso.split("/");
+                
+                p.setPercurso(""+separaPer[0]+" - "+separaPer[1]);
+                
+                 
+                
+                // RELATORIO
+                
+                r.setPedido(p);
+                
+                // status
+                r.setStatus(rset.getInt("rf.status"));
+                
+                
+                //datas
+                // --saida
+                String fsaida = rset.getString("rf.data_coleta");// query
+                String separa[] = fsaida.split(" ");
+                String data[] = separa[0].split("-");
+                String time[] = separa[1].split(":");
+                String dataColeta = "" + data[2] + "/" + data[1] + "/" + data[0] + " - " + time[0] + ":" + time[1];
+
+                // --entrada
+                String fentrada = rset.getString("rf.data_devolucao");// query
+                String separa2[] = fentrada.split(" ");
+                String data2[] = separa2[0].split("-");
+                String time2[] = separa2[1].split(":");
+                String dataDevolucao = "" + data2[2] + "/" + data2[1] + "/" + data2[0] + " - " + time2[0] + ":" + time2[1];
+
+                if(dataDevolucao.equals("00/01/0000 - 00:00")){
+                    dataDevolucao = "Nao devolvido";
+                }
+                
+                r.setDataColeta(dataColeta);
+                r.setDataDevolucao(dataDevolucao);
+                
+                
+                // odometro
+                r.setOdometroColeta(rset.getInt("rf.odometro_coleta"));
+                r.setOdometroDevolucao(rset.getInt("rf.odometro_devolucao"));
+
+                 
+                 
+                
+                relatorio_dados.add(r);// adiciona na variavel (array)
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (rset != null) {
+                rset.close();
+            }
+        }
+
+        return relatorio_dados;// retorna array 
+
+    }
+    
+    
     //READ USUARIO
     public ArrayList<RelatorioChaveFuncionario> getAllUsuario(int idFuncionario) throws SQLException {
 
