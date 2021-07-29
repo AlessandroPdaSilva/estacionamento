@@ -139,8 +139,8 @@ public class PedidoDAO {
                 String dataPedido = "" + data[2] + "/" + data[1] + "/" + data[0] + " - " + time[0] + ":" + time[1];
 
                 p.setDataPedido(dataPedido);
-                
                 p.setMensagem(rset.getString("p.mensagem"));
+                
                  
                 
                 relatorio_dados.add(p);// adiciona na variavel (array)
@@ -510,9 +510,7 @@ public class PedidoDAO {
          
         
         // query
-        String sql = "SELECT * FROM relatorio_chave_funcionario rf "
-                + "INNER JOIN pedido p ON p.id = rf.id_pedido "
-                + "WHERE ((p.id_funcionario = ? AND p.status = 2) OR (rf.status = 2 OR rf.status = 1))"; 
+        String sql = "SELECT * FROM pedido WHERE (id_funcionario = ? AND status = 2)";
                  
                 
 
@@ -536,10 +534,6 @@ public class PedidoDAO {
                 // funcionario
                 Funcionario f = new Funcionario();
                 f.setId(rset.getInt("id_funcionario"));
-                
-                // veiculo
-                VeiculoDaFrota v = new VeiculoDaFrota();
-                v.setId(rset.getInt("id_veiculo"));
                 
                 
                 msg = true;

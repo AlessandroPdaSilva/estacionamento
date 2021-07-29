@@ -1,4 +1,6 @@
 
+<%@page import="dao.RelatorioChaveFuncionarioDAO"%>
+<%@page import="dao.PedidoDAO"%>
 <%@page import="model.Usuario"%>
 <%@page import="model.VeiculoDaFrota"%>
 <%@page import="dao.VeiculoDaFrotaDAO"%>
@@ -17,32 +19,10 @@
         <%@include file="../../page/cabeçalho_sub.jsp" %>
         <h1 class="my-3">Meus Pedidos</h1>
 
-        <!-- botoes-->
-        <jsp:useBean class="dao.PedidoDAO" id="pdao"/><!-- objeto -->
-        <c:if test="${pdao.getPedidoEmUso(ulogado.funcionario.id)==false}">
-            <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalCriarPedido">
-                Criar Novo Pedido
-            </button>
-        </c:if>
-        
-        <c:if test="${pdao.getPedidoEmUso(ulogado.funcionario.id)}">
-            <button disabled="" type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalCriarPedido">
-                Criar Novo Pedido
-            </button>
-        </c:if>
+          
          
-
-        <c:if test="${pdao.getPedidoEmUso(ulogado.funcionario.id)==false}">
-            <button disabled="" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#ModalDeletarPedido" >
-                Deletar Pedido
-            </button>
-        </c:if>
-        
-        <c:if test="${pdao.getPedidoEmUso(ulogado.funcionario.id)}">
-            <button class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#ModalDeletarPedido" >
-                Deletar Pedido
-            </button>
-        </c:if>
+         <!-- botoes -->
+         <%@include file="permissao_botoes.jsp" %>
  
         
         
@@ -66,7 +46,8 @@
             <tbody>
 
                 <!-- view -->
-                
+                <jsp:useBean class="dao.PedidoDAO" id="pdao"/><!-- objeto -->
+                <jsp:useBean class="dao.RelatorioChaveFuncionarioDAO" id="rcdao"/><!-- objeto -->
                 <c:forEach var="p" items="${pdao.getPedido(ulogado.funcionario.id)}">
 
 
@@ -140,7 +121,7 @@
 
                           <br>
                           
-                          <jsp:useBean class="dao.RelatorioChaveFuncionarioDAO" id="rcdao"/><!-- objeto -->
+                          
                           <select id="placa" class="form-select " aria-label="Default select example">
                               <option selected disabled=""> placa</option>
                               

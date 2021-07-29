@@ -264,7 +264,7 @@
                 }else{
                 resp.innerHTML = "<div class='mb-3'>"
                                 +"<label for='exampleFormControlTextarea1' class='form-label'>Pedido Nº "+id+"</label>"
-                                +"<textarea class='form-control' id='exampleFormControlTextarea1' rows='5' disabled readonly>"+texto+"</textarea>"
+                                +"<textarea class='form-control' id='exampleFormControlTextarea1' rows='5' disabled readonly >"+texto+"</textarea>"
                                 +"</div>";
                         
                 }        

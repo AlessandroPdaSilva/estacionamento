@@ -369,6 +369,59 @@ public class RelatorioChaveFuncionarioDAO {
         
     }
     
+    // funcionario em uso
+    public Boolean getRelatorioChaveEmUso(int idFuncionario) throws SQLException{
+         
+        
+        // query
+        String sql = "SELECT * FROM relatorio_chave_funcionario rf "
+                + "INNER JOIN pedido p ON p.id = rf.id_pedido "
+                + "WHERE (p.id_funcionario = ? AND (rf.status = 2 OR rf.status = 1))";
+                 
+                
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        ResultSet rset;
+        Boolean msg = false;
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setInt(1, idFuncionario);// bind 1
+
+            // execução (boolean)
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                
+                // funcionario
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("id_funcionario"));
+                
+                
+                msg = true;
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+            msg = false;
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        return msg;
+        
+    }
     
     
     //UPDATE DEVOLDIDO

@@ -131,24 +131,40 @@ public class GerenciarPedido extends HttpServlet {
 
             try {
                 PedidoDAO pd = new PedidoDAO();
+                
+                 
+                 
+                        
+                if(mensagem.indexOf("\n")>-1){// se pressionar enter
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Erro. Nao quebre linha no campo de mensagem')");
+                    out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
+                    out.println("</script>");
 
-                if (pd.updateStatus(id, status)) {
+                }else{
                     
-                    if(mensagem != ""){
-                        pd.updateMensagem(id, mensagem);
-                    }
+                        if (pd.updateStatus(id, status)) {
+
+                            if(mensagem != ""){//se nao estiver vazio
+                                pd.updateMensagem(id, mensagem);
+                            }
+
+
+
+                            out.println("<script type='text/javascript'>");
+                            out.println("alert('Recusado com sucesso')");
+                            out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
+                            out.println("</script>");
+                        } else {
+                            out.println("<script type='text/javascript'>");
+                            out.println("alert('Erro ao recusar')");
+                            out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
+                            out.println("</script>");
+                        }
                     
-                    
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Recusado com sucesso')");
-                    out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
-                    out.println("</script>");
-                } else {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Erro ao recusar')");
-                    out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
-                    out.println("</script>");
                 }
+
+                
 
             } catch (Exception e) {
                 e.printStackTrace();
