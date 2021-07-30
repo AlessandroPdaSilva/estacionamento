@@ -9,7 +9,7 @@
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
             <li><a class="dropdown-item" href="/estacionamento/funcionarios/index.jsp">Lista de Funcionarios</a></li>
             <li><a class="dropdown-item" href="/estacionamento/funcionarios/pedido/gerente_view.jsp">Pedidos</a></li>
-            <li><a class="dropdown-item" href="/estacionamento/funcionarios/chave-funcionario/gerente_view.jsp">Chaves / Funcionarios</a></li>
+            <li><a class="dropdown-item" href="/estacionamento/funcionarios/chave-funcionario/gerente_view.jsp">Chaves Concedidas</a></li>
 
           </ul>
     </li>
@@ -28,7 +28,7 @@
           <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
             <li><a class="dropdown-item" href="/estacionamento/funcionarios/index.jsp">Lista de Funcionarios</a></li>
             <li><a class="dropdown-item" href="/estacionamento/funcionarios/pedido/gerente_view.jsp">Pedidos</a></li>
-            <li><a class="dropdown-item" href="/estacionamento/funcionarios/chave-funcionario/gerente_view.jsp">Chaves / Funcionarios</a></li>
+            <li><a class="dropdown-item" href="/estacionamento/funcionarios/chave-funcionario/gerente_view.jsp">Chaves Concedidas</a></li>
 
           </ul>
     </li>
@@ -48,6 +48,6 @@
 <!-- Funcionario-->
 <c:if test="${ulogado.nivel==4}"> 
     <li><a href="/estacionamento/funcionarios/pedido/funcionario_view.jsp" class="navegacao nav-link px-4" > Pedido</a></li>
-    <li><a href="/estacionamento/funcionarios/chave-funcionario/funcionario_view.jsp" class="navegacao nav-link px-4" > Chave / Funcionario</a></li>
+    <li><a href="/estacionamento/funcionarios/chave-funcionario/funcionario_view.jsp" class="navegacao nav-link px-4" > Chaves Concedidas</a></li>
     
 </c:if>

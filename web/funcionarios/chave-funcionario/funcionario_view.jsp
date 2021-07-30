@@ -15,7 +15,7 @@
     
     
         <%@include file="../../page/cabeçalho_sub.jsp" %>
-        <h1 class="my-3">Chave / Funcionario</h1>
+        <h1 class="my-3">Chaves Concedidas</h1>
 
          
          

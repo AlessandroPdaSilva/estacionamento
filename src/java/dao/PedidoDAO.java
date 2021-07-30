@@ -16,8 +16,8 @@ public class PedidoDAO {
     //CREATE
     public Boolean save(Pedido p) {
         // query
-        String sql = "INSERT INTO pedido(id_veiculo,id_funcionario,data_pedido,percurso,mensagem,status)"
-                + " VALUES (?,?,?,?,' ',2)";
+        String sql = "INSERT INTO pedido(id_veiculo,id_funcionario,data_pedido,percurso,solicitacao,data_para_uso,mensagem,status)"
+                + " VALUES (?,?,?,?,?,?,' ',2)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -40,6 +40,8 @@ public class PedidoDAO {
             pstmt.setInt(2, f.getId());//bind 2
             pstmt.setString(3, p.getDataPedido());//bind 3
             pstmt.setString(4, p.getPercurso());//bind 4
+            pstmt.setString(5, p.getSolicitacao());//bind 5
+            pstmt.setString(6, p.getDataParaUso());//bind 6
             
            
              
@@ -141,7 +143,12 @@ public class PedidoDAO {
                 p.setDataPedido(dataPedido);
                 p.setMensagem(rset.getString("p.mensagem"));
                 
-                 
+                //solicitacao
+                p.setSolicitacao(rset.getString("p.solicitacao"));
+
+                // data para uso
+                p.setDataParaUso(rset.getString("p.data_para_uso")); 
+                
                 
                 relatorio_dados.add(p);// adiciona na variavel (array)
             }
@@ -384,6 +391,13 @@ public class PedidoDAO {
                 
                 p.setMensagem(rset.getString("p.mensagem"));
                 
+                //solicitacao
+                p.setSolicitacao(rset.getString("p.solicitacao"));
+
+                // data para uso
+                p.setDataParaUso(rset.getString("p.data_para_uso")); 
+                
+                
                 relatorio_dados.add(p);// adiciona na variavel (array)
             }
 
@@ -482,6 +496,11 @@ public class PedidoDAO {
                 
                 p.setMensagem(rset.getString("p.mensagem"));
                 
+                //solicitacao
+                p.setSolicitacao(rset.getString("p.solicitacao"));
+
+                // data para uso
+                p.setDataParaUso(rset.getString("p.data_para_uso")); 
                  
             }
 

@@ -1,4 +1,6 @@
 
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
 <%@page import="dao.RelatorioChaveFuncionarioDAO"%>
 <%@page import="dao.PedidoDAO"%>
 <%@page import="model.Usuario"%>
@@ -107,7 +109,7 @@
                   <!-- form-->
                   <form action="/estacionamento/gerenciar_pedido.do" method="POST">
                       <div class="modal-header">
-                          <h5 class="modal-title">Criar Novo Pedido</h5>
+                          <h5 class="modal-title">Criar Novo Pedido de Veiculo</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
 
@@ -121,26 +123,39 @@
 
                           <br>
                           
+                          <label style="font-weight: bold " for='exampleFormControlTextarea1' class='form-label'> Motivo da Solicitação</label>
+                          <textarea name="solicitacao" placeholder="Ex: Vou organizar o evento 'Celebração do rock na Torre de TV'" class='form-control' id='exampleFormControlTextarea1' rows='2' ></textarea>
                           
-                          <select id="placa" class="form-select " aria-label="Default select example">
-                              <option selected disabled=""> placa</option>
-                              
-                              <c:forEach var="v" items="${vdao.all}">
-                                  
-                                  
-                                  <c:if test="${rcdao.getCarroEmUso(v.placa)==false}">
-                                      <option value="${v.modelo}">${v.placa}</option>
-                                  </c:if>
-                                  
-                                  
-                                  
-                              </c:forEach>
-
-                          </select>
+                          <br>
+                          
+                          <%
+                          //--data
+                            LocalDateTime agora = LocalDateTime.now();//data atual
 
 
-                          <div id="resp2"></div>
+                            DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("uuuu-MM-dd");// formatar a data
+                            String dataFormatada = formatterData.format(agora);
 
+
+                            DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");// formatar a hora
+                            String horaFormatada = formatterHora.format(agora);
+
+                            String data = ""+dataFormatada + "T" + horaFormatada +"";
+
+                            
+                          %> 
+                          
+                          <div style="font-weight: bold "> Data para usar veiculo:</div>
+                          <input name="dataParaUso" value="<%= data%>" type="datetime-local" class="form-control">
+                          
+                            
+
+                          <div id="resp2">
+                                 
+                          </div>
+
+                          
+                          
                           <br>
                           <div style="font-weight: bold ">Percurso</div>
                           <div class="mb-3 row">
@@ -242,21 +257,7 @@
     <script type="text/javascript">
         
 
-    // veiculo
-    var select2 = document.querySelector('select#placa');
-    select2.addEventListener('change', function () {
-        var option = this.selectedOptions[0];
-        var texto = option.value;
-        var texto2 = option.text;
-        var resp = document.getElementById('resp2');
-
-        //resp.innerHTML = '<br><input class="form-control" id="disabledInput" type="text" placeholder="'+texto+'" disabled>'
-        resp.innerHTML = '<br><div class="alert alert-success" role="alert">'+texto+'</div>'+
-                '<input name="placa" type="text" value="'+texto2+'" hidden></input>'
-
-
-        console.log(texto);
-    });
+     
 
     
     function abrirMensagem(id,texto){

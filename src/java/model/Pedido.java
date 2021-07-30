@@ -11,8 +11,28 @@ public class Pedido {
     private String percurso;
     private int status;
     private String mensagem;
+    private String solicitacao;
+    private String dataParaUso;
     
     // gets e sets
+
+    public String getSolicitacao() {
+        return solicitacao;
+    }
+
+    public void setSolicitacao(String solicitacao) {
+        this.solicitacao = solicitacao;
+    }
+
+    public String getDataParaUso() {
+        return dataParaUso;
+    }
+
+    public void setDataParaUso(String dataParaUso) {
+        this.dataParaUso = dataParaUso;
+    }
+    
+    
 
     public String getMensagem() {
         return mensagem;

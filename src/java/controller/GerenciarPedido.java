@@ -52,6 +52,7 @@ public class GerenciarPedido extends HttpServlet {
             int status = Integer.parseInt((String) request.getParameter("status"));
             String placa = request.getParameter("placa");
             
+            
             PedidoDAO pd = new PedidoDAO();
             Pedido p = new Pedido();
 
@@ -187,11 +188,26 @@ public class GerenciarPedido extends HttpServlet {
             String percurso = request.getParameter("percurso");
             String placa = request.getParameter("placa");
             int id_funcionario = Integer.parseInt((String) request.getParameter("id_funcionario"));
-
+            String solicitacao = request.getParameter("solicitacao");
+            String dataParaUso = request.getParameter("dataParaUso");
+            
+            String aux[] = dataParaUso.split("T");
+            
+            dataParaUso = aux[0]+" "+aux[1];
+            
             PedidoDAO pd = new PedidoDAO();
             
             try {
-                
+                    
+                    if(solicitacao.indexOf("\n")>-1){// se pressionar enter
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Erro. Nao quebre linha no campo de solicitacao')");
+                    out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
+                    out.println("</script>");
+
+                    }else{
+                    
+                    }
                     
                     //-veiculo
                     VeiculoDaFrota vf = new VeiculoDaFrota();
@@ -224,6 +240,14 @@ public class GerenciarPedido extends HttpServlet {
                     p.setPercurso("setur/" + percurso);
                     p.setDataPedido(dataPedido);
                     p.setVeiculo(vf);
+                    
+                    //solicitacao
+                    p.setSolicitacao(solicitacao);
+                    
+                    // data para uso
+                    p.setDataParaUso(dataParaUso);
+                    
+                    
 
                     if (pd.save(p)) {
                         out.println("<script type='text/javascript'>");
