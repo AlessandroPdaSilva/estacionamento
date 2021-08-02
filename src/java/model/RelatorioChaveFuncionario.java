@@ -4,6 +4,7 @@ package model;
 public class RelatorioChaveFuncionario {
     
     private Pedido pedido;
+    private VeiculoDaFrota veiculo;
     private String dataColeta;
     private int odometroColeta;
     private String dataDevolucao;
@@ -11,6 +12,14 @@ public class RelatorioChaveFuncionario {
     private int status;
     
     // get e set 
+
+    public VeiculoDaFrota getVeiculo() {
+        return veiculo;
+    }
+
+    public void setVeiculo(VeiculoDaFrota veiculo) {
+        this.veiculo = veiculo;
+    }
 
     public Pedido getPedido() {
         return pedido;

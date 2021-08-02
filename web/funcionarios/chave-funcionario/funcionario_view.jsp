@@ -26,9 +26,10 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Funcionario</th>
+                    <th scope="col">Veiculo</th>
                     <th scope="col">Data de Coleta</th>
                     <th scope="col">Data de Devolução</th>
-                    <th scope="col">Odometro</th>
+                    
                     <th scope="col">Status</th>
                      
 
@@ -53,18 +54,26 @@
                               </button>
                               <ul class="dropdown-menu">
                                   &nbsp Matricula: ${r.pedido.funcionario.matricula} <br>
-                                  &nbsp Placa: ${r.pedido.veiculo.placa} 
+                                   
                               </ul>
                         </td>
-                         
+                        <td>
+                            ${r.veiculo.id}&nbsp
+                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                  &nbsp Odometro: ${r.odometroColeta}Km / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km</c:if> 
+                                  <br>
+                              </ul>
+                        </td>
                         <td>
                             ${r.dataColeta}
                         </td>
-                        <td>${r.dataDevolucao}</td>
-                        
                         <td>
-                            ${r.odometroColeta}Km / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km</c:if> 
+                            ${r.dataDevolucao}
                         </td>
+                         
                          
                          
                         <td>

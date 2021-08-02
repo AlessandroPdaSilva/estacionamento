@@ -44,6 +44,7 @@ public class GerenciarPedido extends HttpServlet {
 
         PrintWriter out = response.getWriter();
         String acao = request.getParameter("acao");
+         
 
         // aceito
         if (acao.equals("pedido_aceito")) {
@@ -51,7 +52,6 @@ public class GerenciarPedido extends HttpServlet {
             int id = Integer.parseInt((String) request.getParameter("id"));
             int status = Integer.parseInt((String) request.getParameter("status"));
             String placa = request.getParameter("placa");
-            
             
             PedidoDAO pd = new PedidoDAO();
             Pedido p = new Pedido();
@@ -62,6 +62,7 @@ public class GerenciarPedido extends HttpServlet {
                 p = pd.getPedidoId(id);
 
                 if (pd.updateStatus(id, status)) {
+                   
                     // jogando para relatorio
                     RelatorioChaveFuncionarioDAO rd = new RelatorioChaveFuncionarioDAO();
                     RelatorioChaveFuncionario r = new RelatorioChaveFuncionario();
@@ -86,27 +87,20 @@ public class GerenciarPedido extends HttpServlet {
                     
                     r.setDataColeta(dataColeta);
                     
-                    //--odometro
-                     
+                    //--odometro e Veiculo
+                    
+                    VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
                     VeiculoDaFrota v = new VeiculoDaFrota();
-                    v = p.getVeiculo();
+                    v = vd.getVeiculo(placa);
                     
                     
                     r.setOdometroColeta(v.getOdometro());
+                    r.setVeiculo(v);
                     
-                    
-                    rd.save(r);
+                     
                     // salvar
-                    
-                    /*
-                    if(rd.save(r)){
-                        out.println("<script type='text/javascript'>");
-                        out.println("alert('Deu certo')");
-                        out.println(" ");
-                        out.println("</script>");
-                    }
-                    */
-                    
+                    rd.save(r);
+                     
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Aceito com sucesso')");
                     out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
@@ -132,40 +126,33 @@ public class GerenciarPedido extends HttpServlet {
 
             try {
                 PedidoDAO pd = new PedidoDAO();
-                
-                 
-                 
-                        
-                if(mensagem.indexOf("\n")>-1){// se pressionar enter
+
+                if (mensagem.indexOf("\n") > -1) {// se pressionar enter
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Erro. Nao quebre linha no campo de mensagem')");
                     out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
                     out.println("</script>");
 
-                }else{
-                    
-                        if (pd.updateStatus(id, status)) {
+                } else {
 
-                            if(mensagem != ""){//se nao estiver vazio
-                                pd.updateMensagem(id, mensagem);
-                            }
+                    if (pd.updateStatus(id, status)) {
 
-
-
-                            out.println("<script type='text/javascript'>");
-                            out.println("alert('Recusado com sucesso')");
-                            out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
-                            out.println("</script>");
-                        } else {
-                            out.println("<script type='text/javascript'>");
-                            out.println("alert('Erro ao recusar')");
-                            out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
-                            out.println("</script>");
+                        if (mensagem != "") {//se nao estiver vazio
+                            pd.updateMensagem(id, mensagem);
                         }
-                    
-                }
 
-                
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Recusado com sucesso')");
+                        out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
+                        out.println("</script>");
+                    } else {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Erro ao recusar')");
+                        out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
+                        out.println("</script>");
+                    }
+
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -186,35 +173,25 @@ public class GerenciarPedido extends HttpServlet {
         if (acao.equals("criar_pedido")) {
             //var
             String percurso = request.getParameter("percurso");
-            String placa = request.getParameter("placa");
+
             int id_funcionario = Integer.parseInt((String) request.getParameter("id_funcionario"));
             String solicitacao = request.getParameter("solicitacao");
-            String dataParaUso = request.getParameter("dataParaUso");
-            
+            String dataParaUso = request.getParameter("data_para_uso");
+
             String aux[] = dataParaUso.split("T");
-            
-            dataParaUso = aux[0]+" "+aux[1];
-            
+            dataParaUso = aux[0] + " " + aux[1];
+
             PedidoDAO pd = new PedidoDAO();
-            
-            try {
-                    
-                    if(solicitacao.indexOf("\n")>-1){// se pressionar enter
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Erro. Nao quebre linha no campo de solicitacao')");
-                    out.println("location.href='funcionarios/pedido/gerente_view.jsp'");
-                    out.println("</script>");
 
-                    }else{
-                    
-                    }
-                    
-                    //-veiculo
-                    VeiculoDaFrota vf = new VeiculoDaFrota();
-                    VeiculoDaFrotaDAO vfd = new VeiculoDaFrotaDAO();
+            if (solicitacao.indexOf("\n") > -1 || percurso.indexOf("\n") > -1) {// se pressionar enter
+                out.println("<script type='text/javascript'>");
+                out.println("alert(' Erro. Nao quebre linha no campo de solicitacao')");
+                out.println("location.href='funcionarios/pedido/funcionario_view.jsp'");
+                out.println("</script>");
 
-                    vf = vfd.getVeiculo(placa);
-                    int id_veiculo = vf.getId();
+            } else {
+
+                try {
 
                     //-funcionario
                     Funcionario f = new Funcionario();
@@ -239,15 +216,12 @@ public class GerenciarPedido extends HttpServlet {
                     p.setFuncionario(f);
                     p.setPercurso("setur/" + percurso);
                     p.setDataPedido(dataPedido);
-                    p.setVeiculo(vf);
-                    
+
                     //solicitacao
                     p.setSolicitacao(solicitacao);
-                    
+
                     // data para uso
                     p.setDataParaUso(dataParaUso);
-                    
-                    
 
                     if (pd.save(p)) {
                         out.println("<script type='text/javascript'>");
@@ -261,10 +235,10 @@ public class GerenciarPedido extends HttpServlet {
                         out.println("</script>");
                     }
 
-                
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            } catch (Exception e) {
-                e.printStackTrace();
             }
 
         }
@@ -272,33 +246,27 @@ public class GerenciarPedido extends HttpServlet {
         // deletar_pedido
         if (acao.equals("deletar_pedido")) {
             int id_funcionario = Integer.parseInt((String) request.getParameter("id_funcionario"));
-            
-            
+
             try {
-                
+
                 PedidoDAO pd = new PedidoDAO();
-                
-                if(pd.delete(id_funcionario)){
+
+                if (pd.delete(id_funcionario)) {
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Pedido deletado com sucesso')");
                     out.println("location.href='funcionarios/pedido/funcionario_view.jsp'");
                     out.println("</script>");
-                }else{
+                } else {
                     out.println("<script type='text/javascript'>");
                     out.println("alert('Erro ao deletar pedido')");
                     out.println("location.href='funcionarios/pedido/funcionario_view.jsp'");
                     out.println("</script>");
                 }
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            
-            
-            
-            
-            
-            
+
         }
     }
 

@@ -24,15 +24,17 @@
         </div>
          
         <div id="dados">
+            
         <!-- tabela -->
-        <table data-order='[[ 0, "desc" ]]' class="table table-dark table-striped" id="listarPedido">
+        <table data-order='[[ 0, "desc" ]]' class="table table-dark table-striped" id="listarChave">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Funcionario</th>
+                    <th scope="col">Veiculo</th>
                     <th scope="col">Data de Coleta</th>
                     <th scope="col">Data de Devolução</th>
-                    <th scope="col">Odometro</th>
+                    
                     <th scope="col">Status</th>
                     <th scope="col">Opcoes</th>
 
@@ -42,76 +44,14 @@
 
 
             <tbody>
-
-                <!-- view -->
                 <jsp:useBean class="dao.RelatorioChaveFuncionarioDAO" id="rfdao"/><!-- objeto -->
-                <c:forEach var="r" items="${rfdao.all}">
-
-
-                    <tr>
-                        <th scope="row">${r.pedido.id}</th>
-                        <td>
-                            ${r.pedido.funcionario.nome} &nbsp
-                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                  &nbsp Matricula: ${r.pedido.funcionario.matricula} <br>
-                                  &nbsp Placa: ${r.pedido.veiculo.placa} 
-                              </ul>
-                        </td>
-                         
-                        <td>
-                            ${r.dataColeta}
-                        </td>
-                        <td>${r.dataDevolucao}</td>
-                        
-                        <td>
-                            ${r.odometroColeta}Km / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km</c:if> 
-                        </td>
-                         
-                         
-                        <td>
-                        <c:if test="${r.status==0}"> 
-                                <div style="color:#198754;font-weight:750"> Devolvido </div>  
-                            </c:if>
-
-                            <c:if test="${r.status==1}"> 
-                                <div style="color:crimson;font-weight:750"> Em uso </div>  
-                            </c:if>
-
-                            <c:if test="${r.status==2}"> 
-                                <!--
-                                <div style="color:black;background:#ffca2c;text-align: center;"> Em aberto </div>  
-                                -->
-                                <div style="color:#ffca2c;font-weight:750"> Nao coletado </div>  
-                            </c:if>
-                            
-                        </td>
-                        <td>
-                        <c:if test="${r.status==2}">
-                            <a onclick="confirmarColetado(${r.pedido.id},'${r.pedido.funcionario.nome}','${r.pedido.veiculo.placa}' )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarColetado" class="btn btn-primary mb-3">
-                                Coletado
-                            </a>
-                        </c:if>
-                        <c:if test="${r.status==1}">
-                            <a onclick="confirmarDevolvido(${r.pedido.id},'${r.pedido.funcionario.nome}','${r.pedido.veiculo.placa}',${r.odometroColeta} )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarDevolvido" class="btn btn-success mb-3">
-                                Devolvido
-                            </a>
-                        </c:if>
-                        </td>
-                        
-                    </tr>
-
-
-
+                <c:forEach var="r" items="${rfdao.allDesc}">
+                    
                 </c:forEach>
-
-
             </tbody>
 
-
         </table>
+
         </div>
 
  
@@ -242,13 +182,13 @@
                                     
                                     +''
                                     +'<tr>'
-                                    +'<td style="border: 1px solid black;" scope="row">${r.pedido.id} </td>'
-                                    +'<td style="border: 1px solid black;">${r.pedido.funcionario.nome}</td>'
-                                    +'<td style="border: 1px solid black;">${r.pedido.funcionario.matricula}</td>'
-                                    +'<td style="border: 1px solid black;">${r.pedido.veiculo.placa} </td>'
-                                    +'<td style="border: 1px solid black;">${r.dataColeta}</td>'
-                                    +'<td style="border: 1px solid black;">${r.dataDevolucao}</td>'
-                                    +'<td style="border: 1px solid black;">${r.odometroColeta}Km / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km</c:if> </td>'
+                                    +'<td style="border: 1px solid black;" scope="row">  </td>'
+                                    +'<td style="border: 1px solid black;"> </td>'
+                                    +'<td style="border: 1px solid black;"> </td>'
+                                    +'<td style="border: 1px solid black;">  </td>'
+                                    +'<td style="border: 1px solid black;"> </td>'
+                                    +'<td style="border: 1px solid black;"> </td>'
+                                    +'<td style="border: 1px solid black;"> Km /   </td>'
                                     +'<td style="border: 1px solid black;">'
                                     <c:if test="${r.status==0}"> 
                                         +' Devolvido '
@@ -289,7 +229,7 @@
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                $("#listarPedido").dataTable({
+                $("#listarChave").dataTable({
 
                     "bJQueryUI": true,
                     "oLanguage": {

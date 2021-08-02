@@ -18,7 +18,7 @@ public class RelatorioChaveFuncionarioDAO {
     public Boolean save(RelatorioChaveFuncionario r) {
         // query
         String sql = "INSERT INTO relatorio_chave_funcionario"
-                + "(id_pedido,data_coleta,odometro_coleta,data_devolucao,odometro_devolucao,status)"
+                + "(id_pedido,id_veiculo,data_coleta,odometro_coleta,data_devolucao,odometro_devolucao,status)"
                 + " VALUES (?,?,?,'0000-01-00 00:00:00',-1,2)";
 
         Connection conn = null;
@@ -34,6 +34,7 @@ public class RelatorioChaveFuncionarioDAO {
             
             
             pstmt.setInt(1, r.getPedido().getId());//bind 1
+            pstmt.setInt(2, r.getVeiculo().getId());//bind 2
             pstmt.setString(2, r.getDataColeta());//bind 2
             pstmt.setInt(3, r.getOdometroColeta());//bind 3
              
@@ -113,14 +114,7 @@ public class RelatorioChaveFuncionarioDAO {
                 
                 
                 p.setFuncionario(f);
-                
-                // veiculo
-                VeiculoDaFrota v = new VeiculoDaFrota();
-                VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
-                        
-                v = vd.getVeiculo(rset.getInt("p.id_veiculo"));
-                
-                p.setVeiculo(v);
+                 
                 
                  
                 // percurso
@@ -167,7 +161,12 @@ public class RelatorioChaveFuncionarioDAO {
                 r.setOdometroDevolucao(rset.getInt("rf.odometro_devolucao"));
 
                  
-                 
+                 // veiculo
+                VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
+                VeiculoDaFrota v = new VeiculoDaFrota();
+                v = vd.getVeiculo(rset.getInt("rf.id_veiculo"));
+                
+                r.setVeiculo(v);
                 
                 relatorio_dados.add(r);// adiciona na variavel (array)
             }
@@ -232,14 +231,7 @@ public class RelatorioChaveFuncionarioDAO {
                 
                 
                 p.setFuncionario(f);
-                
-                // veiculo
-                VeiculoDaFrota v = new VeiculoDaFrota();
-                VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
-                        
-                v = vd.getVeiculo(rset.getInt("p.id_veiculo"));
-                
-                p.setVeiculo(v);
+                 
                 
                  
                 // percurso
@@ -286,7 +278,12 @@ public class RelatorioChaveFuncionarioDAO {
                 r.setOdometroDevolucao(rset.getInt("rf.odometro_devolucao"));
 
                  
-                 
+                 // veiculo
+                VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
+                VeiculoDaFrota v = new VeiculoDaFrota();
+                v = vd.getVeiculo(rset.getInt("rf.id_veiculo"));
+                
+                r.setVeiculo(v);
                 
                 relatorio_dados.add(r);// adiciona na variavel (array)
             }
@@ -355,14 +352,7 @@ public class RelatorioChaveFuncionarioDAO {
                 
                 
                 p.setFuncionario(f);
-                
-                // veiculo
-                VeiculoDaFrota v = new VeiculoDaFrota();
-                VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
-                        
-                v = vd.getVeiculo(rset.getInt("p.id_veiculo"));
-                
-                p.setVeiculo(v);
+                 
                 
                  
                 // percurso
@@ -409,7 +399,12 @@ public class RelatorioChaveFuncionarioDAO {
                 r.setOdometroDevolucao(rset.getInt("rf.odometro_devolucao"));
 
                  
-                 
+                 // veiculo
+                VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
+                VeiculoDaFrota v = new VeiculoDaFrota();
+                v = vd.getVeiculo(rset.getInt("rf.id_veiculo"));
+                
+                r.setVeiculo(v);
                 
                 relatorio_dados.add(r);// adiciona na variavel (array)
             }

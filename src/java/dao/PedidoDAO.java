@@ -16,8 +16,8 @@ public class PedidoDAO {
     //CREATE
     public Boolean save(Pedido p) {
         // query
-        String sql = "INSERT INTO pedido(id_veiculo,id_funcionario,data_pedido,percurso,solicitacao,data_para_uso,mensagem,status)"
-                + " VALUES (?,?,?,?,?,?,' ',2)";
+        String sql = "INSERT INTO pedido(id_funcionario,data_pedido,percurso,solicitacao,data_para_uso,mensagem,status)"
+                + " VALUES (?,?,?,?,?,' ',2)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -32,16 +32,14 @@ public class PedidoDAO {
             
             Funcionario f = new Funcionario();
             f = p.getFuncionario();
+             
             
-            VeiculoDaFrota v = new VeiculoDaFrota();
-            v = p.getVeiculo();
             
-            pstmt.setInt(1, v.getId());//bind 1
-            pstmt.setInt(2, f.getId());//bind 2
-            pstmt.setString(3, p.getDataPedido());//bind 3
-            pstmt.setString(4, p.getPercurso());//bind 4
-            pstmt.setString(5, p.getSolicitacao());//bind 5
-            pstmt.setString(6, p.getDataParaUso());//bind 6
+            pstmt.setInt(1, f.getId());//bind 2
+            pstmt.setString(2, p.getDataPedido());//bind 3
+            pstmt.setString(3, p.getPercurso());//bind 4
+            pstmt.setString(4, p.getSolicitacao());//bind 5
+            pstmt.setString(5, p.getDataParaUso());//bind 6
             
            
              
@@ -80,15 +78,13 @@ public class PedidoDAO {
     
     //READ
     public ArrayList<Pedido> getAll() throws SQLException {
-
-        // query --id,id_veiculo,id_funcionario,vaga_estacionamento,DATE_FORMAT( saida_do_veiculo, '%d/%m/%Y  %H:%i' ),DATE_FORMAT( entrada_do_veiculo, '%d/%m/%Y  %H:%i' )
-        //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
+        
         String sql = "SELECT * FROM pedido p "
-       + "INNER JOIN funcionario f ON p.id_funcionario = f.id "
-       + "INNER JOIN veiculo_da_frota v ON p.id_veiculo = v.id ";
+       + "INNER JOIN funcionario f ON p.id_funcionario = f.id ";
 
+        
         // var -veiculo_dados
-        ArrayList<Pedido> relatorio_dados = new ArrayList<>();
+        ArrayList<Pedido> relatorio_dados = new ArrayList<Pedido>();
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rset = null;
@@ -116,18 +112,11 @@ public class PedidoDAO {
                 
                 p.setFuncionario(f);
                 
-                // veiculo
-                VeiculoDaFrota v = new VeiculoDaFrota();
-                v.setPlaca(rset.getString("v.placa"));
-                
-                p.setVeiculo(v);
+                 
                 
                  
                 // percurso
-                String percurso = rset.getString("p.percurso");
-                String separaPer[] = percurso.split("/");
-                
-                p.setPercurso(""+separaPer[0]+" - "+separaPer[1]);
+                p.setPercurso(rset.getString("p.percurso"));
                 
                 
                 p.setStatus(rset.getInt("p.status"));
@@ -328,7 +317,6 @@ public class PedidoDAO {
         //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
         String sql = "SELECT * FROM pedido p "
        + "INNER JOIN funcionario f ON p.id_funcionario = f.id "
-       + "INNER JOIN veiculo_da_frota v ON p.id_veiculo = v.id "
        + "WHERE p.id_funcionario = ?";
 
         // var -veiculo_dados
@@ -360,21 +348,13 @@ public class PedidoDAO {
                 f.setNome(rset.getString("f.nome"));
                 
                 p.setFuncionario(f);
-                
-                // veiculo
-                VeiculoDaFrota v = new VeiculoDaFrota();
-                v.setPlaca(rset.getString("v.placa"));
-                
-                p.setVeiculo(v);
+                 
                 
                 p.setDataPedido(rset.getString("p.data_pedido"));
                 
                 
                 // percurso
-                String percurso = rset.getString("p.percurso");
-                String separaPer[] = percurso.split("/");
-                
-                p.setPercurso(""+separaPer[0]+" - "+separaPer[1]);
+                p.setPercurso(rset.getString("p.percurso"));
                 
                 
                 p.setStatus(rset.getInt("p.status"));
@@ -427,7 +407,7 @@ public class PedidoDAO {
         //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
         String sql = "SELECT * FROM pedido p "
        + "INNER JOIN funcionario f ON p.id_funcionario = f.id "
-       + "INNER JOIN veiculo_da_frota v ON p.id_veiculo = v.id "
+        
        + "WHERE p.id = ?";
 
         // var -veiculo_dados
@@ -464,22 +444,13 @@ public class PedidoDAO {
                 
                 p.setFuncionario(f);
                 
-                // veiculo
-                VeiculoDaFrota v = new VeiculoDaFrota();
-                v.setId(rset.getInt("v.id"));
-                v.setPlaca(rset.getString("v.placa"));
-                v.setOdometro(rset.getInt("v.odometro"));
-                
-                p.setVeiculo(v);
+                 
                 
                 p.setDataPedido(rset.getString("p.data_pedido"));
                 
                 
                 // percurso
-                String percurso = rset.getString("p.percurso");
-                String separaPer[] = percurso.split("/");
-                
-                p.setPercurso(""+separaPer[0]+" - "+separaPer[1]);
+                p.setPercurso(rset.getString("p.percurso"));
                 
                 
                 p.setStatus(rset.getInt("p.status"));
@@ -640,6 +611,15 @@ public class PedidoDAO {
 
     }
      
-    
-    
+        
+    // teste 
+    public static void main(String [] args){
+        
+        PedidoDAO pd = new PedidoDAO();
+        Pedido p = new Pedido();
+        Funcionario f = new Funcionario();
+        
+        
+    }
+     
 }

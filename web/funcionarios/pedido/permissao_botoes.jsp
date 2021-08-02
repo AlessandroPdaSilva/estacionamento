@@ -30,7 +30,7 @@
                 Criar Novo Pedido
             </button>
             
-            <button class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#ModalDeletarPedido" >
+            <button disabled="" class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#ModalDeletarPedido" >
                 Deletar Pedido
             </button>
         

@@ -6,7 +6,7 @@ public class Pedido {
     // var
     private int id;
     private Funcionario funcionario;
-    private VeiculoDaFrota veiculo;
+     
     private String dataPedido;
     private String percurso;
     private int status;
@@ -59,14 +59,7 @@ public class Pedido {
     public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
-
-    public VeiculoDaFrota getVeiculo() {
-        return veiculo;
-    }
-
-    public void setVeiculo(VeiculoDaFrota veiculo) {
-        this.veiculo = veiculo;
-    }
+ 
 
     public String getDataPedido() {
         return dataPedido;

@@ -34,9 +34,10 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Funcionario</th>
-                    <th scope="col">Veiculo </th>
+                    
                     <th scope="col">Data do Pedido</th>
                     <th scope="col">Percurso</th>
+                    <th scope="col">Solicitação</th>
                     <th scope="col">Status</th>
                     <th scope="col">Opcoes</th>
 
@@ -56,10 +57,27 @@
                     <tr>
                         <th scope="row">${p.id}</th>
                         <td>${p.funcionario.nome}</td>
-                        <td>${p.veiculo.placa}</td>
+                        
                         <td>${p.dataPedido}</td>
                         <td>${p.percurso}</td>
-                        
+                        <td style="display:flex; justify-content: center;">
+                            <c:if test="${p.status==0}">
+                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
+                                    <img src="../../imagens/clipboard-check.svg">
+                                </button>
+                            </c:if>
+                            <c:if test="${p.status==1}">
+                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
+                                    <img src="../../imagens/clipboard-x.svg">
+                                </button>
+                            </c:if>
+                            <c:if test="${p.status==2}">
+                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
+                                    <img src="../../imagens/clipboard-x.svg">
+                                </button>
+                            </c:if>
+                            
+                        </td>
                         
                         <td>
                             <c:if test="${p.status==0}"> 
@@ -140,13 +158,13 @@
                             DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm");// formatar a hora
                             String horaFormatada = formatterHora.format(agora);
 
-                            String data = ""+dataFormatada + "T" + horaFormatada +"";
+                            String data = ""+dataFormatada + "T" + horaFormatada +":00";
 
                             
                           %> 
                           
                           <div style="font-weight: bold "> Data para usar veiculo:</div>
-                          <input name="dataParaUso" value="<%= data%>" type="datetime-local" class="form-control">
+                          <input name="data_para_uso" value="<%=data%>" type="datetime-local" class="form-control">
                           
                             
 
@@ -247,7 +265,33 @@
           </div>
       </div>
       
+        <!-- MODAL SOLICITACAO FUNCIONARIO-->
+      <div id="ModalSolicitacao" class="modal" tabindex="-1">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
 
+                  <!-- form-->
+                  <form action="/estacionamento/gerenciar_pedido.do" method="POST">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Solicitacao</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+
+                      <!-- body form -->
+                      <div class="modal-body">
+
+                          <div id="resp-solicitacao">  </div>
+                          
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
 
 
 
@@ -255,10 +299,6 @@
 
     <!-- javaScript -->
     <script type="text/javascript">
-        
-
-     
-
     
     function abrirMensagem(id,texto){
                 var resp = document.getElementById('resp-mensagem');
@@ -276,7 +316,67 @@
                  
             }
                       
-
+    function abrirSolicitacao(id,nome,matricula,percurso,solicitacao,dataParaUso){
+                var resp = document.getElementById('resp-solicitacao');
+                 
+                var aux = dataParaUso.split(" ")
+                var data = aux[0].split("-")
+                var hora = aux[1].split(":")
+                dataParaUso = ""+data[2]+"/"+data[1]+"/"+data[0]+" "+hora[0]+":"+hora[1]+""
+                 
+                
+                  
+                resp.innerHTML = '' 
+                                +'<div class="mb-3 row">'
+                                +'<label for="inputPassword" class="col-sm-2 col-form-label">Pedido Nª:</label>'
+                                +'<div class="col-sm-10">'
+                                +'<input class="form-control" type="text" value="'+id+'" aria-label="Disabled input example" disabled readonly>'
+                                +'</div>'
+                                +'</div>'
+                                +'<div class="mb-3 row">'
+                                +'<label for="inputPassword" class="col-sm-2 col-form-label">Funcionario:</label>'
+                                +'<div class="col-sm-10">'
+                                +'<input class="form-control" type="text" value="'+nome+'" aria-label="Disabled input example" disabled readonly>'
+                                +'</div>'
+                                +'</div>'
+                                +''
+                                +'<div class="mb-3 row">'
+                                +'<label for="inputPassword" class="col-sm-2 col-form-label">Matricula:</label>'
+                                +'<div class="col-sm-10">'
+                                +'<input class="form-control" type="text" value="'+matricula+'" aria-label="Disabled input example" disabled readonly>'
+                                +'</div>'
+                                +'</div>'
+                                +''
+                                +'<div class="mb-3 row">'
+                                +'<label for="inputPassword" class="col-sm-2 col-form-label">Percurso:</label>'
+                                +'<div class="col-sm-10">'
+                                +'<input class="form-control" type="text" value="'+percurso+'" aria-label="Disabled input example" disabled readonly>'
+                                +'</div>'
+                                +'</div>'
+                                +''
+                                +'<div class="mb-3 row">'
+                                +'<label for="inputPassword" class="col-sm-2 col-form-label">Solicitação:</label>'
+                                +'<div class="col-sm-10">'
+                                +'<textarea class="form-control" type="text" aria-label="Disabled input example" disabled readonly>'+solicitacao+'</textarea>'
+                                +'</div>'
+                                +'</div>'
+                                +''
+                                +'<div class="mb-3 row">'
+                                +'<label for="inputPassword" class="col-sm-2 col-form-label">Data para uso:</label>'
+                                +'<div class="col-sm-10">'
+                                +'<input class="form-control" type="text" value="'+dataParaUso+'" disabled>'
+                                +'</div>'
+                                +'</div>'
+                
+                            
+                            
+                              
+                          
+                            
+                               
+                 
+            }
+     
 
     </script>
 
