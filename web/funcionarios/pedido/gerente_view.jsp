@@ -42,7 +42,7 @@
 
                 <!-- view -->
                 <jsp:useBean class="dao.PedidoDAO" id="pdao"/><!-- objeto -->
-                <c:forEach var="p" items="${pdao.all}">
+                <c:forEach var="p" items="${pdao.allDesc}">
 
 
                     <tr>

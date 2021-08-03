@@ -50,7 +50,7 @@
                 <!-- view -->
                 
                 <jsp:useBean class="dao.RelatorioVeiculoFuncionarioDAO" id="rdao"/><!-- objeto -->
-                <c:forEach var="r" items="${rdao.all}">
+                <c:forEach var="r" items="${rdao.allDesc}">
 
                     <tr>
                         <th scope="row">${r.id}</th>

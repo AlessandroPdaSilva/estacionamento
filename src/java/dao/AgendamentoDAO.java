@@ -151,6 +151,80 @@ public class AgendamentoDAO {
 
     }
 
+    //READ DESC
+    public ArrayList<Agendamento> getAllDesc() throws SQLException {
+
+        // query --id,id_veiculo,id_funcionario,vaga_estacionamento,DATE_FORMAT( saida_do_veiculo, '%d/%m/%Y  %H:%i' ),DATE_FORMAT( entrada_do_veiculo, '%d/%m/%Y  %H:%i' )
+        //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
+        String sql = "SELECT * FROM agendamento a "
+       + "INNER JOIN funcionario f ON a.id_funcionario = f.id "
+       + "INNER JOIN veiculo_da_frota v ON a.id_veiculo = v.id "
+       + "ORDER BY a.id DESC";
+
+        // var -veiculo_dados
+        ArrayList<Agendamento> relatorio_dados = new ArrayList<>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            // array do resultado
+            rset = pstmt.executeQuery();
+
+            while (rset.next()) {// passando valores para var(veiculo_dados)
+
+                Agendamento a = new Agendamento();// objeto
+                
+                
+                a.setId(rset.getInt("a.id"));
+                
+                // funcionario
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("f.id"));
+                f.setMatricula(rset.getString("f.matricula"));
+                f.setNome(rset.getString("f.nome"));
+                
+                a.setFuncionario(f);
+                
+                // veiculo
+                VeiculoDaFrota v = new VeiculoDaFrota();
+                v.setPlaca(rset.getString("v.placa"));
+                
+                a.setVeiculo(v);
+                
+                
+                a.setVagaEstacionamento(rset.getInt("a.vaga_estacionamento"));// veiculo
+
+                a.setStatus(rset.getInt("a.status"));
+
+                
+                relatorio_dados.add(a);// adiciona na variavel (array)
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (rset != null) {
+                rset.close();
+            }
+        }
+
+        return relatorio_dados;// retorna array 
+
+    }
+
+    
     //UPDATE
     public Boolean update(int id, int id_veiculo, int id_funcionario, int vaga) throws Exception {
         

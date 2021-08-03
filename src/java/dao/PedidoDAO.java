@@ -161,6 +161,93 @@ public class PedidoDAO {
 
     }
 
+    //READ DESC
+    public ArrayList<Pedido> getAllDesc() throws SQLException {
+        
+        String sql = "SELECT * FROM pedido p "
+       + "INNER JOIN funcionario f ON p.id_funcionario = f.id "
+       + "ORDER BY p.id DESC";
+
+        
+        // var -veiculo_dados
+        ArrayList<Pedido> relatorio_dados = new ArrayList<Pedido>();
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+
+        try {
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            // array do resultado
+            rset = pstmt.executeQuery();
+
+            while (rset.next()) {// passando valores para var(veiculo_dados)
+
+                Pedido p = new Pedido();// objeto
+                
+                
+                p.setId(rset.getInt("p.id"));
+                
+                // funcionario
+                Funcionario f = new Funcionario();
+                f.setId(rset.getInt("f.id"));
+                f.setMatricula(rset.getString("f.matricula"));
+                f.setNome(rset.getString("f.nome"));
+                
+                p.setFuncionario(f);
+                
+                 
+                
+                 
+                // percurso
+                p.setPercurso(rset.getString("p.percurso"));
+                
+                
+                p.setStatus(rset.getInt("p.status"));
+
+                //data e hora
+                 
+                String fsaida = rset.getString("p.data_pedido");
+                String separa[] = fsaida.split(" ");
+                String data[] = separa[0].split("-");
+                String time[] = separa[1].split(":");
+                String dataPedido = "" + data[2] + "/" + data[1] + "/" + data[0] + " - " + time[0] + ":" + time[1];
+
+                p.setDataPedido(dataPedido);
+                p.setMensagem(rset.getString("p.mensagem"));
+                
+                //solicitacao
+                p.setSolicitacao(rset.getString("p.solicitacao"));
+
+                // data para uso
+                p.setDataParaUso(rset.getString("p.data_para_uso")); 
+                
+                
+                relatorio_dados.add(p);// adiciona na variavel (array)
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+            if (rset != null) {
+                rset.close();
+            }
+        }
+
+        return relatorio_dados;// retorna array 
+
+    }
+
+    
     //UPDATE STATUS
     public Boolean updateStatus(int id,int status) throws Exception {
         
@@ -317,7 +404,8 @@ public class PedidoDAO {
         //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
         String sql = "SELECT * FROM pedido p "
        + "INNER JOIN funcionario f ON p.id_funcionario = f.id "
-       + "WHERE p.id_funcionario = ?";
+       + "WHERE p.id_funcionario = ? "
+       + "ORDER BY p.id DESC";
 
         // var -veiculo_dados
         ArrayList<Pedido> relatorio_dados = new ArrayList<>();

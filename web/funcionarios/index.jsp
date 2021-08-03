@@ -24,7 +24,7 @@
 
         
         <!-- tabela -->
-        <table class="table table-dark table-striped" id="listarFrota">
+        <table data-order='[[ 1, "desc" ]]' class="table table-dark table-striped" id="listarFrota">
             <thead>
                 <tr>
                     <th scope="col">ID</th>

@@ -31,7 +31,7 @@
             </a>
         </div>
         <div class="ms-auto p-2 bd-highlight">
-            <a class="btn btn-outline-primary mb-3" onclick="limpar()">
+            <a class="btn btn-outline-primary mb-3" data-bs-toggle="modal" data-bs-target="#ModalConfirmarLimpar">
                 Limpar
             </a>
         </div>
@@ -58,7 +58,7 @@
 
             <!-- view -->
             <jsp:useBean class="dao.AgendamentoDAO" id="adao"/><!-- objeto -->
-            <c:forEach var="a" items="${adao.all}">
+            <c:forEach var="a" items="${adao.allDesc}">
 
 
                 <tr>
@@ -79,7 +79,7 @@
                     </td>
                     <td>
                         <c:if test="${a.status==1}">
-                            <a onclick="confirmarFinalizacao(${a.id},'${a.funcionario.nome}','${a.veiculo.placa}' )" class="btn btn-success mb-3">
+                            <a onclick="confirmarFinalizacao(${a.id},'${a.funcionario.nome}','${a.veiculo.placa}' )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarFinalizado" class="btn btn-success mb-3">
                                 Finalizar
                             </a>
                             
@@ -121,7 +121,7 @@
                     <div class="modal-body">
 
 
-                        <select id="funcionario" class="form-select" aria-label="Default select example" name="matricula">
+                        <select required="" id="funcionario" class="form-select" aria-label="Default select example" name="matricula">
                             <option selected disabled=""> Funcionario</option>
                             
                             <jsp:useBean class="dao.FuncionarioDAO" id="fdao"/><!-- objeto -->
@@ -140,7 +140,7 @@
 
                         <br>
                         
-                        <select id="placa" class="form-select " aria-label="Default select example">
+                        <select required="" id="placa" class="form-select " aria-label="Default select example">
                             <option selected disabled=""> placa</option>
                             <jsp:useBean class="dao.VeiculoDaFrotaDAO" id="vdao"/><!-- objeto -->
                             <c:forEach var="v" items="${vdao.all}">
@@ -158,7 +158,7 @@
                         
                         <br>
                         <div class="form-floating">
-                            <input name="vaga" type="number" class="form-control" id="floatingPassword" placeholder="Password">
+                            <input required="" name="vaga" type="number" class="form-control" id="floatingPassword" placeholder="Password">
                             <label for="floatingPassword">vaga</label>
                         </div>
                         <input name="acao" value="criar_agendamento" hidden="">                        </div>
@@ -172,8 +172,68 @@
         </div>
     </div>
 
+    <!-- MODAL CONFIRMAR FINALIZADO-->
+      <div id="ModalConfirmarFinalizado" class="modal" tabindex="-1">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
 
+                  <!-- form-->
+                  <form action="/estacionamento/gerenciar_agendamento.do" method="GET">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Confirmação</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
 
+                      <!-- body form -->
+                      <div class="modal-body">
+                          
+
+                          <div id="body-finalizado">  </div>
+                           
+                          
+                          
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          <button type="submit" class="btn btn-danger">Confirmar</button>
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+     
+    <!-- MODAL CONFIRMAR LIMPAR-->
+      <div id="ModalConfirmarLimpar" class="modal" tabindex="-1">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+
+                  <!-- form-->
+                  <form action="/estacionamento/gerenciar_agendamento.do" method="GET">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Confirmação</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+
+                      <!-- body form -->
+                      <div class="modal-body">
+                          
+
+                           Deseja remover agendamentos finalizados ?
+                           
+                         <input name='acao' value='limpar' hidden> 
+                          
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          <button type="submit" class="btn btn-danger">Confirmar</button>
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+     
 
 
 
@@ -182,12 +242,34 @@
     <!-- javaScript -->
     <script type="text/javascript">
         //finalizacao
+        /*
         function confirmarFinalizacao(id,nome,placa) {
             if (confirm("\n Tem certeza que o " + nome + " ja chegou \n com carro de placa "+placa+" ? \n\n ")) {
                 location.href = "/estacionamento/gerenciar_agendamento.do?acao=finalizar&id=" + id;
             }
         }
-
+        */
+        function confirmarFinalizacao(id,nome,placa) {
+                var resp = document.getElementById('resp-finalizado');
+                var body = document.getElementById('body-finalizado');
+                
+                body.innerHTML = " Tem certeza que o <span style='font-weight:650'>"+nome+"</span> ja chegou \n com carro de placa <span style='font-weight:650'>"+placa+"</span>  ?"
+                 +"<input name='acao' value='finalizar' hidden>"
+                 +"<input name='id' value='"+id+"' hidden>"
+                 
+                  
+                    
+                /*
+                 * resp.innerHTML = '<a href="/estacionamento/gerenciar_pedido.do?acao=pedido_recusado&id=' + id +'&status=1" class="btn btn-danger" >Confirmar</a>'
+                                +''
+                 * 
+                 * 
+                if (confirm("\nDeseja RECUSAR o pedido de "+nome+" para o uso \ndo veiculo de placa '"+placa+"' ?" )) {
+                    location.href = "/estacionamento/gerenciar_pedido.do?acao=pedido_recusado&id=" + id +"&status=1";
+                }
+                */
+            }
+        
         // funcionario
         var select = document.querySelector('select#funcionario');
         select.addEventListener('change', function () {
@@ -216,14 +298,7 @@
             console.log(texto);
         });
         
-        
-        // limpar
-        function limpar(){
-            if (confirm("\n Deseja remover agendamentos finalizados ?")) {
-                location.href = "/estacionamento/gerenciar_agendamento.do?acao=limpar";
-            }
-        }
-        
+         
 
     </script>
 

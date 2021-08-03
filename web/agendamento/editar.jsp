@@ -65,7 +65,7 @@
                         <a  onclick="enviarId(${a.id})" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalEditar">
                                 <img src="../imagens/pencil.svg">
                         </a>
-                        <a class="btn btn-danger" onclick="confirmarExclusao(${a.id})">
+                        <a class="btn btn-danger" onclick="confirmarExclusao(${a.id})" data-bs-toggle="modal" data-bs-target="#ModalConfirmarExclusao">
                                 <img src="../imagens/trash-fill.svg">
                         </a>
                         
@@ -150,7 +150,37 @@
     </div>
 
 
+<!-- MODAL CONFIRMAR FINALIZADO-->
+      <div id="ModalConfirmarExclusao" class="modal" tabindex="-1">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
 
+                  <!-- form-->
+                  <form action="/estacionamento/gerenciar_agendamento.do" method="GET">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Confirmação</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+
+                      <!-- body form -->
+                      <div class="modal-body">
+                          
+
+                          <div id="body-exclusao">  </div>
+                           
+                          
+                          
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          <button type="submit" class="btn btn-danger">Confirmar</button>
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+     
 
 
 
@@ -195,9 +225,13 @@
         
         // confirmar exclusao
         function confirmarExclusao(id) {
-            if (confirm("\nDeseja realmente EXCLUIR o agendamento de ID = "+id+" ? " )) {
-                location.href = "/estacionamento/gerenciar_agendamento.do?acao=deletar&id=" + id;
-            }
+              
+                var body = document.getElementById('body-exclusao');
+                
+                body.innerHTML = " Deseja realmente <span style='font-weight:650;color:crimson'> EXCLUIR</span> o agendamento de ID = "+id+" ? "
+                 +"<input name='acao' value='deletar' hidden>"
+                 +"<input name='id' value='"+id+"' hidden>"
+                 
         }
         
         function enviarId(id){
