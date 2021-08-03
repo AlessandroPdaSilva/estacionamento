@@ -65,7 +65,7 @@
                                 </button>
                             </c:if>
                             <c:if test="${p.status==1}">
-                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
+                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
                                     <img src="../../imagens/clipboard-x.svg">
                                 </button>
                             </c:if>
@@ -98,7 +98,7 @@
                         <td>
                             
                             <c:if test="${p.status==1}">
-                                <button onclick="abrirMensagem(${p.id},'${p.mensagem}')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalMensage">
+                                <button onclick="abrirMensagem(${p.id},'${p.mensagem}','${p.funcionario.nome}','${p.solicitacao}')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalMensage">
                                     <img src="../../imagens/chat-dots.svg">
                                 </button>
                             </c:if>
@@ -280,11 +280,11 @@
 
         <!-- javaScript -->
         <script type="text/javascript">
-            function confirmarRecusado(id, nome,placa,status) {
+            function confirmarRecusado(id, nome,status) {
                 var resp = document.getElementById('resp-recusado');
                 var body = document.getElementById('body-recusado');
                 
-                body.innerHTML = "\nDeseja <span style='color:crimson;font-weight:750'>RECUSAR</span> o pedido de "+nome+" para o uso \ndo veiculo de placa '"+placa+"' ?"
+                body.innerHTML = "\nDeseja <span style='color:crimson;font-weight:750'>RECUSAR</span> o pedido de <span style='font-weight:650'>"+nome+"</span>  ?"
                  +"<input name='acao' value='pedido_recusado' hidden>"
                  +"<input name='id' value='"+id+"' hidden>"
                  +"<input name='status' value='1' hidden>"
@@ -307,7 +307,7 @@
                 var body = document.getElementById('body-aceito');
                 
                 body.innerHTML = "\nDeseja <span style='color:#198754;font-weight:750'>ACEITAR</span>"
-                        +" o pedido de "+nome+" ?"
+                        +" o pedido de <span style='font-weight:650'>"+nome+"</span> ?"
                         +"<input name='id' value='"+id+"' hidden>"
                 
                
@@ -319,7 +319,7 @@
                 
             }
             
-            function abrirMensagem(id,texto){
+            function abrirMensagem(id,texto,nome,solicitacao){
                 var resp = document.getElementById('resp');
                  
                  
@@ -327,8 +327,13 @@
                     resp.innerHTML = " Não há mensagens"
                 }else{
                 resp.innerHTML = "<div class='mb-3'>"
-                                +"<label for='exampleFormControlTextarea1' class='form-label'>Pedido Nº "+id+"</label>"
-                                +"<textarea class='form-control' id='exampleFormControlTextarea1' rows='5' disabled readonly >"+texto+"</textarea>"
+                                +"<label for='exampleFormControlTextarea1' class='form-label'><span style='font-weight:650'>Pedido Nº "+id+"</span></label>"
+                                +"<br>Solicitacao de "+nome+":"
+                                +"<textarea class='form-control' id='exampleFormControlTextarea1' rows='2' disabled readonly >"+solicitacao+"</textarea>"
+                                +"</div>"
+                                +"<div class='mb-3'>"
+                                +"<br> Resposta do Gerente"
+                                +"<textarea class='form-control' id='exampleFormControlTextarea1' rows='2' disabled readonly >"+texto+"</textarea>"
                                 +"</div>";
                         
                 }        

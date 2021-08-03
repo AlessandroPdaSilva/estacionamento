@@ -350,5 +350,48 @@ public class VeiculoDaFrotaDAO {
 
     }
 
+    // modificar odometro
+    public void modificarOdometro(int id,int odometro) throws Exception {
+        // query
+        String sql = "UPDATE veiculo_da_frota SET odometro = ? WHERE id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        int exec = 0;
+        Boolean msg = false;
+        try {
+
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            
+            pstmt.setInt(1,odometro);// bind 1
+            pstmt.setInt(2,id);// bind 2
+            
+             
+
+            // execução (boolean)
+            exec = pstmt.executeUpdate();
+
+             
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+ 
+
+    }
+
     
 }

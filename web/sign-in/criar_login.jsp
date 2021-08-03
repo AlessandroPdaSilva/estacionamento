@@ -109,7 +109,9 @@
                 +'</select>'
                 console.log(texto);
             }else{
-                resp.innerHTML = ''
+                resp.innerHTML = '<input name="id-funcionario" value="0" hidden>'
+                
+        
             }
             
 

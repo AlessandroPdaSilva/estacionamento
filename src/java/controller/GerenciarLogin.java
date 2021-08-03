@@ -108,7 +108,7 @@ public class GerenciarLogin extends HttpServlet {
             String senha = request.getParameter("senha");
             int nivel = Integer.parseInt((String) request.getParameter("nivel"));
             int idFuncionario = Integer.parseInt((String) request.getParameter("id-funcionario"));
-            
+             
             
             UsuarioDAO ud = new UsuarioDAO();
             Usuario u = new Usuario();

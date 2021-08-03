@@ -19,7 +19,7 @@ public class RelatorioChaveFuncionarioDAO {
         // query
         String sql = "INSERT INTO relatorio_chave_funcionario"
                 + "(id_pedido,id_veiculo,data_coleta,odometro_coleta,data_devolucao,odometro_devolucao,status)"
-                + " VALUES (?,?,?,'0000-01-00 00:00:00',-1,2)";
+                + " VALUES (?,?,?,?,'0000-01-00 00:00:00',-1,2)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -35,8 +35,8 @@ public class RelatorioChaveFuncionarioDAO {
             
             pstmt.setInt(1, r.getPedido().getId());//bind 1
             pstmt.setInt(2, r.getVeiculo().getId());//bind 2
-            pstmt.setString(2, r.getDataColeta());//bind 2
-            pstmt.setInt(3, r.getOdometroColeta());//bind 3
+            pstmt.setString(3, r.getDataColeta());//bind 3
+            pstmt.setInt(4, r.getOdometroColeta());//bind 4
              
             
            
@@ -80,7 +80,8 @@ public class RelatorioChaveFuncionarioDAO {
         // query --id,id_veiculo,id_funcionario,vaga_estacionamento,DATE_FORMAT( saida_do_veiculo, '%d/%m/%Y  %H:%i' ),DATE_FORMAT( entrada_do_veiculo, '%d/%m/%Y  %H:%i' )
         //SELECT DATE_FORMAT(saida_do_veiculo,'%d/%m/%Y %H:%i'), DATE_FORMAT(entrada_do_veiculo,'%d/%m/%Y %H:%i'),id, id_veiculo, id_funcionario, vaga_estacionamento FROM relatorio_veiculo_funcionario
         String sql = "SELECT * FROM relatorio_chave_funcionario rf "
-                + "INNER JOIN pedido p ON p.id = rf.id_pedido";
+                + "INNER JOIN pedido p ON p.id = rf.id_pedido ";
+                
 
         // var -veiculo_dados
         ArrayList<RelatorioChaveFuncionario> relatorio_dados = new ArrayList<>();
@@ -93,8 +94,11 @@ public class RelatorioChaveFuncionarioDAO {
             conn = connect.ConnectionFactory.createConnectionToMySql();
             // preparando
             pstmt = (PreparedStatement) conn.prepareStatement(sql);
+             
             // array do resultado
             rset = pstmt.executeQuery();
+            
+            
 
             while (rset.next()) {// passando valores para var(veiculo_dados)
 
@@ -441,7 +445,7 @@ public class RelatorioChaveFuncionarioDAO {
         // query
         String sql = "SELECT * FROM relatorio_chave_funcionario rf "
                 + "INNER JOIN pedido p ON p.id = rf.id_pedido "
-                + "WHERE (p.id_veiculo = ? AND (rf.status = 2 OR rf.status = 1))";
+                + "WHERE (rf.id_veiculo = ? AND (rf.status = 2 OR rf.status = 1))";
 
         Connection conn = null;
         PreparedStatement pstmt = null;

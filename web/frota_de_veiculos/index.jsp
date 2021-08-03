@@ -50,7 +50,7 @@
                         <th scope="row">${vf.id}</th>
                         <td>${vf.modelo}</td>
                         <td>${vf.placa}</td>
-                        <td>${vf.odometro}</td>
+                        <td>${vf.odometro}Km</td>
                         <td>${vf.vaga}</td>
                         
 

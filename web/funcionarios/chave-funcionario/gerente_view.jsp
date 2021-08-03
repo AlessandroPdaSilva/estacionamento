@@ -1,4 +1,3 @@
-
 <%@page import="model.Usuario"%>
 <%@page import="model.VeiculoDaFrota"%>
 <%@page import="dao.VeiculoDaFrotaDAO"%>
@@ -46,7 +45,69 @@
             <tbody>
                 <jsp:useBean class="dao.RelatorioChaveFuncionarioDAO" id="rfdao"/><!-- objeto -->
                 <c:forEach var="r" items="${rfdao.allDesc}">
-                    
+                    <tr>
+                        <th scope="row">${r.pedido.id}</th>
+                        <td>
+                            ${r.pedido.funcionario.nome} &nbsp
+                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                  &nbsp Matricula: ${r.pedido.funcionario.matricula} 
+                                   
+                              </ul>
+                        </td>
+                         <td>
+                            ${r.veiculo.placa}&nbsp
+                            <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="visually-hidden">Toggle Dropdown</span>
+                              </button>
+                              <ul class="dropdown-menu">
+                                  &nbsp Odometro: ${r.odometroColeta}Km / 
+                                  <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km &nbsp</c:if>
+                                  <c:if test="${r.odometroDevolucao==-1}"> Nao devolvido &nbsp</c:if> 
+                                  <br>
+                                  &nbsp Modelo: ${r.veiculo.modelo}&nbsp
+                              </ul>
+                        </td>
+                        <td>
+                            ${r.dataColeta}
+                        </td>
+                        <td>${r.dataDevolucao}</td>
+                         
+                         
+                         
+                        <td>
+                        <c:if test="${r.status==0}"> 
+                                <div style="color:#198754;font-weight:750"> Devolvido </div>  
+                            </c:if>
+
+                            <c:if test="${r.status==1}"> 
+                                <div style="color:crimson;font-weight:750"> Em uso </div>  
+                            </c:if>
+
+                            <c:if test="${r.status==2}"> 
+                                <!--
+                                <div style="color:black;background:#ffca2c;text-align: center;"> Em aberto </div>  
+                                -->
+                                <div style="color:#ffca2c;font-weight:750"> Nao coletado </div>  
+                            </c:if>
+                            
+                        </td>
+                        <td>
+                        <c:if test="${r.status==2}">
+                            <a onclick="confirmarColetado(${r.pedido.id},'${r.pedido.funcionario.nome}' )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarColetado" class="btn btn-primary mb-3">
+                                Coletado
+                            </a>
+                        </c:if>
+                        <c:if test="${r.status==1}">
+                            <a onclick="confirmarDevolvido(${r.pedido.id},'${r.pedido.funcionario.nome}',${r.odometroColeta},${r.veiculo.id} )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarDevolvido" class="btn btn-success mb-3">
+                                Devolvido
+                            </a>
+                        </c:if>
+                        </td>
+                        
+                    </tr>
                 </c:forEach>
             </tbody>
 
@@ -123,11 +184,11 @@
 
         <!-- javaScript -->
         <script type="text/javascript">
-             function confirmarColetado(idPedido,nome,placa){
+             function confirmarColetado(idPedido,nome){
                  
                 var body = document.getElementById('body-coletado');
                 
-                body.innerHTML = "\nTem certeza que "+nome+" ja <span style='color:crimson;font-weight:750'>COLETOU</span> a chave\n do veiculo de placa '"+placa+"' ?"
+                body.innerHTML = "\nTem certeza que <span style='font-weight:650'>"+nome+"</span> ja <span style='color:crimson;font-weight:750'>COLETOU</span> a chave ?"
                 +" <br>(ID: "+idPedido+")" 
                 +"<input name='acao' value='chave_coletada' hidden>"
                  +"<input name='id_pedido' value='"+idPedido+"' hidden>"
@@ -136,16 +197,17 @@
                     
              }
              
-             function confirmarDevolvido(idPedido,nome,placa,odometroColeta){
+             function confirmarDevolvido(idPedido,nome,odometroColeta,idVeiculo){
                  
                 var body = document.getElementById('body-devolvido');
                 
-                body.innerHTML = "\nTem certeza que "+nome+" ja <span style='color:#198754;font-weight:750'>DEVOLVEU</span> a chave\n do veiculo de placa '"+placa+"' ?"
+                body.innerHTML = "\nTem certeza que <span style='font-weight:650'>"+nome+"</span> ja <span style='color:#198754;font-weight:750'>DEVOLVEU</span> a chave?"
                 +" <br>(ID: "+idPedido+")<br>" 
                 +" " 
                 +"<input name='acao' value='chave_devolvido' hidden>"
                 +"<input name='id_pedido' value='"+idPedido+"' hidden>"
                 +"<input name='odometro_coleta' value='"+odometroColeta+"' hidden>"
+                +"<input name='id_veiculo' value='"+idVeiculo+"' hidden>"
                  
                   
                     

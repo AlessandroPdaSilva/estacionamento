@@ -2,6 +2,7 @@
 package controller;
 
 import dao.RelatorioChaveFuncionarioDAO;
+import dao.VeiculoDaFrotaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
@@ -72,6 +73,7 @@ public class GerenciarRelatorioCF extends HttpServlet {
         if (acao.equals("chave_devolvido")) {
             
             int idPedido = Integer.parseInt((String) request.getParameter("id_pedido"));
+            int idVeiculo = Integer.parseInt((String) request.getParameter("id_veiculo"));
             int odometroDevolvido = Integer.parseInt((String) request.getParameter("odometro"));
             int odometroColeta = Integer.parseInt((String) request.getParameter("odometro_coleta"));
             int status = 0;
@@ -97,6 +99,11 @@ public class GerenciarRelatorioCF extends HttpServlet {
 
 
                         if(rd.updateDevolvido(idPedido, dataDevolucao, odometroDevolvido, status)){
+                            
+                            // precisa atualizar
+                            VeiculoDaFrotaDAO vd = new VeiculoDaFrotaDAO();
+                            vd.modificarOdometro(idVeiculo, odometroDevolvido);
+                            
                             out.println("<script type='text/javascript'>");
                             out.println("alert('Devolvido com sucesso')");
                             out.println("location.href='funcionarios/chave-funcionario/gerente_view.jsp'");

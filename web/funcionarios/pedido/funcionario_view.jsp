@@ -67,7 +67,7 @@
                                 </button>
                             </c:if>
                             <c:if test="${p.status==1}">
-                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
+                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
                                     <img src="../../imagens/clipboard-x.svg">
                                 </button>
                             </c:if>
@@ -98,7 +98,7 @@
                         
                         <td>
                             <c:if test="${p.status==1}">
-                                <button onclick="abrirMensagem(${p.id},'${p.mensagem}')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalMensage">
+                                <button onclick="abrirMensagem(${p.id},'${p.mensagem}','${p.funcionario.nome}','${p.solicitacao}')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalMensage">
                                     <img src="../../imagens/chat-dots.svg">
                                 </button>
                             </c:if>
@@ -220,12 +220,10 @@
                       <!-- body form -->
                       <div class="modal-body">
 
-                          Deseja realmente DELETAR o ultimo pedido feito? <br><br>
+                          Deseja realmente <span style="color:crimson;font-weight:750">DELETAR</span> o ultimo pedido feito? <br><br>
 
-                          Obs: So é possivel deletar pedidos com status 'em aberto'.<br>
-                          &nbsp So e possivel criar pedidos se na tabela 'chave / funcionario' seu status estiver como 'devolvido'.<br>
-                          &nbsp So e possivel criar pedidos caso seu pedido ja estiver sido avalidado (Ex: pedido recusado)<br>
-
+                          Obs: So é possivel deletar pedidos com status 'Em aberto'.<br>
+                          
                       <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
                           <button type="submit" class="btn btn-danger">Deletar</button>
@@ -300,7 +298,7 @@
     <!-- javaScript -->
     <script type="text/javascript">
     
-    function abrirMensagem(id,texto){
+    function abrirMensagem(id,texto,nome,solicitacao){
                 var resp = document.getElementById('resp-mensagem');
                   
                   
@@ -308,8 +306,13 @@
                     resp.innerHTML = " Não há mensagens"
                 }else{
                 resp.innerHTML = "<div class='mb-3'>"
-                                +"<label for='exampleFormControlTextarea1' class='form-label'>Pedido Nº "+id+"</label>"
-                                +"<textarea class='form-control' id='exampleFormControlTextarea1' rows='5' disabled readonly>"+texto+"</textarea>"
+                                +"<label for='exampleFormControlTextarea1' class='form-label'><span style='font-weight:650'>Pedido Nº "+id+"</span></label>"
+                                +"<br>Solicitacao de "+nome+":"
+                                +"<textarea class='form-control' id='exampleFormControlTextarea1' rows='2' disabled readonly >"+solicitacao+"</textarea>"
+                                +"</div>"
+                                +"<div class='mb-3'>"
+                                +"<br> Resposta do Gerente"
+                                +"<textarea class='form-control' id='exampleFormControlTextarea1' rows='2' disabled readonly >"+texto+"</textarea>"
                                 +"</div>";
                         
                 }        

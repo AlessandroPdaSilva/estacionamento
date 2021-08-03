@@ -31,7 +31,7 @@
                     <th scope="col">Data de Devolução</th>
                     
                     <th scope="col">Status</th>
-                     
+                    
 
 
                 </tr>
@@ -58,13 +58,16 @@
                               </ul>
                         </td>
                         <td>
-                            ${r.veiculo.id}&nbsp
+                            ${r.veiculo.placa}&nbsp
                             <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                 <span class="visually-hidden">Toggle Dropdown</span>
                               </button>
                               <ul class="dropdown-menu">
-                                  &nbsp Odometro: ${r.odometroColeta}Km / <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km</c:if> 
+                                  &nbsp Odometro: ${r.odometroColeta}Km / 
+                                  <c:if test="${r.odometroDevolucao!=-1}">${r.odometroDevolucao}Km &nbsp</c:if>
+                                  <c:if test="${r.odometroDevolucao==-1}"> Nao devolvido &nbsp</c:if> 
                                   <br>
+                                  &nbsp Modelo: ${r.veiculo.modelo}&nbsp
                               </ul>
                         </td>
                         <td>
@@ -93,7 +96,7 @@
                             </c:if>
                             
                         </td>
-                         
+                        
                         
                     </tr>
 
