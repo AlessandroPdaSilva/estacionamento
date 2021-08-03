@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import model.Funcionario;
 import model.Pedido;
@@ -19,7 +21,7 @@ public class RelatorioChaveFuncionarioDAO {
         // query
         String sql = "INSERT INTO relatorio_chave_funcionario"
                 + "(id_pedido,id_veiculo,data_coleta,odometro_coleta,data_devolucao,odometro_devolucao,status)"
-                + " VALUES (?,?,?,?,'0000-01-00 00:00:00',-1,2)";
+                + " VALUES (?,?,'0000-01-00 00:00:00',?,'0000-01-00 00:00:00',-1,2)";
 
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -35,8 +37,8 @@ public class RelatorioChaveFuncionarioDAO {
             
             pstmt.setInt(1, r.getPedido().getId());//bind 1
             pstmt.setInt(2, r.getVeiculo().getId());//bind 2
-            pstmt.setString(3, r.getDataColeta());//bind 3
-            pstmt.setInt(4, r.getOdometroColeta());//bind 4
+             
+            pstmt.setInt(3, r.getOdometroColeta());//bind 4
              
             
            
@@ -152,9 +154,7 @@ public class RelatorioChaveFuncionarioDAO {
                 String time2[] = separa2[1].split(":");
                 String dataDevolucao = "" + data2[2] + "/" + data2[1] + "/" + data2[0] + " - " + time2[0] + ":" + time2[1];
 
-                if(dataDevolucao.equals("00/01/0000 - 00:00")){
-                    dataDevolucao = "Nao devolvido";
-                }
+                
                 
                 r.setDataColeta(dataColeta);
                 r.setDataDevolucao(dataDevolucao);
@@ -271,6 +271,10 @@ public class RelatorioChaveFuncionarioDAO {
 
                 if(dataDevolucao.equals("00/01/0000 - 00:00")){
                     dataDevolucao = "Nao devolvido";
+                }
+                
+                if(dataColeta.equals("00/01/0000 - 00:00")){
+                    dataColeta = "Nao coletado";
                 }
                 
                 r.setDataColeta(dataColeta);
@@ -603,7 +607,7 @@ public class RelatorioChaveFuncionarioDAO {
         
         // query
         String sql = "UPDATE relatorio_chave_funcionario "
-                + "SET status = ? "
+                + "SET status = ? , data_coleta = ? "
                 + "WHERE id_pedido = ?";
 
         Connection conn = null;
@@ -613,6 +617,18 @@ public class RelatorioChaveFuncionarioDAO {
         Boolean msg = false;
         try {
 
+            // data coleta
+            LocalDateTime agora = LocalDateTime.now();//data atual
+
+            DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("uuuu-MM-dd");// formatar a data
+            String dataFormatada = formatterData.format(agora);
+
+            DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");// formatar a hora
+            String horaFormatada = formatterHora.format(agora);
+
+            String dataColeta = "" + dataFormatada + " " + horaFormatada + "";
+
+            
             // conexao
             conn = connect.ConnectionFactory.createConnectionToMySql();
             
@@ -621,8 +637,8 @@ public class RelatorioChaveFuncionarioDAO {
             pstmt = (PreparedStatement) conn.prepareStatement(sql);
              
             pstmt.setInt(1, status);// bind 1
-            pstmt.setInt(2, idPedido);// bind 2
-            
+            pstmt.setString(2, dataColeta);// bind 2
+            pstmt.setInt(3, idPedido);// bind 2
              
 
             // execução (boolean)

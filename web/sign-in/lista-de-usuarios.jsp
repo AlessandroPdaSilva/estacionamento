@@ -67,7 +67,7 @@
                         </td>
                         
                         <td>
-                            <a class="btn btn-primary" onclick="confirmarEdicao()" data-bs-toggle="modal" data-bs-target="#ModalConfirmarEdicao">
+                            <a class="btn btn-primary" onclick="confirmarEdicao(${u.id},'${u.nome}',${u.nivel})" data-bs-toggle="modal" data-bs-target="#ModalConfirmarEdicao">
                                 <img src="../imagens/pencil.svg">
                             </a>
                             <a class="btn btn-danger" onclick="confirmarExclusao(${u.id},'${u.nome}' )" data-bs-toggle="modal" data-bs-target="#ModalConfirmarExclusao">
@@ -166,12 +166,24 @@
             }
 
             
-            function confirmarEdicao() {
+            function confirmarEdicao(id,login,nivel) {
                  
                 var body = document.getElementById('body-edicao');
                 
-                body.innerHTML = "Precisa atualizar (resetar senha) "
-                  
+                body.innerHTML = "<input name='acao' value='editar-usuario' hidden>"
+                +"<input name='id' value='"+id+"' hidden>"
+                 
+                +"<div class='form-floating'>"
+                +"<input name='login' value='"+login+"' type='text' class='form-control' id='floatingInput' placeholder='name@example.com'>"
+                +"<label for='floatingInput'>nome de usuario</label>"   
+                +"</div><br>"   
+                        
+                +"<div class='form-floating'>"
+                +"<input name='senha' type='password' class='form-control' id='floatingInput' placeholder='name@example.com'>"
+                +"<label for='floatingInput'>Nova senha</label>"   
+                +"</div>"
+                                
+                            
                   
             }
             

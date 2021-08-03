@@ -72,20 +72,7 @@ public class GerenciarPedido extends HttpServlet {
                     
                     r.setPedido(p);
                     
-                    //--data
-                    LocalDateTime agora = LocalDateTime.now();//data atual
-
-                
-                    DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("uuuu-MM-dd");// formatar a data
-                    String dataFormatada = formatterData.format(agora);
-
-
-                    DateTimeFormatter formatterHora = DateTimeFormatter.ofPattern("HH:mm:ss");// formatar a hora
-                    String horaFormatada = formatterHora.format(agora);
-
-                    String dataColeta = ""+dataFormatada + " " + horaFormatada +"";
-                    
-                    r.setDataColeta(dataColeta);
+                     
                     
                     //--odometro e Veiculo
                     

@@ -138,6 +138,9 @@ public class UsuarioDAO {
         int exec = 0;
         Boolean msg = false;
         try {
+            
+            UsuarioDAO ud = new UsuarioDAO();
+            senha = ud.criptografar(senha);
 
             // conexao
             conn = connect.ConnectionFactory.createConnectionToMySql();
@@ -175,6 +178,56 @@ public class UsuarioDAO {
 
     }
 
+    //UPDATE SEM SENHA
+    public Boolean update(int id, String nome) throws Exception {
+        // query
+        String sql = "UPDATE usuario SET nome = ? WHERE id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        int exec = 0;
+        Boolean msg = false;
+        try {
+             
+
+            // conexao
+            conn = connect.ConnectionFactory.createConnectionToMySql();
+            // preparando
+            pstmt = (PreparedStatement) conn.prepareStatement(sql);
+            pstmt.setString(1, nome);// bind 1
+             
+            pstmt.setInt(2,id);// bind 2
+             
+
+            // execução (boolean)
+            exec = pstmt.executeUpdate();
+
+            if (exec > 0) {
+                msg = true;
+            } else {
+                msg = false;
+            }
+
+        } catch (Exception e) {// erro
+            e.printStackTrace();
+        } finally {
+
+            if (conn != null) {
+                conn.close();
+            }
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+        }
+
+        // mensagem de exclusao
+        return msg;
+
+    }
+
+    
     //DELETE
     public Boolean delete(int id) throws Exception {
         // query

@@ -142,7 +142,7 @@
                           <br>
                           
                           <label style="font-weight: bold " for='exampleFormControlTextarea1' class='form-label'> Motivo da Solicitação</label>
-                          <textarea name="solicitacao" placeholder="Ex: Vou organizar o evento 'Celebração do rock na Torre de TV'" class='form-control' id='exampleFormControlTextarea1' rows='2' ></textarea>
+                          <textarea required="" name="solicitacao" placeholder="Ex: Vou organizar o evento 'Celebração do rock na Torre de TV'" class='form-control' id='exampleFormControlTextarea1' rows='2' ></textarea>
                           
                           <br>
                           
@@ -186,7 +186,7 @@
                           <div class="mb-3 row">
                             <label for="inputPassword" class="col-sm-2 col-form-label">Destino:</label>
                             <div class="col-sm-10">
-                              <input name="percurso" type="text" class="form-control" id="floatingPassword" placeholder="Ex: Torre de TV">
+                                <input required="" name="percurso" type="text" class="form-control" id="floatingPassword" placeholder="Ex: Torre de TV">
                             </div>
                           </div>
                            

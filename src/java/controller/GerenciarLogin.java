@@ -168,6 +168,67 @@ public class GerenciarLogin extends HttpServlet {
             
             
         }
+        
+        
+        if (acao.equals("editar-usuario")) {
+            int idUsuario = Integer.parseInt((String) request.getParameter("id"));
+            String login = request.getParameter("login");
+            String senha = request.getParameter("senha");
+            
+            if(senha != ""){
+                
+                
+                try {
+                    
+                UsuarioDAO ud = new UsuarioDAO();
+            
+                    if(ud.update(idUsuario,login,senha)){
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Editado com sucesso')");
+                        out.println("location.href='sign-in/lista-de-usuarios.jsp'");
+                        out.println("</script>");
+                    }else{
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Erro ao editar')");
+                        out.println("location.href='sign-in/lista-de-usuarios.jsp'");
+                        out.println("</script>");
+                    }
+
+                
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }else{
+                
+                try {
+                    
+                UsuarioDAO ud = new UsuarioDAO();
+            
+                    if(ud.update(idUsuario,login)){
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Editado com sucesso')");
+                        out.println("location.href='sign-in/lista-de-usuarios.jsp'");
+                        out.println("</script>");
+                    }else{
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Erro ao editar')");
+                        out.println("location.href='sign-in/lista-de-usuarios.jsp'");
+                        out.println("</script>");
+                    }
+
+                
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                
+                
+            }
+            
+            
+            
+            
+        }
 
     }
 
