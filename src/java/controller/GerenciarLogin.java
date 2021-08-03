@@ -138,6 +138,36 @@ public class GerenciarLogin extends HttpServlet {
             
             
         }
+        
+        if (acao.equals("excluir-usuario")) {
+            int idUsuario = Integer.parseInt((String) request.getParameter("id"));
+            
+            
+            try {
+                
+                
+                UsuarioDAO ud = new UsuarioDAO();
+            
+                if(ud.delete(idUsuario)){
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Excluido com sucesso')");
+                    out.println("location.href='relatorio/index.jsp'");
+                    out.println("</script>");
+                }else{
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Erro ao excluir')");
+                    out.println("location.href='relatorio/index.jsp'");
+                    out.println("</script>");
+                }
+                
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            
+            
+        }
 
     }
 

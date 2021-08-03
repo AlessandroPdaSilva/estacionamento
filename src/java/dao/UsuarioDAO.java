@@ -94,9 +94,13 @@ public class UsuarioDAO {
                 usuario.setId(rset.getInt("id"));
                 usuario.setNome(rset.getString("nome"));// nome
                 usuario.setSenha(rset.getString("senha"));// senha
+                usuario.setNivel(rset.getInt("nivel"));// senha
                 
+                FuncionarioDAO fd = new FuncionarioDAO();
                 Funcionario f = new Funcionario();
-                f.setId(rset.getInt("id_funcionario"));
+                
+                f = fd.getFuncionario(rset.getInt("id_funcionario"));
+                 
                 
                 usuario.setFuncionario(f);// funcionario
 

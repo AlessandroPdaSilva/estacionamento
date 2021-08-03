@@ -125,6 +125,9 @@
                                             <a  class="btn btn-primary mb-3" href="../sign-in/criar_login.jsp">
                                                 Criar Usuario
                                             </a>
+                                            <a  class="btn btn-primary mb-3" href="../sign-in/lista-de-usuarios.jsp">
+                                                Tabela de Usuarios
+                                            </a>
                                         </c:if>
                                         <br><br>
                                         
