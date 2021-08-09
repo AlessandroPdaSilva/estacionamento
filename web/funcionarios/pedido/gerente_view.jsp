@@ -21,7 +21,7 @@
          
  
         <!-- tabela -->
-        <table data-order='[[ 0, "desc" ]]' class="table table-dark table-striped" id="listarPedido">
+        <table  class="table table-dark table-striped" id="listarPedido">
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -36,91 +36,7 @@
 
                 </tr>
             </thead>
-
-
-            <tbody>
-
-                <!-- view -->
-                <jsp:useBean class="dao.PedidoDAO" id="pdao"/><!-- objeto -->
-                <c:forEach var="p" items="${pdao.allDesc}">
-
-
-                    <tr>
-                        <th scope="row">${p.id}</th>
-                        <td>
-                            ${p.funcionario.nome} &nbsp
-                              <button type="button" class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="visually-hidden">Toggle Dropdown</span>
-                              </button>
-                              <ul class="dropdown-menu">
-                                &nbsp Matricula: ${p.funcionario.matricula}
-                              </ul>
-                        </td>
-                         
-                        <td>${p.dataPedido}</td>
-                        <td>
-                            <c:if test="${p.status==0}">
-                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
-                                    <img src="../../imagens/clipboard-check.svg">
-                                </button>
-                            </c:if>
-                            <c:if test="${p.status==1}">
-                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
-                                    <img src="../../imagens/clipboard-x.svg">
-                                </button>
-                            </c:if>
-                            <c:if test="${p.status==2}">
-                                <button onclick="abrirSolicitacao(${p.id},'${p.funcionario.nome}','${p.funcionario.matricula}','${p.percurso}','${p.solicitacao}','${p.dataParaUso}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#ModalSolicitacao">
-                                    <img src="../../imagens/clipboard-x.svg">
-                                </button>
-                            </c:if>
-                            
-                        </td>
-                        
-                        
-                        <td>
-                            <c:if test="${p.status==0}"> 
-                                <div style="color:#198754;font-weight:750"> Concedido </div>  
-                            </c:if>
-
-                            <c:if test="${p.status==1}"> 
-                                <div style="color:crimson;font-weight:750"> Recusado </div>  
-                            </c:if>
-
-                            <c:if test="${p.status==2}"> 
-                                <!--
-                                <div style="color:black;background:#ffca2c;text-align: center;"> Em aberto </div>  
-                                -->
-                                <div style="color:#ffca2c;font-weight:750"> Em aberto </div>  
-                            </c:if>
-                        </td>
-                        
-                        <td>
-                            
-                            <c:if test="${p.status==1}">
-                                <button onclick="abrirMensagem(${p.id},'${p.mensagem}','${p.funcionario.nome}','${p.solicitacao}')" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalMensage">
-                                    <img src="../../imagens/chat-dots.svg">
-                                </button>
-                            </c:if>
-                            
-                            <c:if test="${p.status==2}">
-                                <a onclick="confirmarAceito(${p.id},'${p.funcionario.nome}',0 )" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalConfirmarAceito">
-                                    <img src="../../imagens/hand-thumbs-up.svg">
-                                </a>
-                                <a onclick="confirmarRecusado(${p.id},'${p.funcionario.nome}',1 )" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#ModalConfirmarRecusado">
-                                    <img src="../../imagens/hand-thumbs-down.svg">
-                                </a>
-                            </c:if>
-                        </td>
-                    </tr>
-
-
-
-                </c:forEach>
-
-
-            </tbody>
-
+             
 
         </table>
 
@@ -411,11 +327,33 @@
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
+                 
                 $("#listarPedido").dataTable({
+                    
+                    serverSide: true,
+                    paging: true,
+                    
+                    
+                    
+                    "columns": [
+                        { "data": "id" },
+                        { "data": "last_name" },
+                        { "data": "position" },
+                        { "data": "office" },
+                        { "data": "start_date" },
+                        { "data": "salary" }
+                    ],
+                    ajax: {
+                        url: '/estacionamento/gerenciar_ajax.do',
+                        type: 'GET'
+                        
+                    },
+                     
+                    
 
                     "bJQueryUI": true,
                     "oLanguage": {
-                        "sProcessing": "Processandro...",
+                        "sProcessing": "Processando...",
                         "sLengthMenu": "Mostrar _MENU_ registros",
                         "sZeroRecords": "Não foram encontrados resultados",
                         "sInfo": "Mostrar _START_ até _END_ de _TOTAL_ registros",

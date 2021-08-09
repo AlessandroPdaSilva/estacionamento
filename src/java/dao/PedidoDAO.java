@@ -166,7 +166,8 @@ public class PedidoDAO {
         
         String sql = "SELECT * FROM pedido p "
        + "INNER JOIN funcionario f ON p.id_funcionario = f.id "
-       + "ORDER BY p.id DESC";
+       + "ORDER BY p.id DESC "
+       + "LIMIT 100";
 
         
         // var -veiculo_dados
