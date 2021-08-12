@@ -1,3 +1,5 @@
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
 <%@page import="model.Usuario"%>
 <%@page import="model.VeiculoDaFrota"%>
 <%@page import="dao.VeiculoDaFrotaDAO"%>
@@ -16,8 +18,8 @@
         <%@include file="../../page/cabeçalho_sub.jsp" %>
         <h1 class="my-3">Chaves Concedidas</h1>
 
-         <div class="p-2 bd-highlight">
-            <button class="btn btn-danger mb-3" onclick="gerarPDF()" >
+         <div class="p-2 bd-highlight"> 
+            <button class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#ModalGerarPdf" >
                 <img src="../../imagens/file-earmark-pdf.svg"> &nbsp gerar PDF
             </button>
         </div>
@@ -179,7 +181,50 @@
           </div>
       </div>
       
+         <!-- MODAL GERAR PDF-->
+      <div id="ModalGerarPdf" class="modal" tabindex="-1" >
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
 
+                  <!-- form-->
+                  <form action="/estacionamento/gerenciar_relatorio_cf.do" method="POST">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Gerar PDF</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      
+                      <input name="acao" value="gerar-pdf-relatorio" hidden="">
+                      <%
+                          //--data
+                            LocalDateTime agora = LocalDateTime.now();//data atual
+
+
+                            DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("uuuu-MM-dd");// formatar a data
+                            String dataFormatada = formatterData.format(agora);
+
+                            String auxString[] = dataFormatada.split("-");
+
+                            String data= auxString[0]+ "-" +auxString[1];
+                          %> 
+                       
+                          
+                      <!-- body form -->
+                      <div class="modal-body">
+                          Clique no icone abaixo, e escolha o mês e ano:<br><br>
+                          <input type="month" id="mesEano" name="mesEano" min="2021-08" max="<%=data%>" value="<%=data%>">
+                          
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" >Gerar</button>
+                        
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+      
 
 
         <!-- javaScript -->

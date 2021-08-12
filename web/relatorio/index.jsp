@@ -1,4 +1,6 @@
 
+<%@page import="java.time.format.DateTimeFormatter"%>
+<%@page import="java.time.LocalDateTime"%>
 <%@page import="model.Usuario"%>
 <%@page import="model.RelatorioVeiculoFuncionario"%>
 <%@page import="dao.RelatorioVeiculoFuncionarioDAO"%>
@@ -21,8 +23,8 @@
 
          
             
-        <div class="p-2 bd-highlight">
-            <button class="btn btn-danger mb-3" onclick="gerarPDF()" >
+        <div class="p-2 bd-highlight"><!-- onclick="gerarPDF()"-->
+            <button class="btn btn-danger mb-3" data-bs-toggle="modal" data-bs-target="#ModalGerarPdf" >
                 <img src="../imagens/file-earmark-pdf.svg"> &nbsp gerar PDF
             </button>
         </div>
@@ -75,61 +77,52 @@
         </div>
 
 
-                <script>
-                    function gerarPDF(){
-                        if (confirm("\nDeseja gerar um PDF ? " )) {
-                            
-                            var dados=document.getElementById('dados').innerHTML
-                            var janela = window.open( '  ' ,  '  ' ,'width=800,heigth=600')
-                            janela.document.write('<html><head>')
-                            janela.document.write('</head>')
-                            janela.document.write('<body>')
-                            
-                        
-                            
-                            janela.document.write('<h1 style="display: flex;flex-direction: row;justify-content: center;">Relatorio da Garagem</h1>');
-                            janela.document.write('<div style="display: flex;flex-direction: row;justify-content: center;">')
-                            janela.document.write('<table style="border-collapse: collapse;" cellspacing="0" cellpadding="6" border-spacing="0">')
-                            janela.document.write(''+'<thead>'
-                                    +'<th style="border: 1px solid black;" scope="col">ID</th>'
-                                    +'<th style="border: 1px solid black;" scope="col">Placa do carro</th>'
-                                    +'<th style="border: 1px solid black;" scope="col">Nome</th>'
-                                    +'<th style="border: 1px solid black;" scope="col">Matricula</th>'
-                                    +'<th style="border: 1px solid black;" scope="col">Vaga</th>'
-                                    +'<th style="border: 1px solid black;" scope="col">Saida do carro</th>'
-                                    +'<th style="border: 1px solid black;" scope="col">Entrada do carro</th>'
-                                    +'</thead>');
-                            janela.document.write('<tbody>')
-                            <c:forEach var="r" items="${rdao.allDesc}">
-                            janela.document.write(''
-                                    
-                                    +''
-                                    +'<tr>'
-                                    +'<td style="border: 1px solid black;" scope="row">${r.id}</td>'
-                                    +'<td style="border: 1px solid black;">${r.veiculo.placa}</td>'
-                                    +'<td style="border: 1px solid black;">${r.funcionario.nome}</td>'
-                                    +'<td style="border: 1px solid black;">${r.funcionario.matricula}</td>'
-                                    +'<td style="border: 1px solid black;">${r.vagaEstacionamento}</td>'
-                                    +'<td style="border: 1px solid black;">${r.saidaVeiculo}</td>'
-                                    +'<td style="border: 1px solid black;">${r.entradaVeiculo}</td>'
-                                    +'</tr>'
-                                    +''
-                                    
-                                    +'')
-                                   
-                            </c:forEach>
-                                
-                                janela.document.write('</tbody>')
-                                janela.document.write('</table>')
-                                janela.document.write('</div>')
-                            janela.document.write('</body></html>')
-                            janela.document.close()
-                            janela.print()
-        
-                        }
-                    }
-                </script>
+        <!-- MODAL GERAR PDF-->
+      <div id="ModalGerarPdf" class="modal" tabindex="-1" >
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
 
+                  <!-- form-->
+                  <form action="/estacionamento/gerenciar_agendamento.do" method="POST">
+                      <div class="modal-header">
+                          <h5 class="modal-title">Gerar PDF</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      
+                      <input name="acao" value="gerar-pdf-relatorio" hidden="">
+                      <%
+                          //--data
+                            LocalDateTime agora = LocalDateTime.now();//data atual
+
+
+                            DateTimeFormatter formatterData = DateTimeFormatter.ofPattern("uuuu-MM-dd");// formatar a data
+                            String dataFormatada = formatterData.format(agora);
+
+                            String auxString[] = dataFormatada.split("-");
+
+                            String data= auxString[0]+ "-" +auxString[1];
+                          %> 
+                       
+                          
+                      <!-- body form -->
+                      <div class="modal-body">
+                          Clique no icone abaixo, e escolha o mês e ano:<br><br>
+                          <input type="month" id="mesEano" name="mesEano" min="2021-07" max="<%=data%>" value="<%=data%>">
+                          
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary" >Gerar</button>
+                        
+                      </div>
+                  </form>
+
+              </div>
+          </div>
+      </div>
+              
+                
+             
         <script type="text/javascript" src="datatables/jquery.js"></script>
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
         <script type="text/javascript">

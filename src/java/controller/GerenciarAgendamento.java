@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -303,6 +304,136 @@ public class GerenciarAgendamento extends HttpServlet {
         
             
         }
+        
+        // Relatorio Garagem
+        if (acao.equals("gerar-pdf-relatorio")) {
+            //data input
+            String mesano = request.getParameter("mesEano");
+            String auxMesAno[] = mesano.split("-");
+            int mes = Integer.parseInt(auxMesAno[1]);
+            int ano = Integer.parseInt(auxMesAno[0]);
+
+             
+            
+            
+            try {
+                
+                RelatorioVeiculoFuncionarioDAO rd = new RelatorioVeiculoFuncionarioDAO();
+                
+                ArrayList<RelatorioVeiculoFuncionario> r = new ArrayList<>();
+                
+                
+                
+                r = rd.getAllDescPdf(mes, ano);
+                
+                String texto = ""; 
+                
+                // setando tabela
+                for(RelatorioVeiculoFuncionario aux:r){ 
+                    
+                    aux.getId();
+                    texto += ""+
+    "                            janela.document.write(''\n" +
+    "                                    \n" +
+    "                                    +''\n" +
+    "                                    +'<tr>'\n" +
+    "                                    +'<td style=\"border: 1px solid black;\" scope=\"row\"> "+aux.getId()+" </td>'\n" +
+ 
+    "                                    +'<td style=\"border: 1px solid black;\"> "+aux.getVeiculo().getPlaca()+" </td>'\n" +
+    "                                    +'<td style=\"border: 1px solid black;\"> "+aux.getFuncionario().getNome()+" </td>'\n" +
+    "                                    +'<td style=\"border: 1px solid black;\"> "+aux.getFuncionario().getMatricula()+" </td>'\n" +
+    "                                    +'<td style=\"border: 1px solid black;\"> "+aux.getVagaEstacionamento()+" </td>'\n" +
+    "                                    +'<td style=\"border: 1px solid black;\"> "+aux.getSaidaVeiculo()+" </td>'\n" +
+     "                                   +'<td style=\"border: 1px solid black;\"> "+aux.getEntradaVeiculo()+" </td>'\n" +
+    "                                    +'</tr>'\n" +
+    "                                    +''\n" +
+    "                                    \n" +
+    "                                    +'')\n" +
+    "                                   \n" +
+    "                            " ;
+                    
+                }
+                
+                
+                //verificando se ha registros
+                if(texto==""){
+                    out.println("<script type='text/javascript'>");
+                    out.println("alert('Nao ha registros para esse mês')");
+                    out.println("location.href='relatorio/index.jsp'");
+                    out.println("</script>");
+                }else{
+                    
+                    // gerando html
+                    out.println("<br><h1 style=\"display: flex;flex-direction: row;justify-content: center;\">PDF gerado com sucesso!!</h1>");
+                    
+                    out.println("<div style=\"display: flex;flex-direction: row;justify-content: center;\">");
+                    out.println("<p> Obs: Caso o PDF não tenha sido gerado, verifique se os pop ups estão bloqueados</p>");
+                    out.println("</div>");
+                     
+                    out.println("<div style=\"display: flex;flex-direction: row;justify-content: center;\">");
+                    out.println("<a href='/estacionamento/relatorio/index.jsp'> Voltar</a>");
+                    out.println("</div>");
+                    
+                    
+                    
+                    
+                    // gerando pop up
+                    out.println("<script type='text/javascript'>");
+
+                    out.println("" +
+
+    "                            onload = function(){"+                             
+    "                            var janela = open( '  ' ,  '  ' ,'width=800,heigth=600')\n" +
+    "                            janela.document.write('<input type=\"text\" hidden=\"\" >')\n" +
+    "                            janela.document.write('</head>')\n" +
+    "                            janela.document.write('<body>')\n" +
+    "                            \n" +
+    "                        \n" +
+    "                            \n" +
+    "                            janela.document.write('<h1 style=\"display: flex;flex-direction: row;justify-content: center;\">Relatorio da Garagem</h1>');\n" +
+    "                            janela.document.write('<div style=\"display: flex;flex-direction: row;justify-content: center;\">')\n" +
+    "                            janela.document.write('<table style=\"border-collapse: collapse;\" cellspacing=\"0\" cellpadding=\"6\" border-spacing=\"0\">')\n" +
+    "                            janela.document.write(''+'<thead>'\n" +
+    "                                    +'<th style=\"border: 1px solid black;\" scope=\"col\">ID</th>'\n" +
+    "                                    +'<th style=\"border: 1px solid black;\" scope=\"col\">Placa do carro</th>'\n" +
+    "                                    +'<th style=\"border: 1px solid black;\" scope=\"col\">Nome</th>'\n" +
+    "                                    +'<th style=\"border: 1px solid black;\" scope=\"col\">Matricula</th>'\n" +
+    "                                    +'<th style=\"border: 1px solid black;\" scope=\"col\">Vaga</th>'\n" +
+    "                                    +'<th style=\"border: 1px solid black;\" scope=\"col\">Saida do carro</th>'\n" +
+    "                                    +'<th style=\"border: 1px solid black;\" scope=\"col\">Entrada do carro</th>'\n" +
+    "                                    +'</thead>');\n" +
+    "                            janela.document.write('<tbody>')\n" );
+
+                         
+                        out.println(texto);
+                        
+
+                        out.println(
+        "                                \n" +
+        "                                janela.document.write('</tbody>')\n" +
+        "                                janela.document.write('</table>')\n" +
+        "                                janela.document.write('</div>')\n" +
+        "                            janela.document.write('</body></html>')\n" +
+        "                            janela.document.close()\n" +
+        "                            janela.print()" +
+                        "};");
+                        
+                        
+                         
+                        
+                        out.println("</script>");
+                    
+                    }
+                
+                   
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+           
+            
+        }
+        
         
     }
  

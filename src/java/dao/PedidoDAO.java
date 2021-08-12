@@ -167,7 +167,7 @@ public class PedidoDAO {
         String sql = "SELECT * FROM pedido p "
        + "INNER JOIN funcionario f ON p.id_funcionario = f.id "
        + "ORDER BY p.id DESC "
-       + "LIMIT 100";
+       + "LIMIT 125";
 
         
         // var -veiculo_dados
@@ -406,7 +406,8 @@ public class PedidoDAO {
         String sql = "SELECT * FROM pedido p "
        + "INNER JOIN funcionario f ON p.id_funcionario = f.id "
        + "WHERE p.id_funcionario = ? "
-       + "ORDER BY p.id DESC";
+       + "ORDER BY p.id DESC "
+       + "LIMIT 125 ";
 
         // var -veiculo_dados
         ArrayList<Pedido> relatorio_dados = new ArrayList<>();
