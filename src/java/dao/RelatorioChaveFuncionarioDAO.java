@@ -204,7 +204,7 @@ public class RelatorioChaveFuncionarioDAO {
         String sql = "SELECT * FROM relatorio_chave_funcionario rf "
                 + "INNER JOIN pedido p ON p.id = rf.id_pedido "
                 + "ORDER BY rf.id_pedido DESC "
-                + "LIMIT 125";
+                + "LIMIT 150";
 
         // var -veiculo_dados
         ArrayList<RelatorioChaveFuncionario> relatorio_dados = new ArrayList<>();
